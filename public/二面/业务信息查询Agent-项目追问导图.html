@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>项目介绍与追问｜渲染版</title>
+  <style>
+    :root { --ink:#171717; --muted:#666; --line:#d7d7d7; --soft:#f7f7f7; --blue:#075d9f; --bluebg:#eef7fc; }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; color:var(--ink); background:#fff; font:14px/1.75 -apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",sans-serif; }
+    header { position:sticky; top:0; z-index:2; padding:14px max(20px,calc((100vw - 1180px)/2)); border-bottom:1px solid var(--line); background:#fff; }
+    h1 { margin:0; font-size:20px; }
+    header p { margin:2px 0 0; color:var(--muted); font-size:12px; }
+    main { width:min(1180px,100%); margin:auto; padding:24px 20px 60px; }
+    .summary { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:24px; }
+    .summary a { display:block; padding:13px 14px; border:1px solid var(--line); border-top:3px solid var(--blue); color:var(--ink); text-decoration:none; }
+    .summary a:hover { background:var(--soft); }
+    .summary b { display:block; color:var(--blue); font-size:13px; }
+    .summary span { display:block; margin-top:3px; color:var(--muted); font-size:12px; }
+    .notice { margin:0 0 18px; padding:10px 12px; border-left:3px solid var(--blue); background:var(--bluebg); }
+    section { margin-top:24px; border:1px solid var(--line); }
+    .rendered { padding:18px; }
+    .rendered > :first-child { margin-top:0; }
+    .rendered > :last-child { margin-bottom:0; }
+    .rendered h2 { margin:26px 0 12px; padding:0 0 7px; border-bottom:1px solid var(--line); font-size:19px; line-height:1.4; }
+    .rendered h2:first-child { margin-top:0; }
+    .rendered h3 { margin:20px 0 8px; font-size:16px; }
+    .rendered h4 { margin:16px 0 7px; font-size:14px; }
+    .rendered p { margin:9px 0; }
+    .rendered blockquote { margin:12px 0; padding:10px 13px; border-left:3px solid var(--blue); background:var(--bluebg); }
+    .rendered blockquote p { margin:0; }
+    .rendered code { padding:1px 4px; background:var(--soft); font-family:Consolas,"Liberation Mono",monospace; font-size:.92em; }
+    .rendered pre { margin:12px 0; padding:13px; overflow:auto; border:1px solid var(--line); background:var(--soft); white-space:pre; }
+    .rendered pre code { padding:0; background:transparent; font-size:12px; line-height:1.6; }
+    .rendered table { width:100%; margin:13px 0; border-collapse:collapse; font-size:13px; }
+    .rendered th,.rendered td { padding:8px 9px; border:1px solid var(--line); vertical-align:top; text-align:left; }
+    .rendered th { background:var(--soft); font-weight:600; }
+    .rendered ul,.rendered ol { padding-left:22px; }
+    .rendered li { margin:4px 0; }
+    footer { margin-top:25px; padding-top:14px; border-top:1px solid var(--line); color:var(--muted); font-size:12px; }
+    @media(max-width:720px) { header { padding:12px 16px; } main { padding:18px 14px 40px; } .summary { grid-template-columns:1fr; } .rendered { padding:14px; } .rendered table { display:block; overflow:auto; } }
+  </style>
+</head>
+<body>
+  <header><h1>项目介绍与追问｜渲染版</h1><p>上方为索引；下方内容来自指定原文，按 Markdown 语义渲染。</p></header>
+  <main>
+    <nav class="summary" aria-label="项目索引">
+      <a href="#first"><b>第一项目</b><span>Voyager 业务信息查询 Agent</span></a>
+      <a href="#second"><b>第二项目</b><span>Robotaxi 碰撞检测 VLM 评测</span></a>
+      <a href="#school"><b>学校项目</b><span>低空经济政策 RAG 与知识抽取</span></a>
+    </nav>
+    <p class="notice"><b>说明：</b>正文内容未改写，已实际渲染为标题、引用、代码块、表格和列表。</p>
+    <section id="first"><div class="rendered"><h2>1. 第一项目：Voyager 业务信息查询 Agent</h2>
+<h3>1.1 30 秒版本</h3>
+<blockquote>
+<p>这是一个面向自动驾驶业务管理者的信息查询 Agent。管理者在 D-Chat 中用自然语言询问版本进展、需求风险或指标变化，背后需要跨 Cooper、任务系统和数据系统查询。难点不在单次调用工具，而在复杂问题会跨多轮、多源：模型容易选错工具、查完忘记目标，或证据不全就回答。我的核心工作是设计信息查询的有状态控制链路，把问题拆成可验收的事实任务，在每次工具调用后更新进度和证据，最后按任务覆盖与来源校验决定继续补查、正常回答还是降级说明。</p>
+</blockquote>
+<h3>1.2 推荐的 90 秒版本</h3>
+<blockquote>
+<p>我在滴滴做的第一个项目是面向业务管理者的信息查询 Agent。业务背景是文档、版本需求、任务进展和指标报表分散在多个内部系统里，管理者问“这个版本有没有上线风险”时，真正需要的不是一段泛化总结，而是要先确认版本范围，再看未完成任务、阻塞项和相关指标，最后给出有来源的结论。  </p>
+<p>我负责的重点是查询链路的有状态管理。原始 Agent Runtime 已经具备 ReAct 式的模型调用和工具执行能力，但仅靠模型在对话里记住进度，会出现工具选择不稳定、查漏、以及证据不足就提前结束的问题。为此我把一次查询抽象为一个 <code>Goal</code> 和 1 到 5 个可独立验收的事实任务；状态里保存原始问题、明确约束、任务状态、工具尝试、标准化结果、证据和当前决策。  </p>
+<p>在运行上，首先用规则处理精确链接、明确数据源等确定场景；复杂或有指代的问题再让模型做结构化补全和任务拆解。之后每轮模型调用前，Controller 根据状态生成当前进度、待补事实和本轮可见的只读工具。工具执行前检查白名单、参数、重复调用、预算和依赖；执行后把不同数据源的返回归一为证据，并更新对应任务。最后不是由模型自己宣称“查完了”，而是重新检查任务覆盖和来源引用，决定继续补查、生成正常回答，还是明确告知哪些事实没有确认。  </p>
+<p>技术上我是在阶段式 Agent Runtime 上做这层控制：上下文构建、模型决策、工具执行、观察回填、检查点和收尾是分开的，所以查询控制可以插入关键生命周期，而不改写底座。这个项目让我最关注的是：如何把 LLM 的开放式推理收敛成可观测、可核验的业务查询流程。</p>
+</blockquote>
+<h3>1.3 白板图</h3>
+<pre><code class="language-text">D-Chat 消息
+    |
+Query Gate：普通问答 / 信息查询 / 需要澄清
+    |
+InfoQueryState
+  Goal + Constraints + Tasks + Observations + Evidence + Decision
+    |
+每轮：生成进度与可见工具 -&gt; 模型决策 -&gt; 执行前校验 -&gt; 工具执行
+    |                                                      |
+    +---------------- 归一化结果、更新任务和证据 &lt;--------+
+    |
+Completion Check：任务是否覆盖？证据是否充分？来源是否可引用？
+    |
+继续补查 / 带来源回答 / 降级说明
+</code></pre>
+<h3>1.4 如果被问“你的状态具体是什么”</h3>
+<blockquote>
+<p>我会把状态分成查询级和任务级。查询级保存用户原问题、消歧后的查询目标、用户明确的时间/版本/指标等约束、当前决策和预算；任务级保存每个待确认事实、状态、已尝试来源、Observation 和 Evidence ID。任务状态至少包括 pending、in-progress、completed、blocked/failed。这样一次工具失败不会让整个查询丢失，也不会因为某个任务完成就误以为整题完成。</p>
+</blockquote>
+<p>不要把这些状态说成“模型思维链”。它们是 Runtime 自己维护的业务状态；模型只读取本轮必要的进度摘要，不能直接随意改正式状态。</p>
+<h3>1.5 如果被问“状态存在哪里，断了怎么恢复”</h3>
+<blockquote>
+<p>这里要先区分运行状态和会话状态。<code>goclaw</code> 的 <code>RunState</code> 是一次 Run 内的共享内存状态，贯穿 Context、Think、Tool、Observe 等阶段；现有 Runtime 会在固定迭代间隔把待持久化的消息写入 Session，用于保留会话和故障排查。  </p>
+<p>对信息查询专项，我设计的 <code>InfoQueryState</code> 是运行控制的数据模型。若要支持跨进程重启后的业务查询续跑，就不能只放在内存里，应把 QueryRun、QueryTask、Observation、Evidence 以 Run ID / Task ID / ToolCall ID 作为键持久化，并在恢复时重放已完成任务、不重复执行有副作用的操作。当前我会清楚地区分：Runtime 的 Session 检查点已有实现；查询任务状态的完整持久化与恢复是该专项的后续工程化落点，而不是说已经全部线上化。</p>
+</blockquote>
+<h3>1.6 高概率深挖与答题骨架</h3>
+<table>
+<thead>
+<tr>
+<th>面试官可能追问</th>
+<th>应答核心</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>为什么需要有状态管理？</td>
+<td>复杂查询跨轮跨源，纯 ReAct 的上下文易丢目标、重复调用、证据不足即结束。状态将“目标、进度、缺口、证据、决策”从模型记忆转为可控数据。</td>
+</tr>
+<tr>
+<td>为什么不是 Plan-and-Execute？</td>
+<td>不是二选一。初始化阶段用结构化模型形成轻量 Plan，即 1 到 5 个事实任务；执行过程仍是 ReAct，允许根据真实工具结果补查或换源。固定长计划对动态业务数据脆弱，纯 ReAct 又缺收敛，因此采用“轻计划 + 有状态反馈循环”。</td>
+</tr>
+<tr>
+<td>如何判断是否需要查询？</td>
+<td>优先确定性规则：精确链接/资源 ID、明确系统或明确事实槽位；其他歧义管理问题再由结构化模型判断、补全指代或追问。规则负责稳定可编码的判断，模型负责语义理解。</td>
+</tr>
+<tr>
+<td>任务怎么拆，如何防止拆偏？</td>
+<td>任务必须是能独立验证的事实，保留原问题中的版本、时间、指标、人员等显式约束；校验任务数、重复性、未消解指代和约束丢失。模型输出不合格可修复一次，仍失败则降级为原问题的单任务或澄清。</td>
+</tr>
+<tr>
+<td>如何避免模型乱调工具？</td>
+<td>模型只看到本轮允许的工具；执行前再校验工具白名单、只读性质、参数、重复、预算与依赖。可见不等于可执行，失败必须作为 observation 回填，不能伪装成事实。</td>
+</tr>
+<tr>
+<td>哪些工具并行，哪些串行？</td>
+<td>没有数据依赖的只读查询可并行，例如分别读取需求状态和报表；下游依赖上游 ID/结果的查询必须串行，例如先确定版本范围再查该版本任务。<code>goclaw</code> 也将并行 I/O 和顺序状态更新拆开，避免并发改写共享状态。</td>
+</tr>
+<tr>
+<td>如何定义“查完了”？</td>
+<td>不是模型说“完成”。Controller 检查每个任务的必要事实是否被可信证据覆盖、关键来源是否存在、是否仍有 pending/blocked 任务；全满足才回答，部分缺失则补查或给带边界的降级回答。</td>
+</tr>
+<tr>
+<td>工具返回格式不同怎么办？</td>
+<td>在工具返回后做 Normalizer，把来源、实体/时间范围、字段、原始链接、可信度/错误原因统一为 QueryObservation 和 Evidence。答案只引用标准化后、可追溯的证据。</td>
+</tr>
+<tr>
+<td>工具失败、超时或查不到怎么办？</td>
+<td>记录失败来源、参数和错误，不将失败当空结果；若有合法替代源则继续补查，否则标记任务 blocked，最终说明已确认部分与未确认原因。对写操作还需幂等键和人工确认；信息查询一期优先收敛为只读工具。</td>
+</tr>
+<tr>
+<td>如何评测这条链路？</td>
+<td>分“结果”和“过程”：结果看事实正确、来源覆盖、回答质量；过程看工具选择、参数、任务覆盖、重复调用、异常降级和稳定性。74 题集合可作为场景资产，但只有在能说明真值、判分规则、实际运行范围和结果时才主动报数。</td>
+</tr>
+</tbody></table>
+</div></section>
+    <section id="second"><div class="rendered"><h2>3. 第二项目：Robotaxi 碰撞检测 VLM 评测</h2>
+<h3>3.1 60 秒版本</h3>
+<blockquote>
+<p>第二个项目是 Robotaxi 碰撞检测的 VLM 评测与 Bad Case 治理。问题是碰撞本身是低频事件，单看 Accuracy 会被大量负样本抬高，但业务真正更在意漏检。因此我参与建立以人工 Ground Truth 为客观真值、以 Recall 和 F-beta（beta 为 2）优先衡量漏检风险的评测闭环；对于模型和 GT 有分歧或证据不足的样本，引入独立 VLM 盲审取证，并流转人工复核。  </p>
+<p>在 8,021 帧、包含 674 个真实碰撞的泛化集上，微调模型相对通用 VLM 基线的 Recall 从 0.185 提升到 0.812，FN 从 549 降到 127，Precision 为 0.958。我还分析了 396 条 Bad Case，归纳出未拍到接触、边缘接触、车身与围栏紧贴、鱼眼畸变等主要模式，并把这些模式回流到数据、提示词和回归集设计中。这个项目让我建立了一个观念：对于高风险感知任务，模型优化必须由可复现评测和 Bad Case 驱动，而不是只看单次 Demo。</p>
+</blockquote>
+<h3>3.2 高概率追问</h3>
+<table>
+<thead>
+<tr>
+<th>追问</th>
+<th>应答核心</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>为什么不用 Accuracy？</td>
+<td>类别极不均衡，全部预测无碰撞也可能 Accuracy 很高，却无法接受漏检。Recall 直接刻画正样本找回，F-beta=2 更高权重惩罚 FN。</td>
+</tr>
+<tr>
+<td>为什么 Precision 也要看？</td>
+<td>安全优先不等于无限报碰撞。误报会造成无效人工复核和业务干扰，因此同时监控 Precision、FP、FN 和场景分布。</td>
+</tr>
+<tr>
+<td>三方评测怎么定义真值？</td>
+<td>人工标注 GT 是主真值；通用 VLM 是参照模型，不替代 GT；模型/GT 分歧或证据不足的样本进入盲审和人工复核，修复标注或确认模型错误。</td>
+</tr>
+<tr>
+<td>Prompt 怎样迭代才不变成拍脑袋？</td>
+<td>固定 Smoke/Core/Hard 回归集、记录 Prompt/模型/参数/数据版本，做单变量对照；每次只改变一类规则，再观察 FP/FN 及 Top Bad Case 是否真的改善。</td>
+</tr>
+<tr>
+<td>Bad Case 如何分类和回流？</td>
+<td>先按错误类型 FP/FN，再按可观察视觉成因和场景维度归类。回流路径可以是补数据/重标、调整模型训练、调整提示词证据要求或单独建立 Hard 集；不能只“多写 Prompt”。</td>
+</tr>
+</tbody></table>
+</div></section>
+    <section id="school"><div class="rendered"><h2>4. 学校项目：低空经济政策 RAG 与知识抽取</h2>
+<h3>4.1 60 秒版本</h3>
+<blockquote>
+<p>学校项目面向低空经济政策的多跳问答。政策文本长、条款多，直接把全文或粗粒度检索结果交给模型，容易遗漏跨条款关系，也难解释答案依据。我们先完成政策清洗和条款级切分，构建检索库；对复杂问题先生成子问题，以子问题引导从相关条款抽取细粒度三元组，再按子问题组织成结构化推理路径，最后结合原文生成答案。  </p>
+<p>我负责的重点是 RAG 链路和子问题引导的细粒度知识抽取。它的价值不是凭空提高模型推理，而是用更小、更结构化、可回看原文的知识单元减少长文本噪声。在 2Wiki 上，相比 Naive RAG，F1/EM 提升 9.6/15.9 个点；在我们构建的 LEMQA 上，ROUGE/BERTScore F1 提升 4.7/4.4 个点。</p>
+</blockquote>
+<h3>4.2 高概率追问</h3>
+<table>
+<thead>
+<tr>
+<th>追问</th>
+<th>应答核心</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>为什么是条款级切分？</td>
+<td>政策的最小可引用语义单元通常是条款而非固定 token 块；既保留条件、主体、时间和例外，也便于引用。过长条款再按句子/语义边界细分并保留父条款元数据。</td>
+</tr>
+<tr>
+<td>子问题有什么用？</td>
+<td>将复合问题拆为可检索子目标，提高召回针对性；子问题不是最终答案，需回到原文和抽取结果验证。</td>
+</tr>
+<tr>
+<td>三元组会不会丢信息？</td>
+<td>会，因此三元组是推理中间表示，不替代原文。每个三元组应保留来源条款和定位；最终生成仍以原文证据为准。</td>
+</tr>
+<tr>
+<td>如何处理幻觉？</td>
+<td>限制回答只能使用召回条款和有来源的三元组；无依据则说明未找到；评测中检查事实正确与证据覆盖。幻觉不能彻底消除，只能通过检索、约束、验证和降级降低风险。</td>
+</tr>
+<tr>
+<td>为什么不直接上知识图谱？</td>
+<td>该方法按问题即时抽取细粒度知识，降低预构建大图谱的成本；当实体关系稳定、需要跨文档关系查询和持续更新时，图谱是值得考虑的下一步。</td>
+</tr>
+</tbody></table>
+<h2>6. 学校项目深挖版：低空经济政策多跳问答</h2>
+<h3>6.1 项目定位与个人贡献口径</h3>
+<p>这是一个研究与系统结合的项目，目标不是泛化地“做一个政策聊天机器人”，而是解决<strong>长政策文本下的多跳问答</strong>：答案往往跨多个条款，存在主体、条件、时间边界和例外；粗粒度 RAG 容易召回大量相似但无关的背景文本，生成时出现遗漏、关系拼错或忽略有效期。</p>
+<p>你可以这样界定个人角色，避免抢团队成果：</p>
+<blockquote>
+<p>我是核心成员，主要参与了政策语料的 RAG 链路、条款级处理，以及 SG-FKE 方法的实验验证与效果分析。论文方法、数据构建和实验是团队协作完成的；我重点关注的是怎样让复杂问题先被拆成可检索、可抽取的子目标，再用结构化证据支持最终回答。</p>
+</blockquote>
+<p>若具体分工与此不符，明天前必须替换为你能证明的实际内容；不要说自己独立完成论文、数据集或全部实验。</p>
+<h3>6.2 90 秒介绍稿</h3>
+<blockquote>
+<p>这个项目面向低空经济政策的多跳问答。政策文本普遍长且结构复杂，用户的问题通常会同时涉及政策目标、适用主体、扶持条件和有效期，答案分散在不同条款中。传统 Naive RAG 只按语义相似度取 Top-K 文本块，容易把大量背景内容一起带进上下文；模型虽然看到了相关段落，但不一定能把跨条款关系组织正确。  </p>
+<p>因此我们提出了 SG-FKE，也就是子问题引导的细粒度知识抽取。链路分四步：第一步对复杂问题进行查询重写和子问题拆分，例如把“某地区的扶持政策在有效期内需要满足哪些条件”拆成“有效期是什么”和“扶持条件是什么”；第二步在条款级候选上下文中，用每个子问题引导模型抽取 <code>&lt;实体, 关系, 实体&gt;</code> 三元组，并保留对应原始条款；第三步按子问题顺序组织三元组，形成可回看的结构化推理路径；最后只将原问题、三元组和必要的原文证据输入生成模型，产出带约束的答案。  </p>
+<p>这个设计的核心不是用三元组替代原文，而是把三元组作为高密度的中间证据，降低长文本噪声，同时保留回指原条款的能力。我们在 HotpotQA、2Wiki、MuSiQue 和自建 LEMQA 上验证；LEMQA 从 176 份权威政策文件构建，最终保留 680 条人工审校的多跳问答对。消融实验显示，去掉三元组抽取的下降比去掉子问题引导更明显，说明子问题负责聚焦，三元组负责压缩和连接，两者是互补关系。  </p>
+<p>我认为这个项目和我后续做信息查询 Agent 是一脉相承的：都是先把模糊的复杂问题转成可验证的子目标，再用显式证据而不是模型的隐式记忆来支持答案。</p>
+</blockquote>
+<h3>6.3 白板图</h3>
+<pre><code class="language-text">政策文档
+  -&gt; 清洗、保留标题/章节/条款/时间等元数据
+  -&gt; 条款级切分与检索
+用户复杂问题
+  -&gt; Query Rewrite
+  -&gt; 子问题 1...N
+  -&gt; 针对每个子问题，从候选条款抽取带来源的三元组
+  -&gt; 组织为“子问题 - 证据三元组 - 原条款”的推理路径
+  -&gt; 最终生成：答案 + 条款引用 + 时间/主体/条件边界
+</code></pre>
+<h3>6.4 实验数字答题卡</h3>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>可确认口径</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>公开数据集</td>
+<td>HotpotQA-distractor、2WikiMultihopQA、MuSiQue-Ans；测试样本分别为 2,222、3,773、725 条。</td>
+</tr>
+<tr>
+<td>自建数据集</td>
+<td>LEMQA：176 份来自国务院、民航局和地方政府官网的政策文件；每份围绕结构与政策要素构造问题，经人工审校后保留 680 条多跳问答对。</td>
+</tr>
+<tr>
+<td>对比方法</td>
+<td>Naive RAG、CoT、RQ-RAG、GraphRAG。</td>
+</tr>
+<tr>
+<td>评价指标</td>
+<td>公开问答集使用 F1 / EM；开放式政策回答使用 ROUGE / BERTScore F1。</td>
+</tr>
+<tr>
+<td>代表结果</td>
+<td>ChatGLM-9B 上，SG-FKE 在 2Wiki 达到 F1 54.6、EM 46.9；LEMQA 达到 ROUGE 46.5、BERTScore F1 75.1。Qwen-32B 在 LEMQA 达到 ROUGE 47.8、BERTScore F1 76.8。</td>
+</tr>
+<tr>
+<td>消融结论</td>
+<td>移除子问题引导时，Qwen-32B 的 2Wiki F1 从 59.0 降至 56.7；移除三元组抽取时降至 52.4，后者影响更大。</td>
+</tr>
+<tr>
+<td>效率结论</td>
+<td>抽取后的上下文大约保留原始文本的 5% 至 15%，但不能把该压缩率直接等同于端到端延迟同比下降。</td>
+</tr>
+</tbody></table>
+<p><strong>重要：简历中的“2Wiki F1/EM 提升 9.6/15.9 个点”与当前论文材料的表格版本不完全一致。</strong> 明天不要主动报“提升多少点”；被问到时以“方法在两种模型和四类数据集上优于各基线，具体数值需按实验版本、模型和比较对象说明”作答。只有确认简历数字对应的模型、数据切分和基线后，才给出绝对提升。</p>
+<h3>6.5 学校项目高频深挖</h3>
+<table>
+<thead>
+<tr>
+<th>追问</th>
+<th>推荐回答</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>多跳问答和普通 RAG 的差别？</td>
+<td>普通 RAG 关注单段是否相关；多跳问答要求跨段落/实体把多个事实按约束连接起来，任何一跳漏掉或关系拼错都会导致最终答案错误。</td>
+</tr>
+<tr>
+<td>为什么先切条款，而不是固定 token Chunk？</td>
+<td>政策条款通常是带条件、主体、时间和例外的最小语义单元；固定长度切分可能把“适用条件”和“例外”切开。条款过长时再按句子或语义边界细分，同时保留父条款和文档层级元数据。</td>
+</tr>
+<tr>
+<td>三元组是怎么抽的？</td>
+<td>先由子问题定义抽取目标，再要求模型从候选条款中按 <code>&lt;实体, 关系, 实体&gt;</code> 格式抽取，并绑定来源条款。为提高格式与关系一致性，使用少量高质量示例约束输出；抽不出可靠三元组时不应编造，而要回退到原文证据或声明不足。</td>
+</tr>
+<tr>
+<td>三元组抽取本身会幻觉，为什么仍可靠？</td>
+<td>三元组不是天然真实，因此必须以原文为锚：每条三元组要保留来源条款，生成前可检查实体/关系/时间是否能在原文对齐。它是压缩和组织层，不是新的事实源。无法对齐就不进入最终证据集。</td>
+</tr>
+<tr>
+<td>为什么不用完整知识图谱或 GraphRAG？</td>
+<td>全局图谱适合实体关系稳定、长期复用和图遍历很重要的场景，但构建/更新/消歧成本高。政策会频繁更新，SG-FKE 按问题从候选原文中即时抽取局部证据图，先以较低维护成本获得多跳推理收益；在实验中也与 GraphRAG 做了对比。</td>
+</tr>
+<tr>
+<td>Query Rewrite 拆错了怎么办？</td>
+<td>子问题是辅助约束，不应覆盖原问题。要保留原问题和显式约束，检查是否遗漏主体、地区、时间或指标；子问题不确定时可保守少拆，或回退为原问题检索。后续可用覆盖率、重复率、答案证据覆盖做自动评估。</td>
+</tr>
+<tr>
+<td>检索错了怎么办？</td>
+<td>后面的抽取再好也无法补救，因此先看 Recall。可采用条款级索引、查询重写、多查询召回、关键词/向量混合检索和 rerank；最终答案必须展示引用，避免把未被检索到的事实说成确定结论。</td>
+</tr>
+<tr>
+<td>ROUGE 和 BERTScore F1 分别说明什么？</td>
+<td>ROUGE 更偏表面 n-gram 重合，对措辞敏感；BERTScore 用上下文表征匹配，能更好衡量语义相近但表达不同。二者都不能替代事实正确性和引用正确性，因此实际政策系统还应加入人工或规则化事实核验。</td>
+</tr>
+<tr>
+<td>方法局限是什么？</td>
+<td>依赖初始召回质量，三元组抽取会带来额外模型调用；复杂关系可能被过度压缩；静态实验指标不能代表政策实时性和线上用户体验。上线需要增量索引、时间有效性过滤、引用核验和真实问题评测。</td>
+</tr>
+</tbody></table>
+<h3>6.6 用学校项目引导面试官的收束句</h3>
+<blockquote>
+<p>这个项目里我比较重视两件事：一是把复杂问题拆成能被检索和验证的中间目标，二是让最终答案始终能回到原始条款。您如果感兴趣，我可以展开讲条款级切分和三元组证据校验，或者实验里子问题引导与三元组抽取的消融对比。</p>
+</blockquote>
+</div></section>
+    <footer>原文来源：明日面试-项目介绍与追问引导.md</footer>
+  </main>
+</body>
+</html>
