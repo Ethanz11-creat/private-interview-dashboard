@@ -1,1 +1,99 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>求职面试思维导图</title><style>body{margin:0;background:#fff;color:#202124;font:15px/1.7 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}header{padding:24px 34px;border-bottom:1px solid #e5e7eb;display:flex;justify-content:space-between;align-items:center}h1{font-size:22px;margin:0}header p{margin:3px 0;color:#6b7280}.buttons button{margin-left:8px;padding:7px 12px;border:1px solid #cbd5e1;background:#fff;border-radius:4px;cursor:pointer}main{display:grid;grid-template-columns:280px 1fr;max-width:1400px;margin:auto}.left{padding:24px;border-right:1px solid #e5e7eb;min-height:calc(100vh - 90px)}.right{padding:24px 38px}.branch{border-left:2px solid #dbeafe;padding-left:18px;margin:0 0 12px}.branch summary{cursor:pointer;font-weight:600;padding:8px}.branch summary::marker{color:#2563eb}.content{padding:10px 16px;background:#fafafa;border-left:1px solid #e5e7eb}.content p{white-space:pre-wrap}.nav{display:block;width:100%;text-align:left;padding:10px 12px;margin:5px 0;border:1px solid #d1d5db;background:#fff;border-radius:4px;cursor:pointer}.nav.active{background:#eff6ff;border-color:#93c5fd;color:#1d4ed8}.label{font-size:12px;color:#6b7280;margin:18px 0 6px}.note{background:#fffbea;border:1px solid #eadf9a;padding:12px;margin:12px 0;white-space:pre-wrap}.line{height:1px;background:#e5e7eb;margin:22px 0}a{color:#2563eb}.modal{position:fixed;inset:0;background:#0005;display:none;align-items:center;justify-content:center}.modal.open{display:flex}.dialog{background:#fff;width:560px;max-width:90%;padding:22px}.dialog label{display:block;margin:8px 0}.dialog input,.dialog textarea{width:100%;padding:8px;border:1px solid #cbd5e1}.dialog textarea{min-height:80px}</style></head><body><header><div><h1>求职面试思维导图</h1><p>按面试轮次熟悉固定话术，按邀约记录本场准备</p></div><div class="buttons"><button id="expand">展开全部</button><button id="collapse">收起全部</button></div></header><main><aside class="left"><div class="label">面试轮次</div><button class="nav active" data-view="business">业务面</button><button class="nav" data-view="supervisor">主管面</button><button class="nav" data-view="hr">HR 面</button><div class="label">面试邀约</div><button class="nav" id="newInterview">＋ 新建面试邀约</button><div id="interviews"></div></aside><section class="right" id="app"></section></main><div class="modal" id="modal"><div class="dialog"><h2>新建面试邀约</h2><label>公司<input id="company"></label><label>岗位<input id="role"></label><label>JD / 面试官 / 时间 / 便利贴<textarea id="memo"></textarea></label><div class="buttons"><button id="cancel">取消</button><button id="saveInvite">保存</button></div></div></div><script src="/content.js"></script><script>let view='business',state=JSON.parse(localStorage.getItem('job-map')||'{"invites":[]}');const app=document.querySelector('#app');function render(){let v=INTERVIEW_VIEWS[view];app.innerHTML='<div class="label">当前轮次</div><h2>'+v.title+'</h2><p>'+v.goal+'</p><div class="line"></div><div class="label">面试导图</div>'+v.nodes.map((n,i)=>'<details class="branch"><summary>'+ (i+1)+'. '+n[0]+'</summary><div class="content"><p>'+n[1]+'</p>'+(n[0].includes('主项目')?'<a href="/二面/业务信息查询Agent-项目追问导图.html" target="_blank">打开完整主项目追问导图 →</a>':'')+'</div></details>').join('')+'<div class="line"></div><details class="branch"><summary>本轮复盘</summary><div class="content"><textarea id="review" style="width:100%;min-height:140px" placeholder="实际问题、我的回答、面试官反馈、下次改进">'+(state.review?.[view]||'')+'</textarea><button id="saveReview">保存复盘</button></div></details>';document.querySelectorAll('.nav[data-view]').forEach(b=>b.classList.toggle('active',b.dataset.view===view));document.querySelector('#saveReview').onclick=()=>{state.review=state.review||{};state.review[view]=review.value;localStorage.setItem('job-map',JSON.stringify(state))}}function list(){interviews.innerHTML=state.invites.map((x,i)=>'<button class="nav" data-i="'+i+'">'+x.company+'｜'+x.role+'</button>').join('')}document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>{view=b.dataset.view;render()});expand.onclick=()=>document.querySelectorAll('details').forEach(x=>x.open=true);collapse.onclick=()=>document.querySelectorAll('details').forEach(x=>x.open=false);newInterview.onclick=()=>modal.classList.add('open');cancel.onclick=()=>modal.classList.remove('open');saveInvite.onclick=()=>{if(!company.value.trim()||!role.value.trim())return alert('请填写公司和岗位');state.invites.push({company:company.value.trim(),role:role.value.trim(),memo:memo.value});localStorage.setItem('job-map',JSON.stringify(state));modal.classList.remove('open');list()};render();list();</script></body></html>
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>求职面试思维导图</title>
+  <style>
+    :root{--ink:#1f2933;--muted:#68737d;--line:#dfe4e8;--soft:#f7f9fa;--blue:#145da0;--blue-soft:#eef5fb;--gold:#8a6500;--gold-soft:#fff9e6}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}
+    body{margin:0;background:#fff;color:var(--ink);font:14px/1.75 -apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",sans-serif}
+    button{font:inherit;color:inherit}
+    header{position:sticky;top:0;z-index:5;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:18px max(20px,calc((100vw - 1440px)/2));background:#fff;border-bottom:1px solid var(--line)}
+    h1{margin:0;font-size:22px;line-height:1.35}header p{margin:3px 0 0;color:var(--muted);font-size:12px}
+    .header-actions{display:flex;gap:8px;flex-wrap:wrap}.plain-btn{padding:7px 11px;border:1px solid #c8d1d9;border-radius:4px;background:#fff;cursor:pointer}.plain-btn:hover{border-color:var(--blue);color:var(--blue)}
+    .layout{display:grid;grid-template-columns:270px minmax(0,1fr);min-height:calc(100vh - 82px);max-width:1440px;margin:auto}
+    aside{padding:22px 16px;border-right:1px solid var(--line);background:#fbfcfd}.side-title{margin:3px 8px 8px;color:var(--muted);font-size:12px;font-weight:700;letter-spacing:.04em}.nav{display:block;width:100%;margin:5px 0;padding:10px 12px;text-align:left;border:1px solid transparent;border-radius:4px;background:transparent;cursor:pointer;text-decoration:none}.nav:hover{background:#f1f4f6}.nav.active{border-color:#b9d2e8;background:var(--blue-soft);color:var(--blue);font-weight:700}.rule{height:1px;margin:20px 0;background:var(--line)}
+    .switch{display:flex;align-items:center;gap:8px;margin:8px;color:#3f4a54;font-size:13px;cursor:pointer}.switch input{width:15px;height:15px;accent-color:var(--blue)}.hint{margin:8px;color:var(--muted);font-size:12px;line-height:1.55}
+    main{min-width:0;padding:30px clamp(20px,4vw,58px) 70px}.eyebrow{color:var(--muted);font-size:12px}.hero{padding-bottom:20px;border-bottom:1px solid var(--line)}.hero h2{margin:2px 0 7px;font-size:25px}.hero p{max-width:850px;margin:0;color:#4d5963}.chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px}.chip{padding:3px 8px;border:1px solid #cdd8e1;border-radius:3px;color:#4c5b67;font-size:12px}
+    .outline{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:22px 0}.outline-card{padding:13px;border:1px solid var(--line);background:#fff}.outline-card b{display:block;font-size:13px}.outline-card span{display:block;margin-top:3px;color:var(--muted);font-size:12px}
+    .section{margin-top:28px}.section-title{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding-bottom:8px;border-bottom:1px solid var(--line)}.section-title h3{margin:0;font-size:18px}.section-title small{color:var(--muted);font-size:12px}.tree{margin-top:12px}.node{margin:0 0 8px;border-left:2px solid #d5e5f2}.node summary{display:flex;align-items:flex-start;gap:10px;padding:9px 12px;cursor:pointer;list-style:none}.node summary::-webkit-details-marker{display:none}.node summary:before{content:'+';width:18px;color:var(--blue);font-weight:700}.node[open] summary:before{content:'−'}.node summary b{display:block}.node summary em{display:block;color:var(--muted);font-style:normal;font-size:12px;font-weight:400}.node-body{margin:0 12px 14px 40px;padding:12px 14px;background:var(--soft);border-left:1px solid var(--line)}.node-body p{margin:6px 0}.node-body ul{margin:6px 0;padding-left:20px}.node-body li{margin:3px 0}.node-body a{color:var(--blue);text-decoration:none}.node-body a:hover{text-decoration:underline}.quote{margin:8px 0;padding:11px 13px;border-left:3px solid #9cbfdb;background:#fff;white-space:pre-wrap}.quote.en{font-family:Georgia,"Times New Roman",serif;line-height:1.65}.addon{border-left-color:#d6c27c}.addon summary:before{color:var(--gold)}.addon .node-body{background:var(--gold-soft);border-left-color:#eadca4}.notice{margin-top:20px;padding:10px 12px;border-left:3px solid var(--blue);background:var(--blue-soft);color:#3f5364}.source-links{display:flex;flex-wrap:wrap;gap:8px}.source-links a{display:inline-block;padding:6px 9px;border:1px solid #c8d8e5;color:var(--blue);text-decoration:none;background:#fff}.source-links a:hover{background:var(--blue-soft)}footer{margin-top:34px;padding-top:14px;border-top:1px solid var(--line);color:var(--muted);font-size:12px}
+    @media(max-width:820px){header{align-items:flex-start;flex-direction:column}.layout{grid-template-columns:1fr}aside{border-right:0;border-bottom:1px solid var(--line);padding:14px 16px}.side-title{margin-top:7px}.nav{display:inline-block;width:auto;margin-right:4px}.side-nav{display:flex;flex-wrap:wrap}.switch{display:inline-flex;margin-right:16px}.outline{grid-template-columns:1fr}.main{padding:24px 16px 50px}}
+  </style>
+</head>
+<body>
+  <header>
+    <div><h1>求职面试思维导图</h1><p>一套统一话术，按面试轮次切换；公司特殊内容按需展开</p></div>
+    <div class="header-actions"><button class="plain-btn" id="openAll">展开当前轮次</button><button class="plain-btn" id="closeAll">收起当前轮次</button></div>
+  </header>
+  <div class="layout">
+    <aside>
+      <div class="side-title">面试轮次</div>
+      <div class="side-nav"><button class="nav active" data-view="technical">技术面</button><button class="nav" data-view="supervisor">主管面</button><button class="nav" data-view="hr">HR 面</button></div>
+      <div class="rule"></div><div class="side-title">附加模块</div>
+      <label class="switch"><input type="checkbox" data-addon-toggle="english" checked> 英文内容</label>
+      <label class="switch"><input type="checkbox" data-addon-toggle="company" checked> 联想业务补充</label>
+      <label class="switch"><input type="checkbox" data-addon-toggle="output" checked> 对外输出经历</label>
+      <p class="hint">面试不需要某个模块时，取消勾选即可隐藏；再次勾选会恢复。</p>
+      <div class="rule"></div><div class="side-title">资料入口</div>
+      <a class="nav" href="二面/业务信息查询Agent-项目追问导图.html" target="_blank" rel="noreferrer">完整项目追问导图 ↗</a>
+      <a class="nav" href="二面/联想主管面思维导图.html" target="_blank" rel="noreferrer">联想主管面原始资料 ↗</a>
+    </aside>
+    <main id="app"></main>
+  </div>
+  <script>
+    const PROJECT_LINK='二面/业务信息查询Agent-项目追问导图.html';
+    const views={
+      technical:{title:'技术面',goal:'证明项目确实做过，讲清技术机制、个人边界、验证方式和方案取舍。技术回答回到“问题—设计—证据—边界”。',chips:['项目深挖','技术原理','方案取舍','验证口径'],outline:[['开场','中文介绍 → 主项目定位'],['深挖','状态、工具、证据、异常、评测'],['收束','局限、下一步、反问']],nodes:[
+        ['开场：统一自我介绍','教育背景 + RAG/Agent/评测经历 + AI 应用落地能力。','<div class="quote">面试官您好，我叫赵一恒，目前在厦门大学电子信息专业读硕士，将于明年毕业。我的实习和在校项目主要聚焦在 RAG、AI Agent 和 AI 应用落地。在滴滴实习时，我参与了团队内部业务信息查询 Agent 的方案和研发，负责信息查询链路和记忆系统的设计与开发，重点解决复杂查询中的进度保持、证据不足和链路稳定性问题。此外，我做过低空经济政策 RAG、知识抽取和 AI 模型评测。我希望继续做把 AI 技术落到真实业务中的工作。</div>'],
+        ['主项目：业务信息查询 Agent','背景 → 我的职责 → 核心问题 → 状态化方案 → 验证与边界。','<p>先讲业务问题，再讲你的设计。明确说明是在既有 goclaw Runtime 上负责信息查询链路和记忆系统的设计与开发，不把底座或完整生产系统说成自己独立搭建。</p><div class="source-links"><a href="'+PROJECT_LINK+'" target="_blank" rel="noreferrer">打开完整项目追问导图 ↗</a></div>'],
+        ['高概率技术追问','状态为什么必要、任务怎么拆、工具如何约束、何时并行、如何判断查完、失败怎么降级。','<ul><li>状态把目标、任务、进度、Observation、Evidence 和 Decision 从模型上下文中抽出来，避免多轮调用丢目标。</li><li>执行前校验工具白名单、参数、重复调用、预算与依赖；执行后归一化结果并做证据覆盖检查。</li><li>区分 PoC、离线评测、小范围试用和生产反馈；没有核验的通过率不主动报。</li></ul>'],
+        ['可信取舍与幻觉','强模型不能替代权限、时效、来源和执行控制；代码控制确定性规则，模型负责语义理解。','<p>幻觉来自检索缺失、上下文冲突或过期、工具不完整和缺少校验。用来源与版本、工具校验、引用、拒答/转人工、回归评测降低风险。</p>'],
+        ['其他项目快速入口','VLM 碰撞检测评测；低空经济政策 RAG 与知识抽取。','<p>只在面试官需要时展开，始终说明个人负责的实验、指标、Bad Case 或知识抽取环节。</p>']
+      ]},
+      supervisor:{title:'主管面',goal:'证明能把模糊需求拆成可交付方案，做符合业务目标的技术取舍，协同推进并持续复盘成长。',chips:['业务判断','协同交付','个人复盘','成长潜力'],outline:[['主线','先讲价值，再讲关键判断'],['证明','项目事实 + 困难处理 + 复盘'],['收束','全球化理解 + 高含金量反问']],nodes:[
+        ['本轮主线','主管关注你是否能从“做功能”上升到“对业务结果负责”。','<p>回答顺序：业务背景和目标 → 我的具体职责 → 关键取舍 → 如何验证 → 还没有验证的边界 → 下一步。</p>'],
+        ['主项目深挖：为什么这样设计','将业务信息查询 Agent 讲成“可观测、可核验的查询交付链路”。','<p>复杂查询跨多个系统和多轮工具调用，纯 ReAct 容易丢进度或证据不足即结束。采用轻量任务拆解 + 有状态反馈循环：先形成 1—5 个可验收事实任务，再根据工具结果补查、换源或降级。</p><div class="source-links"><a href="'+PROJECT_LINK+'" target="_blank" rel="noreferrer">打开完整项目追问导图 ↗</a></div>'],
+        ['最大挑战：未知业务到落地','需求模糊时先拆解，再对齐颗粒度，过程中纠偏并完成开发。','<p>滴滴实习期间，我面对此前没有接触过的业务。需求方最初描述比较模糊，我从需求拆解、设计方案到开发实现逐步推进。中途发现方案颗粒度有偏差后，我和需求方深入讨论，并与组长持续对齐，最后顺利落地。这个过程让我认识到，未知业务先理解场景、持续校准，比急于进入实现更重要。</p>'],
+        ['低谷期：多重压力并存','论文、秋招、实习和转正焦虑同时存在，但把它视为一段需要管理节奏的“奥德赛时期”。','<p>压力曾影响效率，我通过健身和调整工作节奏保持 Work-life balance，最终平稳度过。重点体现识别压力、采取行动和恢复稳定的能力。</p>'],
+        ['不足与自我剖析','易感性思考、向上管理、决策果断度；说明正在采取的改进。','<ul><li><b>易感性思考：</b>早期面对不确定问题容易先关注感受和担忧。现在用量化数字、进度、风险和下一步汇报，先整理证据再表达判断。</li><li><b>工作沟通：</b>主动汇报进展、尽早暴露风险，站在负责人角度思考目标和节奏。</li><li><b>决策果断度：</b>完成从学生思维到工作思维的转变。好的项目不代表最适合业务；现在先明确目标、约束和验收标准，再比较适配度、成本、可扩展性和交付风险。</li></ul>'],
+        ['未来规划','成为懂技术、也能对业务结果负责的 AI 应用与解决方案型人才。','<p>技术上持续积累 RAG、Agent、评测和可信 AI；业务上深入全球服务场景，打通需求拆解、协同交付到持续迭代的完整链路；前 2—3 年扎进具体业务域，沉淀方法论和知识资产。</p>']
+      ]},
+      hr:{title:'HR 面',goal:'证明求职动机稳定、沟通可靠，能客观看待自己并与岗位长期发展匹配。',chips:['求职动机','优势不足','压力管理','职业规划'],outline:[['开场','教育背景 + 方向'],['展开','项目、优势、不足、困难'],['收束','规划 + 岗位期待 + 反问']],nodes:[
+        ['自我介绍','简洁说明教育背景、实习经历和求职方向。','<div class="quote">我叫赵一恒，目前在厦门大学电子信息专业读硕士，将于明年毕业。我的经历主要聚焦 RAG、AI Agent 和 AI 应用落地，在滴滴参与过业务信息查询 Agent 的方案和研发，也做过政策 RAG、知识抽取和 AI 模型评测。我希望从事研发以业务为导向的 AI 应用与解决方案工作。</div>'],
+        ['为什么选择这个方向','把技术积累和业务结果连接起来，而不是只追求模型或 Demo。','<p>AI 知识管理、Agent 和评测都要求把分散信息转成可信、可检索、可复用的能力。我希望在真实业务中持续完成需求拆解、协同交付和迭代。</p>'],
+        ['工作中最擅长的','陌生业务学习、结构化拆解、压力下保持稳定、重视证据和质量。','<ul><li>愿意研究业务背景和问题本质，从陌生领域形成解决方案。</li><li>能把复杂问题拆成流程、模块、状态、验收标准并推动落地。</li><li>关注来源、边界、验收和可追溯性。</li></ul>'],
+        ['工作中最不擅长的','易感性思考影响专业表达；向上沟通和决策果断度仍需加强。','<p>不回避问题，重点说改进动作：汇报使用量化信息，主动同步进度和风险；选型先看业务目标，再在限定时间内做决定并复盘。</p>'],
+        ['困难、低谷与职业规划','用事实说明压力来源、应对方式和成长结果。','<p>困难用“未知业务 + 模糊需求”的故事；低谷用“论文、秋招、实习并行”的故事；规划是前 2—3 年扎进具体业务域，成为能对业务结果负责的 AI 应用与解决方案型人才。</p>']
+      ]}
+    };
+    const addons={
+      english:{title:'英文附加模块：开场与总结',nodes:[
+        ['English self-introduction','面试官要求英文开场时使用。','<div class="quote en">Hello, my name is Yiheng Zhao. I am currently pursuing a master\'s degree in Electronic Information at Xiamen University, and I will graduate next year. My experience mainly focuses on RAG, AI agents, and applying AI to real business problems. During my internship at Didi, I worked on an internal information-querying agent. I was responsible for the query workflow and memory design, especially improving reliability in multi-step queries and preventing answers without enough evidence. I have also worked on policy RAG, knowledge extraction, and AI model evaluation. I am comfortable using tools such as Claude Code and Codex for requirement analysis, development, testing, and documentation. I hope to keep building reliable AI solutions that create real business value.</div>'],
+        ['通用英文面试总结（约 45 秒）','无论中间聊了什么，都可以套用。','<div class="quote en">Thank you for the conversation today. It was helpful to learn more about the team and the challenges of applying AI to real business problems. I shared my experience with an internal information-querying agent at Didi, where I worked on making multi-step queries more reliable and evidence-based. I also talked about how I learn from project challenges and keep improving my communication and decision-making. This role matches what I want to do: use AI skills to solve practical problems and grow through end-to-end delivery. Thank you again.</div>']
+      ]},
+      company:{title:'联想业务附加模块',nodes:[
+        ['一面了解到的团队情况','中国区以外的全球服务场景；eService 自助渠道；MCP/Agent 售后服务探索。','<p>团队主要关注海外售后服务的 AI 转型，目标是提升 self-help 问题解决率，而不是单纯上线聊天功能。不同地区的法律、语言、维修站和 SOP 需要分别适配。</p>'],
+        ['主管可能追问的业务题','如何理解团队业务？如何推进自助提单/设备诊断？如何衡量 AI 客服价值？','<p>回答用“目标 → 动作 → 验收/风险”：先收集 region、客服和维修站需求，区分全球共性与本地规则；再明确知识、接口、权限和人工兜底；最后用解决率、转人工率、错误工单、满意度和合规风险评估。</p>'],
+        ['高含金量反问','全球化难点与业务优先级；失败经验；晋升与海外机会；个人反馈。','<ul><li>不同 region 的难点中，您认为目前最影响 AI 服务规模化的是什么？全球统一与本地化如何取舍？</li><li>过去是否有技术可行但业务未达预期的项目？团队后来如何定位并调整？</li><li>团队如何判断一个 Agent 从 PoC 进入正式交付？</li><li>结合我今天的表现，您建议我最优先补充哪项能力？未来是否有参与海外业务或跨区域项目的机会？</li></ul>']
+      ]},
+      output:{title:'对外输出附加模块',nodes:[
+        ['AI Coding SOP','把 AI 开发从“一句话生成代码”变成有上下文、有边界、可验证、可交接的工程流程。','<p>八阶段闭环：规划知识沉淀 → 拉取上下文 → 澄清需求 → 比较方案 → 编写计划 → 分阶段开发 → 完整验证 → 交付总结与接手包。使用 Claude Code、Codex 等工具辅助需求分析、开发、测试和文档，并将实践方法整理成 SOP 分享给其他团队。</p>'],
+        ['AI 工具实践分享','按真实工作闭环组织工具，不是简单罗列工具名称。','<p>让 AI 先获得可靠上下文，再在工程边界内执行和验证，最后把数据、图表和文档沉淀为团队可复用的知识资产。工具价值最终体现在交付质量、可追溯性和协同效率上。</p>']
+      ]}
+    };
+    let current='technical';const app=document.querySelector('#app');
+    const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    function renderNode(n,extra=false){return '<details class="node '+(extra?'addon':'')+'"><summary><span><b>'+esc(n[0])+'</b><em>'+esc(n[1])+'</em></span></summary><div class="node-body">'+n[2]+'</div></details>'}
+    function render(){const v=views[current];document.querySelectorAll('[data-view]').forEach(b=>b.classList.toggle('active',b.dataset.view===current));let html='<div class="hero"><div class="eyebrow">当前面试轮次</div><h2>'+v.title+'</h2><p>'+v.goal+'</p><div class="chips">'+v.chips.map(x=>'<span class="chip">'+x+'</span>').join('')+'</div></div>';
+      html+='<div class="outline">'+v.outline.map(x=>'<div class="outline-card"><b>'+x[0]+'</b><span>'+x[1]+'</span></div>').join('')+'</div>';
+      html+='<section class="section"><div class="section-title"><h3>通用面试思维导图</h3><small>按需展开完整话术</small></div><div class="tree">'+v.nodes.map(n=>renderNode(n)).join('')+'</div></section>';
+      Object.entries(addons).forEach(([key,mod])=>{if(document.querySelector('[data-addon-toggle="'+key+'"]').checked){html+='<section class="section addon-section" data-addon="'+key+'"><div class="section-title"><h3>'+mod.title+'</h3><small>左侧可隐藏</small></div><div class="tree">'+mod.nodes.map(n=>renderNode(n,true)).join('')+'</div></section>'}});
+      html+='<div class="notice"><b>统一回答提醒：</b>先给结论，再讲个人负责的事实；所有数字带口径；明确已验证范围、未覆盖风险和下一步。</div><footer>资料底座：现有两份静态项目导图。首页只做轮次组织和附加模块管理，新增知识点可继续按同样结构追加。</footer>';app.innerHTML=html;}
+    document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>{current=b.dataset.view;render()}));
+    document.querySelectorAll('[data-addon-toggle]').forEach(x=>x.addEventListener('change',()=>{localStorage.setItem('addon-'+x.dataset.addon,x.checked?'1':'0');render()}));
+    document.querySelectorAll('[data-addon-toggle]').forEach(x=>{const saved=localStorage.getItem('addon-'+x.dataset.addon);if(saved!==null)x.checked=saved==='1'});
+    document.querySelector('#openAll').onclick=()=>document.querySelectorAll('#app details').forEach(x=>x.open=true);document.querySelector('#closeAll').onclick=()=>document.querySelectorAll('#app details').forEach(x=>x.open=false);render();
+  </script>
+</body>
+</html>
