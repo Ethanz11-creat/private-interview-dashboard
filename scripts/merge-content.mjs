@@ -5,10 +5,10 @@ import { fileURLToPath } from 'node:url';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const indexPath = path.join(root, 'public', 'index.html');
 
-function readMain(fileName) {
+function readBody(fileName) {
   const source = fs.readFileSync(path.join(root, 'public', '二面', fileName), 'utf8');
-  const match = source.match(/<main[^>]*>([\s\S]*?)<\/main>/i);
-  if (!match) throw new Error(`Cannot find <main> in ${fileName}`);
+  const match = source.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
+  if (!match) throw new Error(`Cannot find <body> in ${fileName}`);
   return match[1].trim();
 }
 
@@ -21,7 +21,7 @@ function replaceBlock(html, name, content) {
 }
 
 let html = fs.readFileSync(indexPath, 'utf8');
-html = replaceBlock(html, 'PROJECT_SOURCE', readMain('业务信息查询Agent-项目追问导图.html'));
-html = replaceBlock(html, 'SUPERVISOR_SOURCE', readMain('联想主管面思维导图.html'));
+html = replaceBlock(html, 'PROJECT_SOURCE', readBody('业务信息查询Agent-项目追问导图.html'));
+html = replaceBlock(html, 'SUPERVISOR_SOURCE', readBody('联想主管面思维导图.html'));
 fs.writeFileSync(indexPath, html);
 console.log('Merged both source pages into public/index.html');
