@@ -9,6 +9,7 @@
     *{box-sizing:border-box}html{scroll-behavior:smooth}
     body{margin:0;background:#fff;color:var(--ink);font:14px/1.75 -apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",sans-serif}
     button{font:inherit;color:inherit}
+    .full-docs{margin-top:30px}.full-doc{border:1px solid var(--line);border-top:3px solid var(--accent);background:#fff}.full-doc+.full-doc{margin-top:12px}.full-doc>summary{padding:13px 16px;cursor:pointer;font-size:16px;font-weight:700;list-style:none}.full-doc>summary::-webkit-details-marker{display:none}.full-doc>summary:before{content:'+';display:inline-block;width:22px;color:var(--accent)}.full-doc[open]>summary:before{content:'−'}.source-doc{max-width:1050px;margin:0;padding:0 18px 25px}
     header{position:sticky;top:0;z-index:5;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:18px max(20px,calc((100vw - 1440px)/2));background:#fff;border-bottom:1px solid var(--line)}
     h1{margin:0;font-size:22px;line-height:1.35}header p{margin:3px 0 0;color:var(--muted);font-size:12px}
     .header-actions{display:flex;gap:8px;flex-wrap:wrap}.plain-btn{padding:7px 11px;border:1px solid #c8d1d9;border-radius:4px;background:#fff;cursor:pointer}.plain-btn:hover{border-color:var(--blue);color:var(--blue)}
@@ -45,15 +46,10 @@
       <label class="switch"><input type="checkbox" data-addon-toggle="output" checked> 对外输出经历</label>
       <p class="hint">面试不需要某个模块时，取消勾选即可隐藏；再次勾选会恢复。</p>
       <div class="rule"></div><div class="side-title">完整资料</div>
-      <button class="nav" data-source="project">项目介绍与全部追问</button>
-      <button class="nav" data-source="supervisor">主管面全部准备</button>
+      <p class="hint">两份原始 HTML 已直接合并到右侧页面底部的“完整资料”节点，不需要跳转。</p>
     </aside>
     <main id="app"></main>
   </div>
-  <dialog class="source-dialog" id="sourceDialog">
-    <div class="source-head"><h2 id="sourceTitle">完整资料</h2><button class="source-close" id="sourceClose" aria-label="关闭">×</button></div>
-    <div class="source-scroll"><article class="source-doc" id="sourceContent"></article></div>
-  </dialog>
   <template id="projectSource"><!-- PROJECT_SOURCE_START -->
 <nav class="summary" aria-label="项目索引">
       <a href="#first"><b>第一项目</b><span>Voyager 业务信息查询 Agent</span></a>
@@ -367,14 +363,14 @@ My strength is turning broad business needs into AI capabilities that can be bui
     const views={
       technical:{title:'技术面',goal:'证明项目确实做过，讲清技术机制、个人边界、验证方式和方案取舍。技术回答回到“问题—设计—证据—边界”。',chips:['项目深挖','技术原理','方案取舍','验证口径'],outline:[['开场','中文介绍 → 主项目定位'],['深挖','状态、工具、证据、异常、评测'],['收束','局限、下一步、反问']],nodes:[
         ['开场：统一自我介绍','教育背景 + RAG/Agent/评测经历 + AI 应用落地能力。','<div class="quote">面试官您好，我叫赵一恒，目前在厦门大学电子信息专业读硕士，将于明年毕业。我的实习和在校项目主要聚焦在 RAG、AI Agent 和 AI 应用落地。在滴滴实习时，我参与了团队内部业务信息查询 Agent 的方案和研发，负责信息查询链路和记忆系统的设计与开发，重点解决复杂查询中的进度保持、证据不足和链路稳定性问题。此外，我做过低空经济政策 RAG、知识抽取和 AI 模型评测。我希望继续做把 AI 技术落到真实业务中的工作。</div>'],
-        ['主项目：业务信息查询 Agent','背景 → 我的职责 → 核心问题 → 状态化方案 → 验证与边界。','<p>先讲业务问题，再讲你的设计。明确说明是在既有 goclaw Runtime 上负责信息查询链路和记忆系统的设计与开发，不把底座或完整生产系统说成自己独立搭建。</p><div class="source-links"><button data-source="project">在本页查看完整项目资料</button></div>'],
+        ['主项目：业务信息查询 Agent','背景 → 我的职责 → 核心问题 → 状态化方案 → 验证与边界。','<p>先讲业务问题，再讲你的设计。明确说明是在既有 goclaw Runtime 上负责信息查询链路和记忆系统的设计与开发，不把底座或完整生产系统说成自己独立搭建。</p><div class="source-links"><button data-jump="fullProject">展开本页完整项目资料</button></div>'],
         ['高概率技术追问','状态为什么必要、任务怎么拆、工具如何约束、何时并行、如何判断查完、失败怎么降级。','<ul><li>状态把目标、任务、进度、Observation、Evidence 和 Decision 从模型上下文中抽出来，避免多轮调用丢目标。</li><li>执行前校验工具白名单、参数、重复调用、预算与依赖；执行后归一化结果并做证据覆盖检查。</li><li>区分 PoC、离线评测、小范围试用和生产反馈；没有核验的通过率不主动报。</li></ul>'],
         ['可信取舍与幻觉','强模型不能替代权限、时效、来源和执行控制；代码控制确定性规则，模型负责语义理解。','<p>幻觉来自检索缺失、上下文冲突或过期、工具不完整和缺少校验。用来源与版本、工具校验、引用、拒答/转人工、回归评测降低风险。</p>'],
         ['其他项目快速入口','VLM 碰撞检测评测；低空经济政策 RAG 与知识抽取。','<p>只在面试官需要时展开，始终说明个人负责的实验、指标、Bad Case 或知识抽取环节。</p>']
       ]},
       supervisor:{title:'主管面',goal:'证明能把模糊需求拆成可交付方案，做符合业务目标的技术取舍，协同推进并持续复盘成长。',chips:['业务判断','协同交付','个人复盘','成长潜力'],outline:[['主线','先讲价值，再讲关键判断'],['证明','项目事实 + 困难处理 + 复盘'],['收束','全球化理解 + 高含金量反问']],nodes:[
         ['本轮主线','主管关注你是否能从“做功能”上升到“对业务结果负责”。','<p>回答顺序：业务背景和目标 → 我的具体职责 → 关键取舍 → 如何验证 → 还没有验证的边界 → 下一步。</p>'],
-        ['主项目深挖：为什么这样设计','将业务信息查询 Agent 讲成“可观测、可核验的查询交付链路”。','<p>复杂查询跨多个系统和多轮工具调用，纯 ReAct 容易丢进度或证据不足即结束。采用轻量任务拆解 + 有状态反馈循环：先形成 1—5 个可验收事实任务，再根据工具结果补查、换源或降级。</p><div class="source-links"><button data-source="project">在本页查看完整项目资料</button></div>'],
+        ['主项目深挖：为什么这样设计','将业务信息查询 Agent 讲成“可观测、可核验的查询交付链路”。','<p>复杂查询跨多个系统和多轮工具调用，纯 ReAct 容易丢进度或证据不足即结束。采用轻量任务拆解 + 有状态反馈循环：先形成 1—5 个可验收事实任务，再根据工具结果补查、换源或降级。</p><div class="source-links"><button data-jump="fullProject">展开本页完整项目资料</button></div>'],
         ['最大挑战：未知业务到落地','需求模糊时先拆解，再对齐颗粒度，过程中纠偏并完成开发。','<p>滴滴实习期间，我面对此前没有接触过的业务。需求方最初描述比较模糊，我从需求拆解、设计方案到开发实现逐步推进。中途发现方案颗粒度有偏差后，我和需求方深入讨论，并与组长持续对齐，最后顺利落地。这个过程让我认识到，未知业务先理解场景、持续校准，比急于进入实现更重要。</p>'],
         ['低谷期：多重压力并存','论文、秋招、实习和转正焦虑同时存在，但把它视为一段需要管理节奏的“奥德赛时期”。','<p>压力曾影响效率，我通过健身和调整工作节奏保持 Work-life balance，最终平稳度过。重点体现识别压力、采取行动和恢复稳定的能力。</p>'],
         ['不足与自我剖析','易感性思考、向上管理、决策果断度；说明正在采取的改进。','<ul><li><b>易感性思考：</b>早期面对不确定问题容易先关注感受和担忧。现在用量化数字、进度、风险和下一步汇报，先整理证据再表达判断。</li><li><b>工作沟通：</b>主动汇报进展、尽早暴露风险，站在负责人角度思考目标和节奏。</li><li><b>决策果断度：</b>完成从学生思维到工作思维的转变。好的项目不代表最适合业务；现在先明确目标、约束和验收标准，再比较适配度、成本、可扩展性和交付风险。</li></ul>'],
@@ -410,12 +406,13 @@ My strength is turning broad business needs into AI capabilities that can be bui
       html+='<div class="outline">'+v.outline.map(x=>'<div class="outline-card"><b>'+x[0]+'</b><span>'+x[1]+'</span></div>').join('')+'</div>';
       html+='<section class="section"><div class="section-title"><h3>'+v.title+'核心主线</h3><small>按需展开完整话术</small></div><div class="tree">'+v.nodes.map(n=>renderNode(n)).join('')+'</div></section>';
       Object.entries(addons).forEach(([key,mod])=>{if(document.querySelector('[data-addon-toggle="'+key+'"]').checked){html+='<section class="section addon-section" data-addon="'+key+'"><div class="section-title"><h3>'+mod.title+'</h3><small>左侧可隐藏</small></div><div class="tree">'+mod.nodes.map(n=>renderNode(n,true)).join('')+'</div></section>'}});
-      html+='<div class="notice"><b>统一回答提醒：</b>先给结论，再讲个人负责的事实；所有数字带口径；明确已验证范围、未覆盖风险和下一步。</div><footer>两份原始 HTML 的完整正文已经合并进本页面，可从左侧“完整资料”或项目节点打开。</footer>';app.innerHTML=html;}
-    function openSource(type){const template=document.querySelector('#'+type+'Source');sourceTitle.textContent=type==='project'?'项目介绍与全部追问':'主管面全部准备';sourceContent.replaceChildren(template.content.cloneNode(true));sourceDialog.showModal();}
+      html+='<div class="notice"><b>统一回答提醒：</b>先给结论，再讲个人负责的事实；所有数字带口径；明确已验证范围、未覆盖风险和下一步。</div>';
+      html+='<section class="full-docs"><div class="section-title"><h3>完整资料（已合并到本页）</h3></div><details class="full-doc" id="fullProject"><summary>业务信息查询 Agent：项目介绍与全部追问</summary><article class="source-doc">'+document.querySelector('#projectSource').innerHTML+'</article></details><details class="full-doc" id="fullSupervisor"><summary>主管面：全部准备内容</summary><article class="source-doc">'+document.querySelector('#supervisorSource').innerHTML+'</article></details></section>';
+      html+='<footer>两份原始 HTML 的完整正文已直接合并在本页面；主项目节点可滚动到下方对应资料。</footer>';app.innerHTML=html;}
     document.body.dataset.round=current;document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>{current=b.dataset.view;document.body.dataset.round=current;render()}));
     document.querySelectorAll('[data-addon-toggle]').forEach(x=>x.addEventListener('change',()=>{localStorage.setItem('addon-'+x.dataset.addon,x.checked?'1':'0');render()}));
     document.querySelectorAll('[data-addon-toggle]').forEach(x=>{const saved=localStorage.getItem('addon-'+x.dataset.addon);if(saved!==null)x.checked=saved==='1'});
-    document.addEventListener('click',event=>{const button=event.target.closest('[data-source]');if(button)openSource(button.dataset.source)});sourceClose.onclick=()=>sourceDialog.close();sourceDialog.addEventListener('click',event=>{if(event.target===sourceDialog)sourceDialog.close()});
+    document.addEventListener('click',event=>{const jump=event.target.closest('[data-jump]');if(jump){const target=document.getElementById(jump.dataset.jump);if(target){target.open=true;target.scrollIntoView({behavior:'smooth',block:'start'})}}});
     document.querySelector('#openAll').onclick=()=>document.querySelectorAll('#app details').forEach(x=>x.open=true);document.querySelector('#closeAll').onclick=()=>document.querySelectorAll('#app details').forEach(x=>x.open=false);render();
   </script>
 </body>
