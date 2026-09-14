@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>求职面试思维导图</title>
   <style>
-    :root{--ink:#1f2933;--muted:#68737d;--line:#dfe4e8;--soft:#f7f9fa;--blue:#145da0;--blue-soft:#eef5fb;--gold:#8a6500;--gold-soft:#fff9e6}
+    :root{--ink:#20272d;--muted:#66717a;--line:#d9e0e4;--soft:#f6f8f9;--blue:#1769aa;--blue-soft:#edf5fb;--gold:#8a6500;--gold-soft:#fff9e6;--accent:#1769aa;--accent-soft:#edf5fb;--accent-line:#9ec7e4}
     *{box-sizing:border-box}html{scroll-behavior:smooth}
     body{margin:0;background:#fff;color:var(--ink);font:14px/1.75 -apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",sans-serif}
     button{font:inherit;color:inherit}
@@ -18,7 +18,16 @@
     main{min-width:0;padding:30px clamp(20px,4vw,58px) 70px}.eyebrow{color:var(--muted);font-size:12px}.hero{padding-bottom:20px;border-bottom:1px solid var(--line)}.hero h2{margin:2px 0 7px;font-size:25px}.hero p{max-width:850px;margin:0;color:#4d5963}.chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px}.chip{padding:3px 8px;border:1px solid #cdd8e1;border-radius:3px;color:#4c5b67;font-size:12px}
     .outline{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:22px 0}.outline-card{padding:13px;border:1px solid var(--line);background:#fff}.outline-card b{display:block;font-size:13px}.outline-card span{display:block;margin-top:3px;color:var(--muted);font-size:12px}
     .section{margin-top:28px}.section-title{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding-bottom:8px;border-bottom:1px solid var(--line)}.section-title h3{margin:0;font-size:18px}.section-title small{color:var(--muted);font-size:12px}.tree{margin-top:12px}.node{margin:0 0 8px;border-left:2px solid #d5e5f2}.node summary{display:flex;align-items:flex-start;gap:10px;padding:9px 12px;cursor:pointer;list-style:none}.node summary::-webkit-details-marker{display:none}.node summary:before{content:'+';width:18px;color:var(--blue);font-weight:700}.node[open] summary:before{content:'−'}.node summary b{display:block}.node summary em{display:block;color:var(--muted);font-style:normal;font-size:12px;font-weight:400}.node-body{margin:0 12px 14px 40px;padding:12px 14px;background:var(--soft);border-left:1px solid var(--line)}.node-body p{margin:6px 0}.node-body ul{margin:6px 0;padding-left:20px}.node-body li{margin:3px 0}.node-body a{color:var(--blue);text-decoration:none}.node-body a:hover{text-decoration:underline}.quote{margin:8px 0;padding:11px 13px;border-left:3px solid #9cbfdb;background:#fff;white-space:pre-wrap}.quote.en{font-family:Georgia,"Times New Roman",serif;line-height:1.65}.addon{border-left-color:#d6c27c}.addon summary:before{color:var(--gold)}.addon .node-body{background:var(--gold-soft);border-left-color:#eadca4}.notice{margin-top:20px;padding:10px 12px;border-left:3px solid var(--blue);background:var(--blue-soft);color:#3f5364}.source-links{display:flex;flex-wrap:wrap;gap:8px}.source-links a{display:inline-block;padding:6px 9px;border:1px solid #c8d8e5;color:var(--blue);text-decoration:none;background:#fff}.source-links a:hover{background:var(--blue-soft)}footer{margin-top:34px;padding-top:14px;border-top:1px solid var(--line);color:var(--muted);font-size:12px}
-    @media(max-width:820px){header{align-items:flex-start;flex-direction:column}.layout{grid-template-columns:1fr}aside{border-right:0;border-bottom:1px solid var(--line);padding:14px 16px}.side-title{margin-top:7px}.nav{display:inline-block;width:auto;margin-right:4px}.side-nav{display:flex;flex-wrap:wrap}.switch{display:inline-flex;margin-right:16px}.outline{grid-template-columns:1fr}.main{padding:24px 16px 50px}}
+    body[data-round="supervisor"]{--accent:#24704d;--accent-soft:#eef7f1;--accent-line:#9bc8ad}body[data-round="hr"]{--accent:#9a493f;--accent-soft:#fbf1ef;--accent-line:#d8aaa4}
+    .nav.active{border-color:var(--accent-line);background:var(--accent-soft);color:var(--accent)}.switch input{accent-color:var(--accent)}.chip{border-color:var(--accent-line);color:var(--accent)}
+    .section-title{justify-content:center;border:0}.section-title h3{padding:8px 16px;border:1px solid var(--accent);background:#fff;color:var(--accent);font-size:15px}.section-title small{display:none}
+    .tree{position:relative;display:flex;flex-direction:column;gap:12px;padding:18px 0}.tree:before{content:"";position:absolute;top:0;bottom:0;left:50%;width:2px;background:var(--accent-line);transform:translateX(-1px)}
+    .node{position:relative;width:calc(50% - 34px);margin:0;border:1px solid var(--line);border-top:3px solid var(--accent);background:#fff}.node:nth-child(odd){align-self:flex-start}.node:nth-child(even){align-self:flex-end}.node:after{content:"";position:absolute;top:27px;width:34px;border-top:2px solid var(--accent-line)}.node:nth-child(odd):after{right:-35px}.node:nth-child(even):after{left:-35px}.node:before{content:"";position:absolute;top:22px;width:10px;height:10px;border:2px solid var(--accent);border-radius:50%;background:#fff;z-index:1}.node:nth-child(odd):before{right:-40px}.node:nth-child(even):before{left:-40px}
+    .node summary{padding:12px 14px}.node summary:before{color:var(--accent)}.node-body{margin:0;padding:13px 16px;border:0;border-top:1px solid var(--line);background:var(--soft)}.addon{border-top-color:var(--gold)}.addon:before{border-color:var(--gold)}.addon summary:before{color:var(--gold)}.addon .node-body{background:var(--gold-soft)}
+    .source-links button,.source-button{padding:7px 10px;border:1px solid var(--accent-line);border-radius:3px;background:#fff;color:var(--accent);cursor:pointer}.source-links button:hover,.source-button:hover{background:var(--accent-soft)}
+    .source-dialog{width:min(1180px,94vw);height:min(88vh,900px);max-width:none;max-height:none;padding:0;border:1px solid var(--line);background:#fff;color:var(--ink)}.source-dialog::backdrop{background:rgba(24,31,36,.55)}.source-head{position:sticky;top:0;z-index:4;display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--line);background:#fff}.source-head h2{margin:0;font-size:18px}.source-close{width:34px;height:34px;border:1px solid var(--line);border-radius:3px;background:#fff;cursor:pointer;font-size:20px}.source-scroll{height:calc(100% - 64px);overflow:auto;padding:24px clamp(16px,4vw,42px)}
+    .source-doc{max-width:1050px;margin:auto}.source-doc h2{margin:30px 0 12px;padding-bottom:7px;border-bottom:1px solid var(--line);font-size:20px}.source-doc h3{margin:23px 0 8px;font-size:16px}.source-doc h4{margin:18px 0 7px}.source-doc p{margin:8px 0}.source-doc blockquote,.source-doc .quote{margin:12px 0;padding:12px 14px;border-left:3px solid var(--accent);background:var(--accent-soft)}.source-doc pre{overflow:auto;padding:13px;border:1px solid var(--line);background:var(--soft);white-space:pre}.source-doc code{font-family:"SFMono-Regular",Consolas,monospace;font-size:12px}.source-doc table{display:block;width:100%;overflow:auto;margin:13px 0;border-collapse:collapse}.source-doc th,.source-doc td{padding:8px 10px;border:1px solid var(--line);vertical-align:top;text-align:left}.source-doc th{background:var(--soft)}.source-doc ul,.source-doc ol{padding-left:22px}.source-doc .summary{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.source-doc .summary a{padding:10px;border:1px solid var(--line);color:var(--accent);text-decoration:none}.source-doc .notice,.source-doc .note{padding:10px 12px;border-left:3px solid var(--accent);background:var(--accent-soft)}.source-doc .board{display:grid;grid-template-columns:minmax(280px,.7fr) minmax(0,1.5fr);gap:18px}.source-doc .col>details{margin:0 0 12px;border:1px solid var(--line)}.source-doc details>summary{cursor:pointer;padding:10px 12px;font-weight:700}.source-doc .content{padding:12px 15px;border-top:1px solid var(--line)}.source-doc .route{display:grid;gap:8px}.source-doc .step,.source-doc .question{padding:10px 12px;border-left:2px solid var(--accent);background:var(--soft)}.source-doc .step strong,.source-doc .step span{display:block}.source-doc .tag{display:inline-block;margin:3px;padding:2px 6px;border:1px solid var(--line)}.source-doc .kicker{display:block;color:var(--muted);font-size:10px}.source-doc footer{display:none}
+    @media(max-width:820px){header{align-items:flex-start;flex-direction:column}.layout{grid-template-columns:1fr}aside{border-right:0;border-bottom:1px solid var(--line);padding:14px 16px}.side-title{margin-top:7px}.nav{display:inline-block;width:auto;margin-right:4px}.side-nav{display:flex;flex-wrap:wrap}.switch{display:inline-flex;margin-right:16px}.outline{grid-template-columns:1fr}.main{padding:24px 16px 50px}.tree:before{left:7px}.node,.node:nth-child(odd),.node:nth-child(even){align-self:stretch;width:auto;margin-left:28px}.node:after,.node:nth-child(odd):after,.node:nth-child(even):after{left:-23px;right:auto;width:22px}.node:before,.node:nth-child(odd):before,.node:nth-child(even):before{left:-28px;right:auto}.source-doc .summary,.source-doc .board{grid-template-columns:1fr}.source-dialog{width:96vw;height:92vh}}
   </style>
 </head>
 <body>
@@ -35,25 +44,337 @@
       <label class="switch"><input type="checkbox" data-addon-toggle="company" checked> 联想业务补充</label>
       <label class="switch"><input type="checkbox" data-addon-toggle="output" checked> 对外输出经历</label>
       <p class="hint">面试不需要某个模块时，取消勾选即可隐藏；再次勾选会恢复。</p>
-      <div class="rule"></div><div class="side-title">资料入口</div>
-      <a class="nav" href="二面/业务信息查询Agent-项目追问导图.html" target="_blank" rel="noreferrer">完整项目追问导图 ↗</a>
-      <a class="nav" href="二面/联想主管面思维导图.html" target="_blank" rel="noreferrer">联想主管面原始资料 ↗</a>
+      <div class="rule"></div><div class="side-title">完整资料</div>
+      <button class="nav" data-source="project">项目介绍与全部追问</button>
+      <button class="nav" data-source="supervisor">主管面全部准备</button>
     </aside>
     <main id="app"></main>
   </div>
+  <dialog class="source-dialog" id="sourceDialog">
+    <div class="source-head"><h2 id="sourceTitle">完整资料</h2><button class="source-close" id="sourceClose" aria-label="关闭">×</button></div>
+    <div class="source-scroll"><article class="source-doc" id="sourceContent"></article></div>
+  </dialog>
+  <template id="projectSource"><!-- PROJECT_SOURCE_START -->
+<nav class="summary" aria-label="项目索引">
+      <a href="#first"><b>第一项目</b><span>Voyager 业务信息查询 Agent</span></a>
+      <a href="#second"><b>第二项目</b><span>Robotaxi 碰撞检测 VLM 评测</span></a>
+      <a href="#school"><b>学校项目</b><span>低空经济政策 RAG 与知识抽取</span></a>
+    </nav>
+    <p class="notice"><b>说明：</b>正文内容未改写，已实际渲染为标题、引用、代码块、表格和列表。</p>
+    <section id="first"><div class="rendered"><h2>1. 第一项目：Voyager 业务信息查询 Agent</h2>
+<h3>1.1 30 秒版本</h3>
+<blockquote>
+<p>这是一个面向自动驾驶业务管理者的信息查询 Agent。管理者在 D-Chat 中用自然语言询问版本进展、需求风险或指标变化，背后需要跨 Cooper、任务系统和数据系统查询。难点不在单次调用工具，而在复杂问题会跨多轮、多源：模型容易选错工具、查完忘记目标，或证据不全就回答。我的核心工作是设计信息查询的有状态控制链路，把问题拆成可验收的事实任务，在每次工具调用后更新进度和证据，最后按任务覆盖与来源校验决定继续补查、正常回答还是降级说明。</p>
+</blockquote>
+<h3>1.2 推荐的 90 秒版本</h3>
+<blockquote>
+<p>我在滴滴做的第一个项目是面向业务管理者的信息查询 Agent。业务背景是文档、版本需求、任务进展和指标报表分散在多个内部系统里，管理者问“这个版本有没有上线风险”时，真正需要的不是一段泛化总结，而是要先确认版本范围，再看未完成任务、阻塞项和相关指标，最后给出有来源的结论。  </p>
+<p>我负责的重点是查询链路的有状态管理。原始 Agent Runtime 已经具备 ReAct 式的模型调用和工具执行能力，但仅靠模型在对话里记住进度，会出现工具选择不稳定、查漏、以及证据不足就提前结束的问题。为此我把一次查询抽象为一个 <code>Goal</code> 和 1 到 5 个可独立验收的事实任务；状态里保存原始问题、明确约束、任务状态、工具尝试、标准化结果、证据和当前决策。  </p>
+<p>在运行上，首先用规则处理精确链接、明确数据源等确定场景；复杂或有指代的问题再让模型做结构化补全和任务拆解。之后每轮模型调用前，Controller 根据状态生成当前进度、待补事实和本轮可见的只读工具。工具执行前检查白名单、参数、重复调用、预算和依赖；执行后把不同数据源的返回归一为证据，并更新对应任务。最后不是由模型自己宣称“查完了”，而是重新检查任务覆盖和来源引用，决定继续补查、生成正常回答，还是明确告知哪些事实没有确认。  </p>
+<p>技术上我是在阶段式 Agent Runtime 上做这层控制：上下文构建、模型决策、工具执行、观察回填、检查点和收尾是分开的，所以查询控制可以插入关键生命周期，而不改写底座。这个项目让我最关注的是：如何把 LLM 的开放式推理收敛成可观测、可核验的业务查询流程。</p>
+</blockquote>
+<h3>1.3 白板图</h3>
+<pre><code class="language-text">D-Chat 消息
+    |
+Query Gate：普通问答 / 信息查询 / 需要澄清
+    |
+InfoQueryState
+  Goal + Constraints + Tasks + Observations + Evidence + Decision
+    |
+每轮：生成进度与可见工具 -&gt; 模型决策 -&gt; 执行前校验 -&gt; 工具执行
+    |                                                      |
+    +---------------- 归一化结果、更新任务和证据 &lt;--------+
+    |
+Completion Check：任务是否覆盖？证据是否充分？来源是否可引用？
+    |
+继续补查 / 带来源回答 / 降级说明
+</code></pre>
+<h3>1.4 如果被问“你的状态具体是什么”</h3>
+<blockquote>
+<p>我会把状态分成查询级和任务级。查询级保存用户原问题、消歧后的查询目标、用户明确的时间/版本/指标等约束、当前决策和预算；任务级保存每个待确认事实、状态、已尝试来源、Observation 和 Evidence ID。任务状态至少包括 pending、in-progress、completed、blocked/failed。这样一次工具失败不会让整个查询丢失，也不会因为某个任务完成就误以为整题完成。</p>
+</blockquote>
+<p>不要把这些状态说成“模型思维链”。它们是 Runtime 自己维护的业务状态；模型只读取本轮必要的进度摘要，不能直接随意改正式状态。</p>
+<h3>1.5 如果被问“状态存在哪里，断了怎么恢复”</h3>
+<blockquote>
+<p>这里要先区分运行状态和会话状态。<code>goclaw</code> 的 <code>RunState</code> 是一次 Run 内的共享内存状态，贯穿 Context、Think、Tool、Observe 等阶段；现有 Runtime 会在固定迭代间隔把待持久化的消息写入 Session，用于保留会话和故障排查。  </p>
+<p>对信息查询专项，我设计的 <code>InfoQueryState</code> 是运行控制的数据模型。若要支持跨进程重启后的业务查询续跑，就不能只放在内存里，应把 QueryRun、QueryTask、Observation、Evidence 以 Run ID / Task ID / ToolCall ID 作为键持久化，并在恢复时重放已完成任务、不重复执行有副作用的操作。当前我会清楚地区分：Runtime 的 Session 检查点已有实现；查询任务状态的完整持久化与恢复是该专项的后续工程化落点，而不是说已经全部线上化。</p>
+</blockquote>
+<h3>1.6 高概率深挖与答题骨架</h3>
+<table>
+<thead>
+<tr>
+<th>面试官可能追问</th>
+<th>应答核心</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>为什么需要有状态管理？</td>
+<td>复杂查询跨轮跨源，纯 ReAct 的上下文易丢目标、重复调用、证据不足即结束。状态将“目标、进度、缺口、证据、决策”从模型记忆转为可控数据。</td>
+</tr>
+<tr>
+<td>为什么不是 Plan-and-Execute？</td>
+<td>不是二选一。初始化阶段用结构化模型形成轻量 Plan，即 1 到 5 个事实任务；执行过程仍是 ReAct，允许根据真实工具结果补查或换源。固定长计划对动态业务数据脆弱，纯 ReAct 又缺收敛，因此采用“轻计划 + 有状态反馈循环”。</td>
+</tr>
+<tr>
+<td>如何判断是否需要查询？</td>
+<td>优先确定性规则：精确链接/资源 ID、明确系统或明确事实槽位；其他歧义管理问题再由结构化模型判断、补全指代或追问。规则负责稳定可编码的判断，模型负责语义理解。</td>
+</tr>
+<tr>
+<td>任务怎么拆，如何防止拆偏？</td>
+<td>任务必须是能独立验证的事实，保留原问题中的版本、时间、指标、人员等显式约束；校验任务数、重复性、未消解指代和约束丢失。模型输出不合格可修复一次，仍失败则降级为原问题的单任务或澄清。</td>
+</tr>
+<tr>
+<td>如何避免模型乱调工具？</td>
+<td>模型只看到本轮允许的工具；执行前再校验工具白名单、只读性质、参数、重复、预算与依赖。可见不等于可执行，失败必须作为 observation 回填，不能伪装成事实。</td>
+</tr>
+<tr>
+<td>哪些工具并行，哪些串行？</td>
+<td>没有数据依赖的只读查询可并行，例如分别读取需求状态和报表；下游依赖上游 ID/结果的查询必须串行，例如先确定版本范围再查该版本任务。<code>goclaw</code> 也将并行 I/O 和顺序状态更新拆开，避免并发改写共享状态。</td>
+</tr>
+<tr>
+<td>如何定义“查完了”？</td>
+<td>不是模型说“完成”。Controller 检查每个任务的必要事实是否被可信证据覆盖、关键来源是否存在、是否仍有 pending/blocked 任务；全满足才回答，部分缺失则补查或给带边界的降级回答。</td>
+</tr>
+<tr>
+<td>工具返回格式不同怎么办？</td>
+<td>在工具返回后做 Normalizer，把来源、实体/时间范围、字段、原始链接、可信度/错误原因统一为 QueryObservation 和 Evidence。答案只引用标准化后、可追溯的证据。</td>
+</tr>
+<tr>
+<td>工具失败、超时或查不到怎么办？</td>
+<td>记录失败来源、参数和错误，不将失败当空结果；若有合法替代源则继续补查，否则标记任务 blocked，最终说明已确认部分与未确认原因。对写操作还需幂等键和人工确认；信息查询一期优先收敛为只读工具。</td>
+</tr>
+<tr>
+<td>如何评测这条链路？</td>
+<td>分“结果”和“过程”：结果看事实正确、来源覆盖、回答质量；过程看工具选择、参数、任务覆盖、重复调用、异常降级和稳定性。74 题集合可作为场景资产，但只有在能说明真值、判分规则、实际运行范围和结果时才主动报数。</td>
+</tr>
+</tbody></table>
+</div></section>
+    <section id="second"><div class="rendered"><h2>3. 第二项目：Robotaxi 碰撞检测 VLM 评测</h2>
+<h3>3.1 60 秒版本</h3>
+<blockquote>
+<p>第二个项目是 Robotaxi 碰撞检测的 VLM 评测与 Bad Case 治理。问题是碰撞本身是低频事件，单看 Accuracy 会被大量负样本抬高，但业务真正更在意漏检。因此我参与建立以人工 Ground Truth 为客观真值、以 Recall 和 F-beta（beta 为 2）优先衡量漏检风险的评测闭环；对于模型和 GT 有分歧或证据不足的样本，引入独立 VLM 盲审取证，并流转人工复核。  </p>
+<p>在 8,021 帧、包含 674 个真实碰撞的泛化集上，微调模型相对通用 VLM 基线的 Recall 从 0.185 提升到 0.812，FN 从 549 降到 127，Precision 为 0.958。我还分析了 396 条 Bad Case，归纳出未拍到接触、边缘接触、车身与围栏紧贴、鱼眼畸变等主要模式，并把这些模式回流到数据、提示词和回归集设计中。这个项目让我建立了一个观念：对于高风险感知任务，模型优化必须由可复现评测和 Bad Case 驱动，而不是只看单次 Demo。</p>
+</blockquote>
+<h3>3.2 高概率追问</h3>
+<table>
+<thead>
+<tr>
+<th>追问</th>
+<th>应答核心</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>为什么不用 Accuracy？</td>
+<td>类别极不均衡，全部预测无碰撞也可能 Accuracy 很高，却无法接受漏检。Recall 直接刻画正样本找回，F-beta=2 更高权重惩罚 FN。</td>
+</tr>
+<tr>
+<td>为什么 Precision 也要看？</td>
+<td>安全优先不等于无限报碰撞。误报会造成无效人工复核和业务干扰，因此同时监控 Precision、FP、FN 和场景分布。</td>
+</tr>
+<tr>
+<td>三方评测怎么定义真值？</td>
+<td>人工标注 GT 是主真值；通用 VLM 是参照模型，不替代 GT；模型/GT 分歧或证据不足的样本进入盲审和人工复核，修复标注或确认模型错误。</td>
+</tr>
+<tr>
+<td>Prompt 怎样迭代才不变成拍脑袋？</td>
+<td>固定 Smoke/Core/Hard 回归集、记录 Prompt/模型/参数/数据版本，做单变量对照；每次只改变一类规则，再观察 FP/FN 及 Top Bad Case 是否真的改善。</td>
+</tr>
+<tr>
+<td>Bad Case 如何分类和回流？</td>
+<td>先按错误类型 FP/FN，再按可观察视觉成因和场景维度归类。回流路径可以是补数据/重标、调整模型训练、调整提示词证据要求或单独建立 Hard 集；不能只“多写 Prompt”。</td>
+</tr>
+</tbody></table>
+</div></section>
+    <section id="school"><div class="rendered"><h2>4. 学校项目：低空经济政策 RAG 与知识抽取</h2>
+<h3>4.1 60 秒版本</h3>
+<blockquote>
+<p>学校项目面向低空经济政策的多跳问答。政策文本长、条款多，直接把全文或粗粒度检索结果交给模型，容易遗漏跨条款关系，也难解释答案依据。我们先完成政策清洗和条款级切分，构建检索库；对复杂问题先生成子问题，以子问题引导从相关条款抽取细粒度三元组，再按子问题组织成结构化推理路径，最后结合原文生成答案。  </p>
+<p>我负责的重点是 RAG 链路和子问题引导的细粒度知识抽取。它的价值不是凭空提高模型推理，而是用更小、更结构化、可回看原文的知识单元减少长文本噪声。在 2Wiki 上，相比 Naive RAG，F1/EM 提升 9.6/15.9 个点；在我们构建的 LEMQA 上，ROUGE/BERTScore F1 提升 4.7/4.4 个点。</p>
+</blockquote>
+<h3>4.2 高概率追问</h3>
+<table>
+<thead>
+<tr>
+<th>追问</th>
+<th>应答核心</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>为什么是条款级切分？</td>
+<td>政策的最小可引用语义单元通常是条款而非固定 token 块；既保留条件、主体、时间和例外，也便于引用。过长条款再按句子/语义边界细分并保留父条款元数据。</td>
+</tr>
+<tr>
+<td>子问题有什么用？</td>
+<td>将复合问题拆为可检索子目标，提高召回针对性；子问题不是最终答案，需回到原文和抽取结果验证。</td>
+</tr>
+<tr>
+<td>三元组会不会丢信息？</td>
+<td>会，因此三元组是推理中间表示，不替代原文。每个三元组应保留来源条款和定位；最终生成仍以原文证据为准。</td>
+</tr>
+<tr>
+<td>如何处理幻觉？</td>
+<td>限制回答只能使用召回条款和有来源的三元组；无依据则说明未找到；评测中检查事实正确与证据覆盖。幻觉不能彻底消除，只能通过检索、约束、验证和降级降低风险。</td>
+</tr>
+<tr>
+<td>为什么不直接上知识图谱？</td>
+<td>该方法按问题即时抽取细粒度知识，降低预构建大图谱的成本；当实体关系稳定、需要跨文档关系查询和持续更新时，图谱是值得考虑的下一步。</td>
+</tr>
+</tbody></table>
+<h2>6. 学校项目深挖版：低空经济政策多跳问答</h2>
+<h3>6.1 项目定位与个人贡献口径</h3>
+<p>这是一个研究与系统结合的项目，目标不是泛化地“做一个政策聊天机器人”，而是解决<strong>长政策文本下的多跳问答</strong>：答案往往跨多个条款，存在主体、条件、时间边界和例外；粗粒度 RAG 容易召回大量相似但无关的背景文本，生成时出现遗漏、关系拼错或忽略有效期。</p>
+<p>你可以这样界定个人角色，避免抢团队成果：</p>
+<blockquote>
+<p>我是核心成员，主要参与了政策语料的 RAG 链路、条款级处理，以及 SG-FKE 方法的实验验证与效果分析。论文方法、数据构建和实验是团队协作完成的；我重点关注的是怎样让复杂问题先被拆成可检索、可抽取的子目标，再用结构化证据支持最终回答。</p>
+</blockquote>
+<p>若具体分工与此不符，明天前必须替换为你能证明的实际内容；不要说自己独立完成论文、数据集或全部实验。</p>
+<h3>6.2 90 秒介绍稿</h3>
+<blockquote>
+<p>这个项目面向低空经济政策的多跳问答。政策文本普遍长且结构复杂，用户的问题通常会同时涉及政策目标、适用主体、扶持条件和有效期，答案分散在不同条款中。传统 Naive RAG 只按语义相似度取 Top-K 文本块，容易把大量背景内容一起带进上下文；模型虽然看到了相关段落，但不一定能把跨条款关系组织正确。  </p>
+<p>因此我们提出了 SG-FKE，也就是子问题引导的细粒度知识抽取。链路分四步：第一步对复杂问题进行查询重写和子问题拆分，例如把“某地区的扶持政策在有效期内需要满足哪些条件”拆成“有效期是什么”和“扶持条件是什么”；第二步在条款级候选上下文中，用每个子问题引导模型抽取 <code>&lt;实体, 关系, 实体&gt;</code> 三元组，并保留对应原始条款；第三步按子问题顺序组织三元组，形成可回看的结构化推理路径；最后只将原问题、三元组和必要的原文证据输入生成模型，产出带约束的答案。  </p>
+<p>这个设计的核心不是用三元组替代原文，而是把三元组作为高密度的中间证据，降低长文本噪声，同时保留回指原条款的能力。我们在 HotpotQA、2Wiki、MuSiQue 和自建 LEMQA 上验证；LEMQA 从 176 份权威政策文件构建，最终保留 680 条人工审校的多跳问答对。消融实验显示，去掉三元组抽取的下降比去掉子问题引导更明显，说明子问题负责聚焦，三元组负责压缩和连接，两者是互补关系。  </p>
+<p>我认为这个项目和我后续做信息查询 Agent 是一脉相承的：都是先把模糊的复杂问题转成可验证的子目标，再用显式证据而不是模型的隐式记忆来支持答案。</p>
+</blockquote>
+<h3>6.3 白板图</h3>
+<pre><code class="language-text">政策文档
+  -&gt; 清洗、保留标题/章节/条款/时间等元数据
+  -&gt; 条款级切分与检索
+用户复杂问题
+  -&gt; Query Rewrite
+  -&gt; 子问题 1...N
+  -&gt; 针对每个子问题，从候选条款抽取带来源的三元组
+  -&gt; 组织为“子问题 - 证据三元组 - 原条款”的推理路径
+  -&gt; 最终生成：答案 + 条款引用 + 时间/主体/条件边界
+</code></pre>
+<h3>6.4 实验数字答题卡</h3>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>可确认口径</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>公开数据集</td>
+<td>HotpotQA-distractor、2WikiMultihopQA、MuSiQue-Ans；测试样本分别为 2,222、3,773、725 条。</td>
+</tr>
+<tr>
+<td>自建数据集</td>
+<td>LEMQA：176 份来自国务院、民航局和地方政府官网的政策文件；每份围绕结构与政策要素构造问题，经人工审校后保留 680 条多跳问答对。</td>
+</tr>
+<tr>
+<td>对比方法</td>
+<td>Naive RAG、CoT、RQ-RAG、GraphRAG。</td>
+</tr>
+<tr>
+<td>评价指标</td>
+<td>公开问答集使用 F1 / EM；开放式政策回答使用 ROUGE / BERTScore F1。</td>
+</tr>
+<tr>
+<td>代表结果</td>
+<td>ChatGLM-9B 上，SG-FKE 在 2Wiki 达到 F1 54.6、EM 46.9；LEMQA 达到 ROUGE 46.5、BERTScore F1 75.1。Qwen-32B 在 LEMQA 达到 ROUGE 47.8、BERTScore F1 76.8。</td>
+</tr>
+<tr>
+<td>消融结论</td>
+<td>移除子问题引导时，Qwen-32B 的 2Wiki F1 从 59.0 降至 56.7；移除三元组抽取时降至 52.4，后者影响更大。</td>
+</tr>
+<tr>
+<td>效率结论</td>
+<td>抽取后的上下文大约保留原始文本的 5% 至 15%，但不能把该压缩率直接等同于端到端延迟同比下降。</td>
+</tr>
+</tbody></table>
+<p><strong>重要：简历中的“2Wiki F1/EM 提升 9.6/15.9 个点”与当前论文材料的表格版本不完全一致。</strong> 明天不要主动报“提升多少点”；被问到时以“方法在两种模型和四类数据集上优于各基线，具体数值需按实验版本、模型和比较对象说明”作答。只有确认简历数字对应的模型、数据切分和基线后，才给出绝对提升。</p>
+<h3>6.5 学校项目高频深挖</h3>
+<table>
+<thead>
+<tr>
+<th>追问</th>
+<th>推荐回答</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>多跳问答和普通 RAG 的差别？</td>
+<td>普通 RAG 关注单段是否相关；多跳问答要求跨段落/实体把多个事实按约束连接起来，任何一跳漏掉或关系拼错都会导致最终答案错误。</td>
+</tr>
+<tr>
+<td>为什么先切条款，而不是固定 token Chunk？</td>
+<td>政策条款通常是带条件、主体、时间和例外的最小语义单元；固定长度切分可能把“适用条件”和“例外”切开。条款过长时再按句子或语义边界细分，同时保留父条款和文档层级元数据。</td>
+</tr>
+<tr>
+<td>三元组是怎么抽的？</td>
+<td>先由子问题定义抽取目标，再要求模型从候选条款中按 <code>&lt;实体, 关系, 实体&gt;</code> 格式抽取，并绑定来源条款。为提高格式与关系一致性，使用少量高质量示例约束输出；抽不出可靠三元组时不应编造，而要回退到原文证据或声明不足。</td>
+</tr>
+<tr>
+<td>三元组抽取本身会幻觉，为什么仍可靠？</td>
+<td>三元组不是天然真实，因此必须以原文为锚：每条三元组要保留来源条款，生成前可检查实体/关系/时间是否能在原文对齐。它是压缩和组织层，不是新的事实源。无法对齐就不进入最终证据集。</td>
+</tr>
+<tr>
+<td>为什么不用完整知识图谱或 GraphRAG？</td>
+<td>全局图谱适合实体关系稳定、长期复用和图遍历很重要的场景，但构建/更新/消歧成本高。政策会频繁更新，SG-FKE 按问题从候选原文中即时抽取局部证据图，先以较低维护成本获得多跳推理收益；在实验中也与 GraphRAG 做了对比。</td>
+</tr>
+<tr>
+<td>Query Rewrite 拆错了怎么办？</td>
+<td>子问题是辅助约束，不应覆盖原问题。要保留原问题和显式约束，检查是否遗漏主体、地区、时间或指标；子问题不确定时可保守少拆，或回退为原问题检索。后续可用覆盖率、重复率、答案证据覆盖做自动评估。</td>
+</tr>
+<tr>
+<td>检索错了怎么办？</td>
+<td>后面的抽取再好也无法补救，因此先看 Recall。可采用条款级索引、查询重写、多查询召回、关键词/向量混合检索和 rerank；最终答案必须展示引用，避免把未被检索到的事实说成确定结论。</td>
+</tr>
+<tr>
+<td>ROUGE 和 BERTScore F1 分别说明什么？</td>
+<td>ROUGE 更偏表面 n-gram 重合，对措辞敏感；BERTScore 用上下文表征匹配，能更好衡量语义相近但表达不同。二者都不能替代事实正确性和引用正确性，因此实际政策系统还应加入人工或规则化事实核验。</td>
+</tr>
+<tr>
+<td>方法局限是什么？</td>
+<td>依赖初始召回质量，三元组抽取会带来额外模型调用；复杂关系可能被过度压缩；静态实验指标不能代表政策实时性和线上用户体验。上线需要增量索引、时间有效性过滤、引用核验和真实问题评测。</td>
+</tr>
+</tbody></table>
+<h3>6.6 用学校项目引导面试官的收束句</h3>
+<blockquote>
+<p>这个项目里我比较重视两件事：一是把复杂问题拆成能被检索和验证的中间目标，二是让最终答案始终能回到原始条款。您如果感兴趣，我可以展开讲条款级切分和三元组证据校验，或者实验里子问题引导与三元组抽取的消融对比。</p>
+</blockquote>
+</div></section>
+    <footer>原文来源：明日面试-项目介绍与追问引导.md</footer>
+<!-- PROJECT_SOURCE_END --></template>
+  <template id="supervisorSource"><!-- SUPERVISOR_SOURCE_START -->
+<p class="source">整理依据：<a href="联想主管面准备.md">联想主管面准备.md</a>、一面逐字稿。团队业务部分仅保留面试官已确认信息。</p><section class="board">
+<aside class="column">
+<details open><summary><span class="kicker">LEFT 01</span><h2>主管面在验证什么</h2></summary><div class="content"><div class="route"><div class="step"><strong>能否把项目讲成业务交付</strong><span>将模糊目标拆为需求、方案、依赖、验收和持续迭代，而不是只讲模型与框架。</span></div><div class="step"><strong>是否有产品与协同潜力</strong><span>与业务、研发、数据及地区团队对齐；理解功能之外的端到端业务目标。</span></div><div class="step"><strong>是否适合长期做 AI + 业务</strong><span>持续积累技术，同时理解服务业务、产品体验和结果，不定位为纯模型研发。</span></div></div><p class="note"><b>全程主线：</b>以技术为底座，以业务结果为目标。所有技术选择回到“可靠解决用户问题、减少不必要的人工转接”。</p></div></details>
+<details open><summary><span class="kicker">LEFT 02</span><h2>高含金量反问：向主管学决策方法</h2></summary><div class="content"><h3>优先问：团队战略与全球化取舍</h3><div class="question"><b>1. 全球化难点（重点）</b><br>海外服务涉及地区、语言、产品线及当地法规/SOP。站在您的视角，团队目前在知识、数据或评测治理上最难的部分是什么？您通常会怎样判断哪些能力应该全球统一，哪些必须交给 region 做本地化？</div><div class="question"><b>2. 业务优先级</b><br>未来 12 个月，团队围绕 self-help 和 AI 服务转型，最希望优先解决的用户问题或业务指标是什么？在机会很多的情况下，您通常用什么标准判断一个 AI 场景值得优先投入？</div><div class="question"><b>3. 从 PoC 到正式交付</b><br>团队如何判断一个 Agent 能力可以从 PoC 进入正式交付？除了模型或任务效果外，您最看重哪些条件，例如地区流程适配、数据/权限、人工兜底或运营指标？</div><h3>深入问：向主管学习项目管理与复盘</h3><div class="question"><b>4. 最有价值的失败经验</b><br>您在推动 AI 服务产品时，是否遇到过一个技术上可行、但业务上没有达到预期的案例？后来团队是如何定位问题，并调整方向的？</div><div class="question"><b>5. 跨区域协同的关键动作</b><br>和不同 region、维修站或 IT 团队协作时，最常见的分歧或阻塞是什么？您认为一个新人最应该尽早建立的协同习惯是什么？</div><div class="question"><b>6. 衡量“解决问题”而非“回答问题”</b><br>对于自助提单、设备诊断等场景，团队现在如何平衡 self-help 解决率、转人工率、用户体验和错误风险？当这些指标出现冲突时，通常怎样做取舍？</div><h3>最后问：个人成长、晋升与全球机会</h3><div class="question"><b>7. 个人反馈与成长（重点）</b><br>从您的观察，能在团队持续成长的人通常在哪些能力上形成差异？结合我这次面试的表现，以及如果后续有机会加入，您觉得我最需要补充和提升的是什么？</div><div class="question"><b>8. 前三到六个月的成功标准</b><br>如果有机会加入，您会期待我在前三到六个月先解决或建立哪些能力？做到什么程度，说明我已经能够独立承担一个场景？</div><div class="question"><b>9. 晋升与海外机会（最后问）</b><br>团队是全球化协作的模式。想了解一下，团队对这个岗位的晋升和能力成长通常怎么看？随着责任范围扩大，是否有机会像您一样参与海外业务、跨区域项目，或获得出差、短期派驻等经历？我自己也希望把视野放得更长远一些。</div><p class="note"><b>推荐现场选法：</b>时间只够 2 个时，问 1 + 7；有 3 个时，问 1 + 3 + 7；聊到具体项目时，把 4 或 6 替换进去。第 9 个始终放在最后，用“能力成长与全球机会”切入，而不是只问职级。</p></div></details>
+</aside>
+<section class="column right">
+<details open><summary><span class="kicker">RIGHT 01 / OPENING</span><h2>自我介绍：中文与英文</h2></summary><div class="content"><h3>中文（约 90 秒）</h3><div class="quote">面试官您好，我叫赵一恒，目前在厦门大学电子信息专业读硕士，将于明年毕业。
+
+实习和在校项目的经历主要聚焦在 RAG、AI Agent 和 AI 应用落地。在滴滴实习时，我参与了团队内部业务信息查询 Agent 的方案和研发，负责信息查询链路和记忆系统的设计与开发，重点解决查询链路不稳定、在复杂查询中多轮调用丢进度、证据不足却直接回答的问题。
+
+此外，我也做过低空经济政策 RAG 与知识抽取，以及 AI 模型评测和 Bad Case 分析相关项目。我也熟练使用 Claude Code、Codex 等 AI 开发工具，辅助进行需求分析、开发、测试和文档整理，并将实践方法梳理成 AI Coding SOP，分享给其他团队。我的优势是能把比较模糊的业务需求拆成可验证的 AI 能力，并和其他岗位同事协同推进落地。
+
+我对贵公司这个岗位很感兴趣，因为 AI 知识管理本质上是把分散的信息、经验和方案沉淀成可信、可检索、可复用的资产，这和我过去做 Agent、RAG 和评测的经历高度相关。我也希望在联想的全球服务场景中，继续积累技术和业务结合的能力。</div><h3>英文（约 60-75 秒）</h3><div class="quote en">Hello, my name is Yiheng Zhao. I am currently pursuing a master's degree in Electronic Information at Xiamen University, and I will graduate next year.
+
+My internship and academic projects have mainly focused on RAG, AI agents, and practical AI applications. During my internship at Didi, I worked on the design and development of an internal business information-querying agent. I was responsible for the information-querying workflow and the memory system. I focused on issues such as unstable query flows, losing progress during complex multi-step queries, and generating answers without enough supporting evidence.
+
+I have also worked on a policy RAG and knowledge extraction project in the low-altitude economy domain, as well as AI model evaluation and bad case analysis. I am comfortable using AI development tools such as Claude Code and Codex to support requirement analysis, development, testing, and documentation. I also organized these practices into an AI Coding SOP and shared it with other teams.
+
+My strength is turning broad business needs into AI capabilities that can be built and tested, and working with colleagues across different functions to move projects forward. I hope to keep developing both my technical skills and business understanding in Lenovo's global service environment.</div></div></details>
+<details open><summary><span class="kicker">RIGHT 02 / MAIN PROJECT</span><h2>主项目：VSA 信息查询 Agent</h2></summary><div class="content"><div class="route"><div class="step"><strong>背景</strong><span>内部同学跨多个系统查询指标、项目和研发任务；复杂查询需要多轮工具调用。</span></div><div class="step"><strong>我的职责</strong><span>信息查询链路和记忆系统设计与开发；确认范围：内部 IM 入口、MCP 接入、信息查询 Pipeline 和记忆系统改造。</span></div><div class="step"><strong>问题与方案</strong><span>处理多轮调用丢进度、证据不足直接回答：理解/拆解 → 工具调用 → 结果归一 → 证据覆盖检查 → 补查或降级。</span></div><div class="step"><strong>验证边界</strong><span>PoC 使用 Mock → 真实数据源 → D-Chat 私聊/群聊的逐层验收。PoC、后续改造和线上效果必须分开讲。</span></div></div><h3>为什么主管会技术质疑？怎样接住</h3><div class="question"><b>“这不就是 RAG 吗？”</b><br>不完全是。还有任务拆分、跨工具查询、状态管理、结果归一、事实覆盖检查和带来源回答；RAG 只是文档知识源的一部分。</div><div class="question"><b>“为什么不让更强模型直接回答？”</b><br>强模型不能解决权限、时效、来源、执行可靠性和错误成本。日期、排序、编号、去重、权限和工具参数由代码/工具控制；LLM 负责理解、拆解、工具选择和表达。</div><div class="question"><b>“怎么证明准确？”</b><br>区分 PoC 可行性、离线评测、小范围试用和生产反馈。74 题覆盖事实、合规与兜底；没有核验的整体通过率就不报。</div><div class="question"><b>“幻觉怎么看？”</b><br>LLM 是概率生成；检索缺失、上下文冲突/过期、工具不完整和无校验都会造成无依据回答。用来源/版本/权限、重排、工具校验、引用、拒答或转人工、回归评测闭环降低风险。</div></div></details>
+<details open><summary><span class="kicker">RIGHT 03 / LENOVO CONTEXT</span><h2>联想团队：真实业务与主管可能提问</h2></summary><div class="content"><h3>一、一面了解到的团队情况</h3><div class="route"><div class="step"><strong>团队定位：海外售后服务的 AI 转型</strong><span>隶属 SSG 下的 SISS/International Service，负责中国区以外的硬件、软件和服务产品售后支持。面试官所在小团队约 10 人，主要做 chat 相关的售后机器人/智能客服。</span></div><div class="step"><strong>服务入口：eService 自助渠道</strong><span>用户可通过网站、社交媒体和预装软件获得服务。业务目标不是单纯上线聊天功能，而是把原本需要人工客服处理的问题，尽可能在 self-help 渠道中解决。</span></div><div class="step"><strong>已做项目：MCP + Agent 的售后服务</strong><span>团队已探索不同 Agent 调用不同系统、执行任务的模式，具体包括自助提单、设备诊断等。它从早期客服能力叠加大模型，发展到 MCP/Agent 架构。</span></div><div class="step"><strong>正在探索：B 端与多模态服务</strong><span>本财年还在看 Agent 是否能服务 B 端客户，以及实时语音、桌面共享、摄像头识别硬件故障等 UI/UX 能力是否能提升服务体验。</span></div><div class="step"><strong>全球化约束：地区差异不能被忽略</strong><span>不同 region 的法律法规、语言、服务方式、维修站和当地 SOP 不同。例如自动提单后如何分发给维修站，需要结合当地实际流程。团队要先收集区域需求，再推动自动化和 AI 化。</span></div><div class="step"><strong>岗位角色：端到端方案与迭代</strong><span>To C 生产开发主要由内部 IT/子公司承担安全和工程交付；这个岗位更深度参与需求梳理、方案设计、研发协同、交付后的精度优化，也可用低/无代码 Agent 做内部提效。</span></div></div><p class="note"><b>你对团队的理解：</b>这是一个“全球服务业务 + AI 产品方案”的岗位。核心不在于堆技术，而在于把各地区真实服务流程、知识和系统能力组织起来，让更多用户问题可靠地在自助渠道解决。</p><h3>二、站在二面 Director 的视角：可能问什么</h3><div class="question"><b>Q1. 你如何理解我们团队当前的业务？你觉得最难的点在哪里？</b><br>他想确认：你是否听懂一面介绍，能否从“做 Agent”上升到“全球服务转型”。</div><div class="question"><b>Q2. 如果让你参与全球自助提单/设备诊断，你会怎样从需求开始推进？</b><br>他想确认：你是否会做需求收集、跨地区协同、方案拆解和交付验收，而不是上来就讲模型。</div><div class="question"><b>Q3. AI 客服或 Agent 做得好，应该怎么衡量？</b><br>他想确认：你是否以业务结果衡量 AI，而不只谈模型准确率。</div><div class="question"><b>Q4. 对语音、桌面共享、摄像头诊断这些新能力，你会怎么判断是否值得做？</b><br>他想确认：你是否具备产品判断和技术取舍，能避免为了多模态而多模态。</div><div class="question"><b>Q5. 全球各地区 SOP 和合规要求不一致，如何保证方案可复制又能落地？</b><br>他想确认：你对全球化、权限、流程和治理复杂度是否有现实认识。</div><h3>三、详细回答思路：按“目标 → 动作 → 验收/风险”展开</h3><div class="question"><b>Q1 回答：理解团队业务与难点</b><br><b>目标：</b>提升 self-help，减少低价值人工转接，让客服资源聚焦复杂问题。<br><b>难点：</b>不是单一模型效果，而是跨地区流程和知识不一致、跨系统执行的可靠性、以及售后错误的风险。<br><b>我的切入：</b>我做过内部信息查询 Agent，理解“模型会回答”不等于“业务可用”。我会先梳理高频问题、知识/系统来源、地区差异和人工兜底，再通过评测和小范围验证迭代。</div><div class="question"><b>Q2 回答：如何推进自助提单或设备诊断</b><br><b>第一步，收集与分层：</b>和 region、客服、维修站确认用户旅程，拆出全球共性步骤和地区差异规则。<br><b>第二步，确定边界：</b>明确哪些信息由用户提供、哪些由系统查询；哪些条件可自动提单，哪些必须追问或转人工。<br><b>第三步，设计与协同：</b>将规则、接口、异常处理、权限和交付责任写进方案，与 IT/研发共同验收。<br><b>第四步，灰度与复盘：</b>先从高频、低风险地区或场景验证；看任务完成率、转人工率、错误工单和用户反馈，再按 bad case 优化。</div><div class="question"><b>Q3 回答：如何衡量 AI 客服价值</b><br><b>业务指标：</b>self-help 问题解决率、转人工率、重复咨询率、用户满意度和处理时长。<br><b>质量指标：</b>事实/政策准确性、来源引用正确性、工具调用与工单执行正确性。<br><b>风险指标：</b>错误提单、错误诊断、合规违规和不恰当转人工。<br><b>方法：</b>离线回归集 + 小范围灰度 + 线上反馈，将问题归因到知识、检索、工具、Agent 规划或生成环节。</div><div class="question"><b>Q4 回答：是否做多模态能力</b><br><b>先判断需求：</b>用户是否确实因文字无法描述故障、或缺少证据导致无法自助。<br><b>再验证可行性：</b>选一个高频具体问题做 PoC，比较文字与语音/图像方案在解决率、时延和人工转接上的差异。<br><b>最后守住边界：</b>提前评估用户授权、隐私、地区合规、识别准确度和人工接管；没有明确业务增益就不扩大投入。</div><div class="question"><b>Q5 回答：全球方案如何兼顾复制与本地落地</b><br><b>统一：</b>沉淀共性的意图、数据字段、评测口径、接口规范和安全底线。<br><b>配置：</b>把语言、法规、SOP、服务网点和工单路由做成地区配置，而不是写死在同一条流程里。<br><b>治理：</b>每个地区明确知识/流程责任人和版本机制；分地区灰度发布、监控和回滚，保留人工兜底和可追溯记录。</div></div></details>
+<details open><summary><span class="kicker">RIGHT 04 / PERSONAL REVIEW</span><h2>个人复盘与规划（中文）</h2></summary><div class="content"><h3>最大挑战：从未知业务到方案落地</h3><p>滴滴实习期间，我面对的是此前没有接触过的业务，需求方最初提出的需求也比较模糊，因此挑战不只是开发，而是逐步完成需求拆解。从最初梳理需求，到形成完整设计方案，再到最终开发实现，中途方案也出现过偏差。后续我通过和需求方深入讨论，并与组长持续对齐颗粒度，逐步纠正并顺利落地。这个过程让我认识到，面对未知业务时，先理解场景、持续校准方案比急于进入实现更重要；也很感谢组长和领导在这个阶段提供的指导。</p><h3>低谷期：一段多重压力并存的时期</h3><p>我不把它定义为真正的低谷，更像一段“奥德赛时期”。当时同时面对论文、秋招、实习工作和对转正的不确定感，多重压力曾影响工作效率。我会通过健身等方式保持工作与生活的平衡，主动调整节奏，最终平稳度过。这段经历让我更清楚地认识到，面对长期压力时，稳定的生活习惯和节奏管理很重要。</p><h3>不足与自我剖析</h3><p><b>易感性思考与专业表达：</b>我感觉自己的一个劣势是容易进行易感性思考，在面对不确定问题时，早期有时会更关注个人感受和担忧。后续在实习中，我有意识地用事实和结果来建立专业表达：汇报时尽量使用量化数字、进度、风险和下一步，而不是停留在主观判断上；遇到问题也先梳理证据和解决方案，再向团队同步。<br><b>工作沟通与向上管理：</b>我和同事私下相处融洽，但在工作沟通上还需要更主动，例如更频繁地汇报进展、尽早暴露风险、站在负责人角度思考他关心的目标和节奏。<br><b>决策果断度与工作思维：</b>在最终拍板时有时会犹豫，决断力仍需加强。这也和从学生思维转向工作思维有关：最初的调研和选型阶段，我有时会更关注“这个项目/Agent 本身是否优秀”，但一个好的项目不代表它就是最适合当前业务的方案。后续我逐渐把目标、约束和业务指标放在前面，先明确要解决的问题，再比较方案的适配度、成本、可扩展性和交付风险，最终选择最适合业务目标的 Agent 项目。滴滴实习后期，我通过及时对齐决策标准、限定判断时间和复盘结果，持续改进自己的决断力。</p><h3>未来规划：研发以业务为导向</h3><p>我希望成为懂技术、也能对业务结果负责的 AI 应用与解决方案型人才。技术上持续积累 RAG、Agent、评测和可信 AI 能力；业务上深入全球服务场景，打通从需求拆解、协同交付到持续迭代的完整链路。前 2-3 年，我会先扎进具体业务域，在实践中持续成长，并沉淀自己的方法论和知识资产。</p><h3>工作中最擅长的</h3><p><b>面对陌生业务主动学习：</b>愿意研究业务背景和问题本质，从不了解的领域逐步形成解决方案。<br><b>结构化解决复杂问题：</b>能把问题拆成流程、模块、状态、验收标准和具体实现，并推动方案落地。<br><b>压力下保持稳定：</b>在论文、秋招和实习任务并行时，能够调整节奏，持续完成重要任务。<br><b>重视规范、细节和质量：</b>关注证据、边界、来源、验收和可追溯性，这与企业 AI 知识管理场景比较匹配。</p><h3>工作中最不擅长的</h3><p><b>易感性思考影响专业表达：</b>面对不确定信息或他人反馈时，早期容易先从主观感受出发。后续在实习中有意识地用进度、量化数字、风险和下一步进行汇报，而不是只描述感受。<br><b>决策果断度不足：</b>早期调研和选型时，容易把“项目本身优秀”和“最适合当前业务”混在一起。现在会先明确业务目标、约束和验收标准，再比较方案的适配度、成本、可扩展性和交付风险，并在信息足够时及时做决定。这个过程也是从学生思维转向工作思维的过程。</p><h3>性格优势</h3><p>求知欲和洞察力较强，愿意探索陌生领域；情绪相对稳定、抗压能力较好；对自己有一定信心，遇到质疑不会轻易自我否定；重视规则、细节和质量；愿意听取他人意见并持续完善方案。</p><h3>性格劣势</h3><p>容易从主观感受出发思考，需要加强基于事实和数据的表达；做决策时容易反复权衡；工作汇报和向上管理还不够主动；有时更关注把自己的事情做好，需要加强主动解释、推动共识和长期业务视角。</p><p class="note"><b>面试总结说法：</b>我的优势是面对陌生业务时有较强的学习和分析能力，能够把复杂问题逐步拆解并落成可执行方案，同时在压力下保持稳定。我的不足主要是早期容易受主观感受影响，决策时也会反复权衡。实习过程中，我在刻意训练自己用量化信息汇报、主动做好向上沟通，并从“追求一个好方案”转向“基于业务目标选择最适合的方案”。</p></div></details>
+<details open><summary><span class="kicker">RIGHT 05 / KNOWLEDGE SHARING</span><h2>对外输出：AI Coding SOP 与工具实践</h2></summary><div class="content"><p>我不只是把 AI 工具用于个人提效，也把实践过程整理为可复用的 SOP、工具分享和检查清单，帮助其他同学从“随口让 AI 写代码”转向“有上下文、有验证、可交接”的工作方式。</p><h3>一、AI Coding SOP：把 AI 开发变成可复用的工程流程</h3><div class="route"><div class="step"><strong>解决的问题</strong><span>一句话把需求交给 AI 时，AI 容易猜业务、跳过澄清、扩大改动范围，最后即使代码能跑，也难以证明满足真实验收要求。</span></div><div class="step"><strong>核心方法</strong><span>“不要直接让 AI 写代码”：先补足项目、需求、接口、验收标准和验证方式等输入包；Cooper 负责读取内部 PRD、方案、接口和历史决策，Superpowers 负责需求澄清、方案比较、计划、分阶段实现和交付前验证。</span></div><div class="step"><strong>8 阶段闭环</strong><span>规划知识沉淀 → 拉取内部上下文 → 澄清需求 → 比较方案 → 编写计划 → 分阶段开发 → 完整验证 → 交付总结与接手包。前一阶段产出未确认，不进入下一阶段。</span></div><div class="step"><strong>工程质量底线</strong><span>把正常、异常、边界和不可破坏旧行为写成验收标准；测试通过不等于交付完成，还要记录验证命令、覆盖范围、未覆盖风险、回滚方式和知识沉淀。</span></div><div class="step"><strong>可验证的推广思路</strong><span>设计“流程化输入”与“一句话输入”的对比实验，关注验收通过率、异常覆盖、计划外改动、返工次数、一次过审率、关键路径覆盖及方案/回滚完整度。</span></div></div><p class="note"><b>主管可感知的价值：</b>这套 SOP 与联想岗位很贴合。它不是教大家更快生成代码，而是让业务需求、方案、研发协同、验证和知识资产形成可追溯闭环，适合低/无代码 Agent 和 AI 产品迭代场景。</p><h3>二、AI 工具分享：按真实工作闭环组织，不是工具清单</h3><div class="question"><b>1. 信息与知识进入 AI：让 AI 有正确上下文</b><br><b>实践：</b>用公众号订阅采集工具建立本地技术语料库，已订阅 10 个大厂技术公众号、积累 500+ 篇带元数据文章；下游用于 AI Coding SOP 的可追溯参考，以及资讯摘要推送。用 D-Chat 消息读取和内部数据工具，让 AI 结合群消息、PRD、表格和数据理解项目，而不是只靠人工转述。<br><b>方法论：</b>工具本身不是价值，关键是把分散文档、群消息和数据转成可检索、可引用、可复用的知识资产。</div><div class="question"><b>2. 工程执行与验证：让 AI 做事有边界、有证据</b><br><b>实践：</b>使用 Claude Code、Codex 做需求分析、开发、测试和文档；Playwright MCP 用于网页信息核对、登录流程自动化和截图验证；cmux 支持同时推进 2-3 个相互独立任务；行为规范类 skill 约束 AI 先对齐再动手、只修改相关范围，使 diff 更易 review。<br><b>方法论：</b>AI 可以并行提效，但要通过任务边界、阶段检查、浏览器验证和人工复核控制风险。</div><div class="question"><b>3. 数据到洞察再到交付：让结果能被业务使用</b><br><b>实践：</b>验证数据库 MCP、联邦查询与语义指标层的用法：先把数据源或指标口径做成受控接口，再让 Agent 查询；查询结果可直接调用图表 MCP 产出周报图表。也使用 draw.io skill 将口头方案转为可编辑的架构图/流程图，例如“评测导向 Agent 迭代全景图”。<br><b>方法论：</b>对业务数据不让 AI 任意猜 SQL 或口径，而是通过参数化工具、指标层、可视化和来源链路提升可控性与可解释性。</div><p class="note"><b>面试中 30 秒说法：</b>“我分享工具时不会只讲‘这个工具好用’，而是按工作流讲：先让 AI 获得可靠上下文，再让它在工程边界内执行和验证，最后把数据、图表、文档沉淀为团队可以复用的输出。这样工具能力才能真正服务于业务交付。”</p><h3>三、前端美化（简写）</h3><p>我还做过 AI 前端美化实践分享：不让 AI 凭默认审美自由发挥，而是先从参考页面提炼颜色、字体、间距、圆角等设计 Token，再约束 AI 只改样式、不改业务逻辑；完成后检查交互状态、可访问性、响应式和页面截图差异。核心是将“好不好看”转为可检查的设计规范与交付验证。</p></div></details>
+<details open><summary><span class="kicker">RIGHT 06 / CLOSING</span><h2>英文总结与结束前检查</h2></summary><div class="content"><h3>英文面试总结（45 秒）</h3><div class="quote en">Thank you for the interview. Today we discussed my experience in building an internal information-querying agent at Didi, especially how I translated a broad business request into a verifiable workflow with tool calls, evidence checks, and source-based answers. We also discussed Lenovo's global service scenarios and the goal of improving self-service for customers. I believe my experience in RAG, agent development, evaluation, and cross-functional collaboration is relevant to this role. I am particularly interested in learning the service domain deeply and contributing to reliable AI solutions from requirement definition to iteration.</div><h3>通用英文总结模板（约 45 秒，聊什么都可用）</h3><div class="quote en">Thank you for the conversation today. It was really helpful to learn more about Lenovo's global service team and the challenges of building AI solutions across different regions. I shared my experience with an internal information-querying agent at Didi, where I worked on making multi-step queries more reliable and evidence-based. I also talked about how I learn from project challenges and keep improving my communication and decision-making. This role matches what I want to do: use AI skills to solve real business problems and grow through end-to-end delivery. Thank you again.</div><h3>结束前检查</h3><p><span class="tag">主项目 2 分钟</span><span class="tag">个人贡献有边界</span><span class="tag">每个数字带口径</span><span class="tag">有真实阻塞案例</span><span class="tag">英文短句慢速</span></p><p class="note">避免“模型很强”“效果不错”这类空话。改为说明证据、验收方式、业务风险、已验证范围和下一步。</p></div></details>
+</section></section><footer>使用方式：先看左侧定答题策略；按右侧顺序练开场、主项目、团队理解、个人复盘、英文总结；最后从左侧选择反问。</footer>
+<!-- SUPERVISOR_SOURCE_END --></template>
   <script>
-    const PROJECT_LINK='二面/业务信息查询Agent-项目追问导图.html';
     const views={
       technical:{title:'技术面',goal:'证明项目确实做过，讲清技术机制、个人边界、验证方式和方案取舍。技术回答回到“问题—设计—证据—边界”。',chips:['项目深挖','技术原理','方案取舍','验证口径'],outline:[['开场','中文介绍 → 主项目定位'],['深挖','状态、工具、证据、异常、评测'],['收束','局限、下一步、反问']],nodes:[
         ['开场：统一自我介绍','教育背景 + RAG/Agent/评测经历 + AI 应用落地能力。','<div class="quote">面试官您好，我叫赵一恒，目前在厦门大学电子信息专业读硕士，将于明年毕业。我的实习和在校项目主要聚焦在 RAG、AI Agent 和 AI 应用落地。在滴滴实习时，我参与了团队内部业务信息查询 Agent 的方案和研发，负责信息查询链路和记忆系统的设计与开发，重点解决复杂查询中的进度保持、证据不足和链路稳定性问题。此外，我做过低空经济政策 RAG、知识抽取和 AI 模型评测。我希望继续做把 AI 技术落到真实业务中的工作。</div>'],
-        ['主项目：业务信息查询 Agent','背景 → 我的职责 → 核心问题 → 状态化方案 → 验证与边界。','<p>先讲业务问题，再讲你的设计。明确说明是在既有 goclaw Runtime 上负责信息查询链路和记忆系统的设计与开发，不把底座或完整生产系统说成自己独立搭建。</p><div class="source-links"><a href="'+PROJECT_LINK+'" target="_blank" rel="noreferrer">打开完整项目追问导图 ↗</a></div>'],
+        ['主项目：业务信息查询 Agent','背景 → 我的职责 → 核心问题 → 状态化方案 → 验证与边界。','<p>先讲业务问题，再讲你的设计。明确说明是在既有 goclaw Runtime 上负责信息查询链路和记忆系统的设计与开发，不把底座或完整生产系统说成自己独立搭建。</p><div class="source-links"><button data-source="project">在本页查看完整项目资料</button></div>'],
         ['高概率技术追问','状态为什么必要、任务怎么拆、工具如何约束、何时并行、如何判断查完、失败怎么降级。','<ul><li>状态把目标、任务、进度、Observation、Evidence 和 Decision 从模型上下文中抽出来，避免多轮调用丢目标。</li><li>执行前校验工具白名单、参数、重复调用、预算与依赖；执行后归一化结果并做证据覆盖检查。</li><li>区分 PoC、离线评测、小范围试用和生产反馈；没有核验的通过率不主动报。</li></ul>'],
         ['可信取舍与幻觉','强模型不能替代权限、时效、来源和执行控制；代码控制确定性规则，模型负责语义理解。','<p>幻觉来自检索缺失、上下文冲突或过期、工具不完整和缺少校验。用来源与版本、工具校验、引用、拒答/转人工、回归评测降低风险。</p>'],
         ['其他项目快速入口','VLM 碰撞检测评测；低空经济政策 RAG 与知识抽取。','<p>只在面试官需要时展开，始终说明个人负责的实验、指标、Bad Case 或知识抽取环节。</p>']
       ]},
       supervisor:{title:'主管面',goal:'证明能把模糊需求拆成可交付方案，做符合业务目标的技术取舍，协同推进并持续复盘成长。',chips:['业务判断','协同交付','个人复盘','成长潜力'],outline:[['主线','先讲价值，再讲关键判断'],['证明','项目事实 + 困难处理 + 复盘'],['收束','全球化理解 + 高含金量反问']],nodes:[
         ['本轮主线','主管关注你是否能从“做功能”上升到“对业务结果负责”。','<p>回答顺序：业务背景和目标 → 我的具体职责 → 关键取舍 → 如何验证 → 还没有验证的边界 → 下一步。</p>'],
-        ['主项目深挖：为什么这样设计','将业务信息查询 Agent 讲成“可观测、可核验的查询交付链路”。','<p>复杂查询跨多个系统和多轮工具调用，纯 ReAct 容易丢进度或证据不足即结束。采用轻量任务拆解 + 有状态反馈循环：先形成 1—5 个可验收事实任务，再根据工具结果补查、换源或降级。</p><div class="source-links"><a href="'+PROJECT_LINK+'" target="_blank" rel="noreferrer">打开完整项目追问导图 ↗</a></div>'],
+        ['主项目深挖：为什么这样设计','将业务信息查询 Agent 讲成“可观测、可核验的查询交付链路”。','<p>复杂查询跨多个系统和多轮工具调用，纯 ReAct 容易丢进度或证据不足即结束。采用轻量任务拆解 + 有状态反馈循环：先形成 1—5 个可验收事实任务，再根据工具结果补查、换源或降级。</p><div class="source-links"><button data-source="project">在本页查看完整项目资料</button></div>'],
         ['最大挑战：未知业务到落地','需求模糊时先拆解，再对齐颗粒度，过程中纠偏并完成开发。','<p>滴滴实习期间，我面对此前没有接触过的业务。需求方最初描述比较模糊，我从需求拆解、设计方案到开发实现逐步推进。中途发现方案颗粒度有偏差后，我和需求方深入讨论，并与组长持续对齐，最后顺利落地。这个过程让我认识到，未知业务先理解场景、持续校准，比急于进入实现更重要。</p>'],
         ['低谷期：多重压力并存','论文、秋招、实习和转正焦虑同时存在，但把它视为一段需要管理节奏的“奥德赛时期”。','<p>压力曾影响效率，我通过健身和调整工作节奏保持 Work-life balance，最终平稳度过。重点体现识别压力、采取行动和恢复稳定的能力。</p>'],
         ['不足与自我剖析','易感性思考、向上管理、决策果断度；说明正在采取的改进。','<ul><li><b>易感性思考：</b>早期面对不确定问题容易先关注感受和担忧。现在用量化数字、进度、风险和下一步汇报，先整理证据再表达判断。</li><li><b>工作沟通：</b>主动汇报进展、尽早暴露风险，站在负责人角度思考目标和节奏。</li><li><b>决策果断度：</b>完成从学生思维到工作思维的转变。好的项目不代表最适合业务；现在先明确目标、约束和验收标准，再比较适配度、成本、可扩展性和交付风险。</li></ul>'],
@@ -87,12 +408,14 @@
     function renderNode(n,extra=false){return '<details class="node '+(extra?'addon':'')+'"><summary><span><b>'+esc(n[0])+'</b><em>'+esc(n[1])+'</em></span></summary><div class="node-body">'+n[2]+'</div></details>'}
     function render(){const v=views[current];document.querySelectorAll('[data-view]').forEach(b=>b.classList.toggle('active',b.dataset.view===current));let html='<div class="hero"><div class="eyebrow">当前面试轮次</div><h2>'+v.title+'</h2><p>'+v.goal+'</p><div class="chips">'+v.chips.map(x=>'<span class="chip">'+x+'</span>').join('')+'</div></div>';
       html+='<div class="outline">'+v.outline.map(x=>'<div class="outline-card"><b>'+x[0]+'</b><span>'+x[1]+'</span></div>').join('')+'</div>';
-      html+='<section class="section"><div class="section-title"><h3>通用面试思维导图</h3><small>按需展开完整话术</small></div><div class="tree">'+v.nodes.map(n=>renderNode(n)).join('')+'</div></section>';
+      html+='<section class="section"><div class="section-title"><h3>'+v.title+'核心主线</h3><small>按需展开完整话术</small></div><div class="tree">'+v.nodes.map(n=>renderNode(n)).join('')+'</div></section>';
       Object.entries(addons).forEach(([key,mod])=>{if(document.querySelector('[data-addon-toggle="'+key+'"]').checked){html+='<section class="section addon-section" data-addon="'+key+'"><div class="section-title"><h3>'+mod.title+'</h3><small>左侧可隐藏</small></div><div class="tree">'+mod.nodes.map(n=>renderNode(n,true)).join('')+'</div></section>'}});
-      html+='<div class="notice"><b>统一回答提醒：</b>先给结论，再讲个人负责的事实；所有数字带口径；明确已验证范围、未覆盖风险和下一步。</div><footer>资料底座：现有两份静态项目导图。首页只做轮次组织和附加模块管理，新增知识点可继续按同样结构追加。</footer>';app.innerHTML=html;}
-    document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>{current=b.dataset.view;render()}));
+      html+='<div class="notice"><b>统一回答提醒：</b>先给结论，再讲个人负责的事实；所有数字带口径；明确已验证范围、未覆盖风险和下一步。</div><footer>两份原始 HTML 的完整正文已经合并进本页面，可从左侧“完整资料”或项目节点打开。</footer>';app.innerHTML=html;}
+    function openSource(type){const template=document.querySelector('#'+type+'Source');sourceTitle.textContent=type==='project'?'项目介绍与全部追问':'主管面全部准备';sourceContent.replaceChildren(template.content.cloneNode(true));sourceDialog.showModal();}
+    document.body.dataset.round=current;document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>{current=b.dataset.view;document.body.dataset.round=current;render()}));
     document.querySelectorAll('[data-addon-toggle]').forEach(x=>x.addEventListener('change',()=>{localStorage.setItem('addon-'+x.dataset.addon,x.checked?'1':'0');render()}));
     document.querySelectorAll('[data-addon-toggle]').forEach(x=>{const saved=localStorage.getItem('addon-'+x.dataset.addon);if(saved!==null)x.checked=saved==='1'});
+    document.addEventListener('click',event=>{const button=event.target.closest('[data-source]');if(button)openSource(button.dataset.source)});sourceClose.onclick=()=>sourceDialog.close();sourceDialog.addEventListener('click',event=>{if(event.target===sourceDialog)sourceDialog.close()});
     document.querySelector('#openAll').onclick=()=>document.querySelectorAll('#app details').forEach(x=>x.open=true);document.querySelector('#closeAll').onclick=()=>document.querySelectorAll('#app details').forEach(x=>x.open=false);render();
   </script>
 </body>
