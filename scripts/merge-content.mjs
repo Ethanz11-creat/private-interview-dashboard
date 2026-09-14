@@ -9,7 +9,7 @@ function readBody(fileName) {
   const source = fs.readFileSync(path.join(root, 'public', '二面', fileName), 'utf8');
   const match = source.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
   if (!match) throw new Error(`Cannot find <body> in ${fileName}`);
-  return match[1].trim();
+  return match[1];
 }
 
 function replaceBlock(html, name, content) {
@@ -17,7 +17,7 @@ function replaceBlock(html, name, content) {
   const end = `<!-- ${name}_END -->`;
   const pattern = new RegExp(`${start}[\\s\\S]*?${end}`);
   if (!pattern.test(html)) throw new Error(`Cannot find ${name} markers`);
-  return html.replace(pattern, `${start}\n${content}\n${end}`);
+  return html.replace(pattern, `${start}${content}${end}`);
 }
 
 let html = fs.readFileSync(indexPath, 'utf8');
