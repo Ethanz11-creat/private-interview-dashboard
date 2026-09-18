@@ -19,6 +19,7 @@
     .hr-panel{border-top:3px solid var(--blue)}.hr-panel details{margin:0 0 9px;border:1px solid var(--line)}.hr-panel summary{padding:11px 13px;cursor:pointer;font-weight:600;list-style:none}.hr-panel summary::-webkit-details-marker{display:none}.hr-panel summary:before{content:'+';display:inline-block;width:21px;color:var(--blue)}.hr-panel details[open] summary:before{content:'−'}.hr-panel .answer{padding:12px 15px;border-top:1px solid var(--line);background:var(--soft)}.hr-panel .answer p{margin:7px 0}.hr-panel .answer b{color:var(--blue)}
     @media(max-width:820px){header{align-items:flex-start;flex-direction:column}.layout{grid-template-columns:1fr}aside{border-right:0;border-bottom:1px solid var(--line);padding:14px 16px}.side-nav{display:flex;flex-wrap:wrap}.nav{display:inline-block;width:auto;margin-right:4px}.round-map{grid-template-columns:1fr}.round-map:before{top:12px;bottom:12px;left:50%;right:auto;border-top:0;border-left:1px solid #b6d2e5}.map-node{text-align:left;margin-left:20px}.map-node strong,.map-node span{display:inline}.map-node strong{margin-right:7px}.stage-grid,.stage-notes,.knowledge-panel .qa-list{grid-template-columns:1fr}.stage-card:not(:last-child):after{content:'↓';right:auto;top:auto;bottom:-17px;left:50%;font-size:16px}.source-body .summary,.source-body .board{grid-template-columns:1fr}}
     .knowledge-panel details{display:block;margin:0 0 18px;border:1px solid var(--line)}.knowledge-panel details>summary{list-style:none;pointer-events:none;padding:11px 14px;background:var(--bluebg);color:var(--blue);font-weight:700}.knowledge-panel details>summary::-webkit-details-marker{display:none}.knowledge-panel details .qa-list{border-top:1px solid var(--line)}
+    .knowledge-panel .answer-detail{display:block;margin-top:9px;padding-top:9px;border-top:1px dashed #c8d8e2;color:#3f4b54}
   </style>
 </head>
 <body>
@@ -524,6 +525,29 @@ My strength is turning broad business needs into AI capabilities that can be bui
         qa.append(script);
       });
     }
+    function enrichKnowledgeAnswers(root){
+      const panel=root.querySelector('.knowledge-panel');
+      if(!panel)return;
+      panel.querySelectorAll('.qa').forEach((qa,index)=>{
+        const answer=qa.querySelector('p');
+        const source=scriptAnswers[index];
+        if(!answer||!source)return;
+        const detail=document.createElement('span');
+        detail.className='answer-detail';
+        detail.innerHTML='<strong>补充：</strong><span></span>';
+        const expanded=source
+          .replaceAll('我会从','可以从')
+          .replaceAll('我会把','可以把')
+          .replaceAll('我会先','可以先')
+          .replaceAll('我会','可以')
+          .replaceAll('我理解','可以理解为')
+          .replaceAll('我认为','工程上通常认为')
+          .replaceAll('我在实习项目','在实际项目')
+          .replaceAll('如果放到实际项目里，','在实际项目中，');
+        detail.querySelector('span').textContent=expanded;
+        answer.append(detail);
+      });
+    }
     function scrubText(root){const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);const nodes=[];while(walker.nextNode())nodes.push(walker.currentNode);nodes.forEach(n=>{n.nodeValue=n.nodeValue.replaceAll('联想','目标公司')});}
     function customizeSupervisor(root){const body=root.querySelector('.source-body');if(!body)return;body.querySelector(':scope > header')?.remove();const main=body.querySelector(':scope > main');if(!main)return;const sourceNote=main.querySelector(':scope > .source');if(sourceNote)sourceNote.innerHTML='整理依据：主管面通用模板，按原主管面页面结构整理。';const details=[...main.querySelectorAll('details')];const byKicker=(name)=>details.find(d=>d.querySelector('.kicker')?.textContent.trim()===name);
       byKicker('LEFT 01')?.remove();
@@ -552,6 +576,7 @@ My strength is turning broad business needs into AI capabilities that can be bui
       if(current==='hr')html+='<section class="source-wrap"><div class="source-label"><h3>HR 面通用准备</h3></div><div class="hr-panel">'+hr.map(x=>'<details><summary>'+x[0]+'<small>　'+x[1]+'</small></summary><div class="answer"><p><b>回答思路：</b>'+x[1]+'</p><p>'+x[2]+'</p></div></details>').join('')+'</div></section>';
       html+='<footer style="margin-top:28px;padding-top:14px;border-top:1px solid var(--line);color:var(--muted);font-size:12px">业务面与主管面正文来自两个原始 HTML，八股题库独立维护，页面仅负责轮次切换和样式承载。</footer>';
       app.innerHTML=html;
+      if(current==='fundamentals')enrichKnowledgeAnswers(app);
       if(current==='supervisor')customizeSupervisor(app);
       if(current==='hr')customizeHr(app);
     }
