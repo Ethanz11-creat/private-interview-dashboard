@@ -18,15 +18,13 @@
     .source-wrap{margin-top:24px}.source-label{display:flex;justify-content:center;margin-bottom:12px}.source-label h3{margin:0;padding:7px 15px;border:1px solid var(--blue);color:var(--blue);font-size:15px;font-weight:600}.source-body{border-top:3px solid var(--blue);padding-top:4px}.source-body>header{position:static;display:block;padding:12px 0;border:0}.source-body>header h1{font-size:20px}.source-body>header p{font-size:12px}.source-body>main{padding:0;max-width:none}.source-body>main>footer{display:none}.source-body .summary{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:0 0 18px}.source-body .summary a{display:block;padding:11px;border:1px solid var(--line);border-top:3px solid var(--blue);color:var(--ink);text-decoration:none}.source-body .summary b{display:block;color:var(--blue);font-size:13px}.source-body .summary span{display:block;color:var(--muted);font-size:12px}.source-body .notice,.source-body .note{margin:12px 0;padding:10px 12px;border-left:3px solid var(--blue);background:var(--bluebg)}.source-body section{margin:20px 0;border:1px solid var(--line)}.source-body .rendered,.source-body .content{padding:16px}.source-body h2{margin:25px 0 10px;padding-bottom:7px;border-bottom:1px solid var(--line);font-size:19px}.source-body h3{margin:20px 0 8px;font-size:16px}.source-body h4{margin:16px 0 7px}.source-body p{margin:8px 0}.source-body blockquote,.source-body .quote{margin:11px 0;padding:11px 13px;border-left:3px solid var(--blue);background:var(--bluebg)}.source-body pre{margin:12px 0;padding:12px;overflow:auto;border:1px solid var(--line);background:var(--soft);white-space:pre}.source-body code{font-family:Consolas,"SFMono-Regular",monospace;font-size:12px}.source-body table{display:block;width:100%;overflow:auto;margin:12px 0;border-collapse:collapse}.source-body th,.source-body td{padding:8px 9px;border:1px solid var(--line);vertical-align:top;text-align:left}.source-body th{background:var(--soft)}.source-body ul,.source-body ol{padding-left:22px}.source-body .board{display:grid;grid-template-columns:minmax(260px,.7fr) minmax(0,1.5fr);gap:16px}.source-body .col>details,.source-body details{margin:0 0 10px;border:1px solid var(--line)}.source-body summary{cursor:pointer;padding:10px 12px;font-weight:600}.source-body .question,.source-body .step{padding:10px 12px;border-left:2px solid var(--blue);background:var(--soft)}.source-body .step strong,.source-body .step span{display:block}.source-body .tag{display:inline-block;margin:3px;padding:2px 6px;border:1px solid var(--line)}.source-body .route{display:grid;gap:8px}.source-body .kicker{color:var(--muted);font-size:10px}
     .hr-panel{border-top:3px solid var(--blue)}.hr-panel details{margin:0 0 9px;border:1px solid var(--line)}.hr-panel summary{padding:11px 13px;cursor:pointer;font-weight:600;list-style:none}.hr-panel summary::-webkit-details-marker{display:none}.hr-panel summary:before{content:'+';display:inline-block;width:21px;color:var(--blue)}.hr-panel details[open] summary:before{content:'−'}.hr-panel .answer{padding:12px 15px;border-top:1px solid var(--line);background:var(--soft)}.hr-panel .answer p{margin:7px 0}.hr-panel .answer b{color:var(--blue)}
     @media(max-width:820px){header{align-items:flex-start;flex-direction:column}.layout{grid-template-columns:1fr}aside{border-right:0;border-bottom:1px solid var(--line);padding:14px 16px}.side-nav{display:flex;flex-wrap:wrap}.nav{display:inline-block;width:auto;margin-right:4px}.round-map{grid-template-columns:1fr}.round-map:before{top:12px;bottom:12px;left:50%;right:auto;border-top:0;border-left:1px solid #b6d2e5}.map-node{text-align:left;margin-left:20px}.map-node strong,.map-node span{display:inline}.map-node strong{margin-right:7px}.stage-grid,.stage-notes,.knowledge-panel .qa-list{grid-template-columns:1fr}.stage-card:not(:last-child):after{content:'↓';right:auto;top:auto;bottom:-17px;left:50%;font-size:16px}.source-body .summary,.source-body .board{grid-template-columns:1fr}}
-    .knowledge-panel .qa-script{margin-top:9px;border:1px dashed #b6d2e5;background:#fff}
-    .knowledge-panel .qa-script summary{padding:8px 10px;color:var(--blue);font-size:12px;font-weight:650}
-    .knowledge-panel .qa-script .script-copy{padding:10px 11px;border-top:1px solid var(--line);color:#333;line-height:1.8;white-space:pre-line}
+    .knowledge-panel .standard-answer{margin-top:9px;padding:10px 11px;border-top:1px solid #b6d2e5;background:#fff;color:#333;line-height:1.8;white-space:pre-line}.knowledge-panel .standard-answer strong{color:var(--blue)}
   </style>
 </head>
 <body>
   <header><div><h1>求职面试准备</h1><p>以原有主管面 HTML 为阅读模板，按轮次直接阅读完整资料</p></div><div class="tools"><button id="openAll">展开当前资料</button><button id="closeAll">收起当前资料</button></div></header>
   <div class="layout">
-    <aside><div class="side-title">面试轮次</div><div class="side-nav"><button class="nav active" data-round="technical">业务面／技术面</button><button class="nav" data-round="fundamentals">八股题库</button><button class="nav" data-round="supervisor">主管面</button><button class="nav" data-round="hr">HR 面</button></div><div class="rule"></div><div class="side-title">页面说明</div><p class="hint">业务面和主管面会直接呈现两个原 HTML 的完整 body 内容，不抽取、不改写、不压缩。八股题库为独立的问答与逐字稿模块。</p></aside>
+    <aside><div class="side-title">面试轮次</div><div class="side-nav"><button class="nav active" data-round="technical">业务面／技术面</button><button class="nav" data-round="fundamentals">八股题库</button><button class="nav" data-round="supervisor">主管面</button><button class="nav" data-round="hr">HR 面</button></div><div class="rule"></div><div class="side-title">页面说明</div><p class="hint">业务面和主管面会直接呈现两个原 HTML 的完整 body 内容，不抽取、不改写、不压缩。八股题库为独立的标准问题与答案模块。</p></aside>
     <main id="app"></main>
   </div>
   <template id="projectSource"><!-- PROJECT_SOURCE_START -->
@@ -370,7 +368,7 @@ My strength is turning broad business needs into AI capabilities that can be bui
           <li><b>可靠性与评测：</b>怎样定义“查完了”？证据不足、工具失败、结果冲突怎么办？74 道题如何构造真值、冻结数据版本并判分？</li>
           <li><b>工程落地：</b>工作区隔离、文件存储、容灾、权限、缓存、监控和可观测性如何设计？当前做到哪一步，哪些仍是规划？</li>
         </ul></div></details>
-        <details open><summary>03 · 八股／基础题：完整问答模块</summary><div class="content"><p>完整题库已独立到左侧“八股题库”。业务面现场先用项目回答，遇到技术下钻时再切换题库，按速记版或 2 分钟逐字稿回答。</p></div></details>
+        <details open><summary>03 · 八股／基础题：完整问答模块</summary><div class="content"><p>完整题库已独立到左侧“八股题库”。业务面现场先用项目回答，遇到技术下钻时再切换题库，直接使用题目下方的标准表述。</p></div></details>
         <details open><summary>04 · 反问：通用高价值问题</summary><div class="content"><ul>
           <li><b>团队业务：</b>团队当前最重要的业务问题是什么？AI Agent 在其中承担哪一段责任？</li>
           <li><b>岗位工作：</b>这个岗位日常在需求理解、Agent／Skill 开发、评测和上线迭代上的时间占比大概怎样？</li>
@@ -518,11 +516,11 @@ My strength is turning broad business needs into AI capabilities that can be bui
       ];
       panel.querySelectorAll('.qa').forEach((qa,index)=>{
         const script=document.createElement('details');
-        script.className='qa-script';
-        script.innerHTML='<summary>2 分钟逐字稿 <small>展开练习</small></summary><div class="script-copy"></div>';
-        const base=scriptAnswers[index]||'这道题的逐字稿待补充。先按上方 Answer 说明定义、原理、工程取舍和实际案例。';
+        script.className='standard-answer';
+        const base=scriptAnswers[index]||'这道题的标准表述待补充。先按上方 Answer 说明定义、原理、工程取舍和实际案例。';
         const tail=index<2?extensions[0]:index<24?extensions[1]:index<30?extensions[2]:index<42?extensions[3]:extensions[4];
-        script.querySelector('.script-copy').textContent=base+'\n\n'+tail;
+        script.innerHTML='<strong>标准表述：</strong><span></span>';
+        script.querySelector('span').textContent=base+'\n\n'+tail;
         qa.append(script);
       });
     }
@@ -545,7 +543,7 @@ My strength is turning broad business needs into AI capabilities that can be bui
       document.body.dataset.round=current;
       document.querySelectorAll('[data-round]').forEach(b=>b.classList.toggle('active',b.dataset.round===current));
       const title=current==='technical'?'业务面／技术面':current==='fundamentals'?'八股题库':current==='supervisor'?'主管面':'HR 面';
-      const desc=current==='technical'?'按固定主线持续沉淀每次业务面的新增问题、回答和复盘，不再按公司拆分。':current==='fundamentals'?'把高频基础题集中管理：先看速记版 Answer，再展开对应的约 2 分钟逐字稿。':current==='supervisor'?'沿用原主管面页面的左右结构，保留可复用的项目、复盘与反问内容。':'重点是说明求职动机、沟通方式、优势不足、压力管理和长期规划。';
+      const desc=current==='technical'?'按固定主线持续沉淀每次业务面的新增问题、回答和复盘，不再按公司拆分。':current==='fundamentals'?'把高频基础题集中管理：每道题都直接展示速记版 Answer 和可背诵的标准表述。':current==='supervisor'?'沿用原主管面页面的左右结构，保留可复用的项目、复盘与反问内容。':'重点是说明求职动机、沟通方式、优势不足、压力管理和长期规划。';
       const map=current==='technical'?'<div class="round-map four"><div class="map-node"><strong>自我介绍</strong><span>背景与岗位价值</span></div><div class="map-node"><strong>项目拷打</strong><span>机制、证据与取舍</span></div><div class="map-node"><strong>八股／基础题</strong><span>技术深度与边界</span></div><div class="map-node"><strong>反问</strong><span>团队、岗位与反馈</span></div></div>':current==='fundamentals'?'<div class="round-map four"><div class="map-node"><strong>Python</strong><span>语言与工程基础</span></div><div class="map-node"><strong>Agent</strong><span>工具、记忆与上下文</span></div><div class="map-node"><strong>RAG／模型</strong><span>检索与模型原理</span></div><div class="map-node"><strong>中间件</strong><span>Redis、MySQL 与缓存</span></div></div>':'<div class="round-map"><div class="map-node"><strong>开场</strong><span>自我介绍与本轮主线</span></div><div class="map-node"><strong>展开</strong><span>项目、问题与个人经历</span></div><div class="map-node"><strong>收束</strong><span>规划、反问与复盘</span></div></div>';
       let html='<div class="hero"><h2>'+title+'</h2><p>'+desc+'</p><span class="badge">当前轮次</span></div>'+map;
       if(current==='technical')html+=businessStages+source('#projectSource','业务信息查询 Agent：原 HTML 全部正文');
