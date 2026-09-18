@@ -528,6 +528,14 @@ My strength is turning broad business needs into AI capabilities that can be bui
     function enrichKnowledgeAnswers(root){
       const panel=root.querySelector('.knowledge-panel');
       if(!panel)return;
+      const boundaries=[
+        '边界上，list 与 tuple 的选择首先由可变性和数据语义决定；不要把实现细节或微小性能差异当成首要依据。',
+        '边界上，模型可以提出决策，但权限、状态变更和副作用必须由应用层控制；协议或提示词不能替代鉴权、校验和异常处理。',
+        '边界上，检索结果、结构化中间结果和最终答案不是同一层证据；不能因为召回了相关内容，就默认答案一定正确，也不能让中间表示脱离原始来源。',
+        '边界上，原理成立不代表资源无限；序列长度、显存、通信、数值稳定性和部署约束都会影响实现，工程选择需要在这些约束下成立。',
+        '边界上，一致性、可靠性和性能通常存在取舍；缓存、事务、流式连接或消息机制都要明确失败场景，不能只描述正常路径。'
+      ];
+      const excluded=/项目|评估|评测|指标|bad case|Bad Case|上线|线上|回归|真实问题|离线任务集|业务损失|服务吞吐|人工抽检|监控|任务成功率|正确率|召回率|准确率|延迟/;
       panel.querySelectorAll('.qa').forEach((qa,index)=>{
         const answer=qa.querySelector('p');
         const source=scriptAnswers[index];
@@ -535,7 +543,9 @@ My strength is turning broad business needs into AI capabilities that can be bui
         const detail=document.createElement('span');
         detail.className='answer-detail';
         detail.innerHTML='<strong>补充：</strong><span></span>';
-        const expanded=source
+        const group=index<2?0:index<24?1:index<30?2:index<42?3:4;
+        const core=source.split('。').filter(sentence=>sentence.trim()&&!excluded.test(sentence)).join('。');
+        const expanded=(core+(core.endsWith('。')?'':'。')+' '+boundaries[group])
           .replaceAll('我会从','可以从')
           .replaceAll('我会把','可以把')
           .replaceAll('我会先','可以先')
