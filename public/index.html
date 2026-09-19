@@ -476,7 +476,22 @@ My strength is turning broad business needs into AI capabilities that can be bui
       const footer=main.querySelector(':scope > footer');if(footer)footer.textContent='使用方式：按右侧顺序练习中文自我介绍、主项目、个人复盘和输出；最后从左侧选择反问。';scrubText(body);
     }
     function source(id,title){const t=document.querySelector(id);return '<section class="source-wrap"'+(id==='#supervisorSource'?' data-template="supervisor"':'')+'><div class="source-label"><h3>'+title+'</h3></div><div class="source-body">'+t.innerHTML+'</div></section>'}
-    function customizeHr(root){const panel=root.querySelector('.hr-panel');if(!panel)return;const duplicate=['工作中最擅长的','工作中最不擅长的','最大挑战','低谷期','未来规划'];panel.querySelectorAll('details').forEach(d=>{const label=d.querySelector('summary')?.textContent.trim()||'';if(duplicate.some(x=>label.startsWith(x)))d.remove()});const d=document.createElement('details');d.open=true;d.innerHTML='<summary>个人复盘与规划（与主管面同步）<small>　挑战、低谷、不足、优势与未来规划</small></summary><div class="answer"><p><b>最大挑战：</b>滴滴实习期间面对陌生业务和模糊需求，我从需求拆解、方案设计推进到开发实现，中途发现方案偏差后，通过和需求方深入讨论、与组长对齐颗粒度，逐步纠正并顺利落地。</p><p><b>低谷期：</b>论文、秋招、实习和转正焦虑同时存在，是一段多重压力并存的“奥德赛时期”。我通过健身和调整节奏保持 Work-life balance，最终平稳度过。</p><p><b>不足与改进：</b>早期容易进行易感性思考，工作沟通和向上管理不够主动，决策时也会反复权衡。现在刻意用量化数字、进度、风险和下一步做汇报；选型先明确业务目标，再比较适配度、成本、可扩展性和交付风险，完成从学生思维到工作思维的转变。</p><p><b>工作优势：</b>面对陌生业务主动学习，能把复杂问题结构化拆解为流程、模块、状态和验收标准，并在压力下保持稳定，重视证据、边界和交付质量。</p><p><b>未来规划：</b>坚持研发以业务为导向，成为懂技术且能对业务结果负责的 AI 应用与解决方案型人才。技术上持续积累 RAG、Agent、评测和可信 AI；业务上深入具体服务场景，前 2—3 年打好领域基础并沉淀方法论与知识资产。</p></div>';panel.prepend(d);}
+    function customizeHr(root){
+      const panel=root.querySelector('.hr-panel');
+      if(!panel)return;
+      const duplicate=['工作中最擅长的','工作中最不擅长的','最大挑战','低谷期','未来规划'];
+      panel.querySelectorAll('details').forEach(d=>{
+        const label=d.querySelector('summary')?.textContent.trim()||'';
+        if(duplicate.some(x=>label.startsWith(x)))d.remove();
+      });
+      const supervisorTemplate=document.querySelector('#supervisorSource');
+      const personalReview=[...supervisorTemplate.content.querySelectorAll('details')].find(d=>d.querySelector('.kicker')?.textContent.trim()==='RIGHT 04 / PERSONAL REVIEW');
+      const completeContent=personalReview?.querySelector('.content')?.innerHTML||'<p>主管面个人复盘内容暂不可用。</p>';
+      const d=document.createElement('details');
+      d.open=true;
+      d.innerHTML='<summary>个人复盘与规划（与主管面完整同步）<small>　挑战、低谷、不足、规划、优势与劣势</small></summary><div class="answer">'+completeContent+'</div>';
+      panel.prepend(d);
+    }
     function fundamentalsVisual(number){
       const flow=(items)=>'<div class="diagram-flow">'+items.map((item,index)=>'<div class="diagram-node">'+item+'</div>'+(index<items.length-1?'<span class="diagram-arrow">→</span>':'')).join('')+'</div>';
       const node=(title,text)=>'<b>'+title+'</b><span>'+text+'</span>';
