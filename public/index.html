@@ -547,6 +547,7 @@ My strength is turning broad business needs into AI capabilities that can be bui
       });
     }
     const tripartiteChecklist=`<section class="tripartite-checklist" aria-label="签三方前确认清单"><div class="tripartite-head"><h4>签三方前确认清单</h4><p>签三方或正式确认 Offer 前，逐项问清楚；没有明确口径就先不要签。</p></div><div class="tripartite-grid"><article class="tripartite-item"><h5>1. 五险一金</h5><p>签三方之前要说清楚五险一金的<strong>缴费基数和缴纳比例</strong>。</p></article><article class="tripartite-item"><h5>2. 毕业后的试岗期</h5><p>有没有毕业之后的试岗期？如果有试岗期，要问清楚按什么标准发工资。基本上，如果有试岗期就直接可以跑路了。毕业之后就直接签劳动合同，才是对学生的保护。</p></article><article class="tripartite-item"><h5>3. 试用期、转正标准与转正率</h5><p>明确试用期标准。三年合同的试用期不能超过 6 个月。还要问清楚转正标准和转正率；如果转正率都不清楚，就不要去。</p></article><article class="tripartite-item"><h5>4. 薪资结构与保护期</h5><p>问清楚薪资结构，以及<strong>薪资保护期是多久</strong>。</p></article><article class="tripartite-item"><h5>5. 上下班时间与加班</h5><p>问清楚上下班时间：是双周休还是单休？是大小周？加班有没有加班费，还是调休？法定节假日是否有带薪加班？</p></article><article class="tripartite-item"><h5>6. 当前团队规模</h5><p>明确当前团队的人数。如果是两三个人的小团队，不建议过去当牛做马。</p></article></div></section>`;
+    const hrAdditionalQuestions=`<section class="role-group"><h5>补充 HR 面高频问题</h5><p><b>7.</b> 实习经历浅问。</p><p><b>8.</b> 实习工作和学习有什么不一样的点？</p><p><b>9.</b> 个人缺点。</p><p><b>10.</b> 相较于其他同学觉得自己的差异化优势什么。</p><p><b>11.</b> 对联想的认知，以及认知途径。</p><p><b>12.</b> 你刚才一直在说互联网行业，联想其实不算互联网行业，你怎么考虑的，以及找工作的时候会投递哪些企业。</p><p><b>14.</b> 会如何选 offer，薪酬、业务等的考虑。</p><p><b>15.</b> 一个有成就感的 case。</p><p><b>16.</b> 除了项目，还问了就是自己的一个职业规划，最好要说作为 xxx 不但要有技术上的积累，也要在工作当中去积累业务经验，逐步理解真正的业务理解产品。</p><p><b>17.</b> 问遇到的最大的困难，然后最大的低谷期是什么时候？还有我的不足在哪儿？还有职业规划是什么？对意向工作的期待？更想做偏研发类，还是说偏业务类。</p></section>`;
     function render(){
       document.body.dataset.round=current;
       document.querySelectorAll('[data-round]').forEach(b=>b.classList.toggle('active',b.dataset.round===current));
@@ -560,6 +561,7 @@ My strength is turning broad business needs into AI capabilities that can be bui
       if(current==='hr')html+='<section class="source-wrap"><div class="source-label"><h3>HR 面通用准备</h3></div>'+lenovoHrbpModule+tripartiteChecklist+offerLedger+offerReplies+salaryScript+'<div class="hr-layout"><div class="hr-side"><h4>Offer / 薪资确认清单</h4><p>进入 Offer 或薪资沟通后，按实际对话选择问题，不需要一次问完。</p><div class="offer-sequence">'+hrOfferChecklist.map(x=>'<div class="offer-item"><b>'+x[0]+'</b><span>'+x[1]+'</span><small>'+x[2]+'</small></div>').join('')+'</div><p class="offer-note"><b>现场顺序：</b>先确认固定与浮动收入，再确认总包和福利；加班、定级和晋升放在后面。没有明确政策时记为“待确认”，不要自行推算。</p></div><div class="hr-panel">'+hr.map(x=>'<details><summary>'+x[0]+'<small>　'+x[1]+'</small></summary><div class="answer"><p><b>回答思路：</b>'+x[1]+'</p><p>'+x[2]+'</p></div></details>').join('')+'</div></div></section>';
       html+='<footer style="margin-top:28px;padding-top:14px;border-top:1px solid var(--line);color:var(--muted);font-size:12px">业务面与主管面正文来自两个原始 HTML，八股题库独立维护，页面仅负责轮次切换和样式承载。</footer>';
       app.innerHTML=html;
+      if(current==='hr'){const core=app.querySelector('.role-group.core');if(core)core.insertAdjacentHTML('beforebegin',hrAdditionalQuestions);}
       if(current==='fundamentals')prepareFundamentals(app);
       if(current==='supervisor')customizeSupervisor(app);
       if(current==='hr')customizeHr(app);
