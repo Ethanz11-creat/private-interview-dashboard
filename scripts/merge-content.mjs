@@ -21,7 +21,23 @@ function replaceBlock(html, name, content) {
 }
 
 let html = fs.readFileSync(indexPath, 'utf8');
-html = replaceBlock(html, 'PROJECT_SOURCE', readBody('业务信息查询Agent-项目追问导图.html'));
+// Keep the detailed projects. Only the school chapter is generated from its
+// editable fragment; the archived project page must never overwrite the others.
+if (!html.includes('<!-- PROJECT_SOURCE_START -->') || !html.includes('<!-- PROJECT_SOURCE_END -->')) {
+  throw new Error('Cannot find canonical PROJECT_SOURCE in index.html');
+}
+const schoolSource = fs.readFileSync(path.join(root, 'content', 'school-project.html'), 'utf8').trim();
+const projectStart = html.indexOf('<!-- PROJECT_SOURCE_START -->');
+const projectEnd = html.indexOf('<!-- PROJECT_SOURCE_END -->', projectStart);
+const schoolStart = html.indexOf('<section id="school"', projectStart);
+const schoolEnd = html.indexOf('    <footer>原文来源：', schoolStart);
+if (schoolStart < projectStart || schoolEnd <= schoolStart || schoolEnd >= projectEnd) {
+  throw new Error('Cannot locate the school chapter within PROJECT_SOURCE');
+}
+if (!schoolSource.startsWith('<section id="school"') || !schoolSource.endsWith('</section>')) {
+  throw new Error('Invalid school project fragment');
+}
+html = html.slice(0, schoolStart) + schoolSource + '\n' + html.slice(schoolEnd);
 html = replaceBlock(html, 'SUPERVISOR_SOURCE', readBody('联想主管面思维导图.html'));
 fs.writeFileSync(indexPath, html);
-console.log('Merged both source pages into public/index.html');
+console.log('Preserved other projects; embedded the complete school chapter and supervisor content.');
