@@ -5,10 +5,30 @@
   const list = document.getElementById('topic-nav-list');
   const toggle = document.getElementById('topic-nav-toggle');
   const header = document.querySelector('body > header');
+  const search = document.getElementById('topic-search');
+  const searchStatus = document.getElementById('topic-search-status');
+  const searchEmpty = document.getElementById('topic-search-empty');
+  const collapse = document.getElementById('topic-collapse');
+  const readingSize = document.getElementById('reading-size');
   const compact = matchMedia('(max-width: 1199px)');
   let entries = [];
   let active = null;
   let frame = 0;
+  let searchQuery = '';
+  let savedExpansion = null;
+
+  function setReadingSize(large) {
+    document.body.classList.toggle('reading-large', large);
+    readingSize.setAttribute('aria-pressed', String(large));
+    readingSize.title = large ? '切换为常规字号' : '放大正文和答案字号';
+    schedulePosition();
+  }
+  try { setReadingSize(localStorage.getItem('interview-reading-size') === 'large'); } catch { /* Reading still works without browser storage. */ }
+  readingSize.addEventListener('click', () => {
+    const large = !document.body.classList.contains('reading-large');
+    setReadingSize(large);
+    try { localStorage.setItem('interview-reading-size', large ? 'large' : 'normal'); } catch {}
+  });
 
   function labelOf(element) {
     const copy = (element.matches('summary') ? element.querySelector('h2') || element : element).cloneNode(true);
@@ -70,6 +90,52 @@
     expand(entry, false);
   }
 
+  function filterTopics() {
+    const query = search.value.trim().toLocaleLowerCase();
+    if (query && !searchQuery) {
+      savedExpansion = new Map(entries.filter(entry => entry.children).map(entry => [entry, !entry.children.hidden]));
+    }
+    searchQuery = query;
+    const matches = new Set(query ? entries.filter(entry => entry.label.toLocaleLowerCase().includes(query)) : []);
+    const shown = new Set(matches);
+    for (const entry of matches) {
+      for (let parent = entry.parent; parent; parent = parent.parent) shown.add(parent);
+    }
+    // A matching chapter includes its questions; a matching question keeps its path.
+    for (const entry of entries) {
+      for (let parent = entry.parent; parent; parent = parent.parent) {
+        if (matches.has(parent)) { shown.add(entry); break; }
+      }
+      entry.item.hidden = Boolean(query) && !shown.has(entry);
+      if (query && shown.has(entry)) expand(entry, true);
+      if (!query && savedExpansion?.has(entry)) expand(entry, savedExpansion.get(entry));
+    }
+    if (!query) {
+      // Keep the newly visited topic reachable when a search is cleared.
+      if (savedExpansion) {
+        for (let branch = active; branch; branch = branch.parent) expand(branch, true);
+      }
+      savedExpansion = null;
+    }
+    searchEmpty.hidden = !query || matches.size > 0;
+    searchStatus.textContent = query ? `匹配 ${matches.size} 个主题标题` : '按主题快速定位';
+    list.scrollTop = 0;
+  }
+  search.addEventListener('input', filterTopics);
+  search.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && search.value) {
+      event.stopPropagation();
+      search.value = '';
+      filterTopics();
+    }
+  });
+  collapse.addEventListener('click', () => {
+    search.value = '';
+    filterTopics();
+    entries.forEach(entry => expand(entry, false));
+    list.scrollTop = 0;
+  });
+
   function setActive(entry) {
     if (!entry || entry === active) return;
     active?.link.removeAttribute('aria-current');
@@ -78,10 +144,10 @@
     entry.link.setAttribute('aria-current', 'location');
     for (let branch = entry; branch; branch = branch.parent) {
       branch.item.classList.add('active-branch');
-      expand(branch, true);
+      if (!searchQuery) expand(branch, true);
     }
     // Scroll only this rail, never the document, and don't fight someone browsing it.
-    if (!list.matches(':hover') && !list.contains(document.activeElement)) {
+    if (!searchQuery && !list.matches(':hover') && !nav.contains(document.activeElement)) {
       const bounds = list.getBoundingClientRect();
       const rect = entry.link.getBoundingClientRect();
       if (bounds.height && (rect.top < bounds.top || rect.bottom > bounds.bottom)) {
@@ -156,8 +222,17 @@
   function rebuild() {
     active = null;
     entries = [];
+    searchQuery = '';
+    savedExpansion = null;
+    search.value = '';
+    searchEmpty.hidden = true;
+    searchStatus.textContent = '按主题快速定位';
     closePanel();
     const round = document.body.dataset.round;
+    document.querySelectorAll('.side-nav [data-round]').forEach(button => {
+      if (button.dataset.round === round) button.setAttribute('aria-current', 'page');
+      else button.removeAttribute('aria-current');
+    });
     const root = document.createElement('ul');
     root.className = 'topic-nav-root';
     const stack = [];
@@ -194,6 +269,7 @@
       stack.push(entry);
     }
     list.replaceChildren(root);
+    list.setAttribute('aria-busy', 'false');
     list.scrollTop = 0;
     document.getElementById('topic-nav-context').textContent = `${app.querySelector('.hero h2').textContent} · ${entries.filter(entry => !entry.parent).length} 个主题`;
     followHash();
@@ -205,7 +281,7 @@
     nav.classList.toggle('is-open', open);
     toggle.setAttribute('aria-expanded', String(open));
     toggle.textContent = open ? '收起目录' : '本页目录';
-    if (open) (active?.link || list.querySelector('a'))?.focus({ preventScroll: true });
+    if (open) search.focus({ preventScroll: true });
   });
   document.addEventListener('keydown', event => {
     if (event.key === 'Escape' && nav.classList.contains('is-open')) closePanel(true);

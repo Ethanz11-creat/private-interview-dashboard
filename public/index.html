@@ -90,16 +90,23 @@
     @media(max-width:700px){#school .school-grid,#school .school-index{grid-template-columns:1fr}#school .school-chapter{padding:12px}#school .school-chapter>h2{font-size:20px}#school .school-unit>h3{font-size:18px}#school .school-figure{padding:6px}#school .school-card{padding:12px}}
   </style>
   <link rel="stylesheet" href="./topic-navigation.css?v=20260927">
-  <script src="./topic-navigation.js?v=20260927" defer></script>
+  <link rel="stylesheet" href="./reading-design.css?v=20260927-1">
+  <script src="./topic-navigation.js?v=20260927-2" defer></script>
 </head>
 <body>
-  <header><div><h1>求职面试准备</h1><p>以原有主管面 HTML 为阅读模板，按轮次直接阅读完整资料</p></div><div class="tools"><button id="openAll">展开当前资料</button><button id="closeAll">收起当前资料</button></div></header>
+  <a class="skip-to-content" href="#app">跳到正文</a>
+  <header class="site-header">
+    <div class="site-brand"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><path d="M8 8v16m0-8h16M8 8h16" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="8" r="3"/><circle cx="24" cy="8" r="3"/><circle cx="24" cy="16" r="3"/><circle cx="8" cy="24" r="3"/></svg></span><div><span class="brand-eyebrow">INTERVIEW / FIELDNOTES</span><h1>求职面试准备</h1></div></div>
+    <div class="tools" aria-label="阅读设置"><button id="reading-size" aria-pressed="false"><span aria-hidden="true">Aa</span> 大字阅读</button><div class="disclosure-tools"><button id="openAll">展开当前资料</button><button id="closeAll">收起当前资料</button></div></div>
+  </header>
   <div class="layout">
-    <aside><div class="side-title">面试轮次</div><div class="side-nav"><button class="nav active" data-round="technical">业务面</button><button class="nav" data-round="fundamentals">八股题库</button><button class="nav" data-round="supervisor">主管面</button><button class="nav" data-round="hr">HR 面</button></div><div class="rule"></div><div class="side-title">页面说明</div><p class="hint">业务面和主管面会直接呈现两个原 HTML 的完整 body 内容，不抽取、不改写、不压缩。八股题库为独立的标准问题与答案模块。</p></aside>
-    <main id="app"></main>
+    <aside class="round-sidebar"><div class="side-title">面试轮次</div><nav class="side-nav" aria-label="面试资料分类"><button class="nav active" data-round="technical"><span class="nav-index" aria-hidden="true">01</span><span>业务面<small>项目表达与技术追问</small></span></button><button class="nav" data-round="fundamentals"><span class="nav-index" aria-hidden="true">02</span><span>八股题库<small>概念、原理与机制</small></span></button><button class="nav" data-round="supervisor"><span class="nav-index" aria-hidden="true">03</span><span>主管面<small>业务判断与个人成长</small></span></button><button class="nav" data-round="hr"><span class="nav-index" aria-hidden="true">04</span><span>HR 面<small>岗位匹配与 Offer 沟通</small></span></button></nav><div class="rule"></div><div class="side-title">阅读指南</div><p class="hint">左侧切换面试轮次，右侧按主题定位。先熟悉表达主线，再进入完整资料。</p><div class="sidebar-note"><span>持续积累 · 反复练习</span><p>把每次面试中的新问题，变成下一次更清楚的回答。</p></div></aside>
+    <main id="app" tabindex="-1"></main>
     <nav id="topic-nav" class="topic-nav" aria-labelledby="topic-nav-title">
       <div class="topic-nav-head"><span class="topic-nav-eyebrow">ON THIS PAGE</span><h2 id="topic-nav-title">本页主题</h2><p id="topic-nav-context"></p></div>
-      <div id="topic-nav-list" class="topic-nav-list"></div>
+      <div class="topic-nav-search"><label class="visually-hidden" for="topic-search">搜索本页主题标题</label><input type="search" id="topic-search" placeholder="搜索主题，如：记忆、薪资" autocomplete="off" aria-controls="topic-nav-list"><div class="topic-nav-controls"><span id="topic-search-status" role="status">按主题快速定位</span><button id="topic-collapse" type="button">收起目录</button></div></div>
+      <div id="topic-nav-list" class="topic-nav-list" aria-busy="true"><p class="topic-nav-empty">正在整理本页主题…</p></div>
+      <p id="topic-search-empty" class="topic-nav-empty" hidden>没有匹配的主题。试试更短的关键词，或清空搜索查看全部目录。</p>
       <a class="topic-nav-top" href="#app">↑ 返回本页顶部</a>
     </nav>
   </div>
