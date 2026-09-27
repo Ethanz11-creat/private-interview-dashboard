@@ -1,0 +1,61 @@
+:root { --page-header-height: 82px; }
+
+/* Reserve space for the contents rail; the article is never covered by it. */
+@media (min-width: 1200px) {
+  body > header { padding-inline: max(20px, calc((100vw - 1800px) / 2)); }
+  .layout { max-width: 1800px; grid-template-columns: 190px minmax(0, 1fr) 270px; }
+  .layout > #app { padding-inline: clamp(22px, 2.5vw, 42px); }
+  .layout > aside { position: sticky; top: var(--page-header-height); align-self: start; max-height: calc(100dvh - var(--page-header-height)); overflow-y: auto; }
+}
+
+.topic-nav {
+  position: sticky;
+  top: calc(var(--page-header-height) + 16px);
+  align-self: start;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  max-height: calc(100dvh - var(--page-header-height) - 32px);
+  margin: 24px 14px 24px 0;
+  border-left: 1px solid #d7e3eb;
+  background: #fbfdfe;
+  color: #465d6c;
+  font-size: 12px;
+}
+.topic-nav-head { padding: 4px 17px 14px; border-bottom: 1px solid #e4ecf1; }
+.topic-nav-eyebrow { color: #80919e; font: 10px/1.8 ui-monospace, monospace; letter-spacing: 1.8px; }
+.topic-nav-head h2 { margin: 4px 0; font-size: 16px; font-weight: 650; color: #174b6b; }
+.topic-nav-head p { margin: 0; font-size: 11px; color: #708491; }
+.topic-nav-list { overflow-y: auto; min-height: 0; padding: 10px 7px 14px; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: #c5d5df transparent; }
+.topic-nav ul { margin: 0; padding: 0; list-style: none; }
+.topic-nav ul ul { margin: 2px 0 7px 12px; border-left: 1px solid #dce7ed; padding-left: 3px; }
+.topic-nav li { margin: 1px 0; }
+.topic-nav-row { display: flex; align-items: flex-start; border-radius: 3px; }
+.topic-nav-link { flex: 1; min-width: 0; padding: 7px 6px 7px 9px; color: #4d6574; text-decoration: none; line-height: 1.6; overflow-wrap: anywhere; border-left: 2px solid transparent; }
+.topic-nav-root > li > .topic-nav-row > a { font-weight: 650; color: #254e68; }
+.topic-nav-link:hover { color: #075d9f; background: #f0f6fa; }
+.topic-nav-link[aria-current="location"] { color: #075d9f; background: #eaf4fb; border-left-color: #075d9f; font-weight: 650; }
+.topic-nav li.active-branch > .topic-nav-row > a { color: #075d9f; }
+.topic-nav-expand { flex: 0 0 26px; width: 26px; height: 32px; margin: 1px 0; border: 0; background: transparent; color: #6d8696; cursor: pointer; border-radius: 3px; }
+.topic-nav-expand::before { content: '›'; display: inline-block; font-size: 19px; line-height: 1; transition: transform .12s; }
+.topic-nav-expand[aria-expanded="true"]::before { transform: rotate(90deg); }
+.topic-nav-expand:hover { color: #075d9f; background: #eaf4fb; }
+.topic-nav-top { flex-shrink: 0; padding: 12px 18px; border-top: 1px solid #e4ecf1; color: #075d9f; text-decoration: none; }
+.topic-nav-toggle { display: none; }
+.topic-nav a:focus-visible, .topic-nav button:focus-visible, .topic-nav-toggle:focus-visible { outline: 2px solid #075d9f; outline-offset: 2px; }
+#app [data-topic-target] { scroll-margin-top: calc(var(--page-header-height) + 20px); }
+
+@media (max-width: 1199px) {
+  .topic-nav { display: none; position: fixed; z-index: 30; right: 14px; top: calc(var(--page-header-height) + 12px); width: min(310px, calc(100vw - 28px)); max-height: calc(100dvh - var(--page-header-height) - 88px); margin: 0; padding-top: 12px; border: 1px solid #c5d8e4; border-radius: 5px; box-shadow: 0 8px 28px #173a531f; }
+  .topic-nav.is-open { display: flex; }
+  .topic-nav-toggle { display: block; position: fixed; z-index: 31; right: 16px; bottom: max(18px, env(safe-area-inset-bottom)); padding: 11px 16px; border: 1px solid #075d9f; border-radius: 4px; background: #fff; box-shadow: 0 3px 12px #173a531a; color: #075d9f; font-size: 13px; cursor: pointer; }
+  .topic-nav-toggle[aria-expanded="true"] { background: #075d9f; color: #fff; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .topic-nav-expand::before { transition: none; }
+}
+@media print {
+  .topic-nav, .topic-nav-toggle { display: none !important; }
+  .layout { display: block; }
+}
