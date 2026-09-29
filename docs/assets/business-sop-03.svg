@@ -1,0 +1,47 @@
+<svg class="memory-svg" viewBox="0 0 1100 1010" role="img" aria-labelledby="mem-runtime-title mem-runtime-desc" xmlns="http://www.w3.org/2000/svg" width="1100" height="1010"><style>svg{background:#fff;font-family:system-ui,-apple-system,'PingFang SC',sans-serif}
+text{font-size:14px;fill:#385465}
+.mem-title{font-size:16px;font-weight:650;fill:#174b6b}
+.mem-lane{fill:#f6f9fc;stroke:#d3e1eb}
+.mem-lane-store{fill:#f2f8f4;stroke:#d3e3d8}
+.mem-lane-title{font-size:18px;font-weight:650;fill:#1d526d}
+.mem-node rect{fill:#fff;stroke:#8bb3ce;stroke-width:1.5}
+.mem-store rect{fill:#f5fcf7;stroke:#7aaa94}
+.mem-warn rect{fill:#fff8eb;stroke:#c79c52}
+.mem-decision{fill:#e5f1f9;stroke:#246b97;stroke-width:1.5}
+.mem-edge{fill:none;stroke:#246b97;stroke-width:2;marker-end:url(#mem-blue-arrow)}
+.mem-feedback{fill:none;stroke:#378266;stroke-width:2;stroke-dasharray:7 5;marker-end:url(#mem-green-arrow)}
+.mem-warning-edge{fill:none;stroke:#af7424;stroke-width:2;marker-end:url(#mem-amber-arrow)}
+.mem-edge-label{font-size:12px;fill:#57717f;paint-order:stroke;stroke:#f6f9fc;stroke-width:4;stroke-linejoin:round}
+.mem-footer{font-size:13px;fill:#607986}</style>
+        <title id="mem-runtime-title">GoClaw 上下文、工具循环、记忆整理与召回闭环</title><desc id="mem-runtime-desc">请求装配上下文，预算判断分流到推理或压缩；工具结果返回预算检查；收尾保存 Session 并发布事件，后台生成情景摘要和语义事实，供下一轮检索。异常可以中止运行或不写入记忆。</desc>
+        <defs><marker id="mem-blue-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#246b97"/></marker><marker id="mem-green-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#378266"/></marker><marker id="mem-amber-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#af7424"/></marker></defs>
+        <rect class="mem-lane" x="10" y="10" width="680" height="985" rx="12"/><rect class="mem-lane mem-lane-store" x="710" y="10" width="380" height="985" rx="12"/>
+        <text class="mem-lane-title" x="30" y="40">本轮 Run · 同步执行</text><text class="mem-lane-title" x="730" y="40">跨 Run 存储与后台整理</text>
+        <g class="mem-node"><rect x="170" y="65" width="370" height="65" rx="8"/><text x="190" y="91"><tspan class="mem-title">① 当前消息 + 可信身份</tspan><tspan x="190" dy="23">Tenant / Agent / User / Sender / Session</tspan></text></g>
+        <g class="mem-node"><rect x="170" y="190" width="370" height="95" rx="8"/><text x="190" y="216"><tspan class="mem-title">② ContextStage 装配 Working</tspan><tspan x="190" dy="24">Session 历史/摘要 + Context Files</tspan><tspan x="190" dy="23">系统提示、工具 Schema、相关 L0 记忆</tspan></text></g>
+        <g class="mem-node mem-store"><rect x="755" y="65" width="295" height="75" rx="8"/><text x="774" y="91"><tspan class="mem-title">Session Store</tspan><tspan x="774" dy="23">会话消息 / 摘要 / 元数据</tspan></text></g>
+        <g class="mem-node mem-store"><rect x="755" y="200" width="295" height="100" rx="8"/><text x="774" y="226"><tspan class="mem-title">按作用域 + 相关性召回</tspan><tspan x="774" dy="24">L0 自动注入；细节按需 search/expand</tspan><tspan x="774" dy="23">KG 由对应工具检索，不全量注入</tspan></text></g>
+        <path class="mem-edge" d="M355 130V190"/><path class="mem-edge" d="M755 102H600V215H540"/><text class="mem-edge-label" x="595" y="90">加载历史</text>
+        <path class="mem-feedback" d="M755 258H540"/><text class="mem-edge-label" x="580" y="247">下一轮相关记忆</text>
+        <path class="mem-edge" d="M355 285V315"/>
+        <polygon class="mem-decision" points="355,315 465,370 355,425 245,370"/><text x="355" y="363" text-anchor="middle"><tspan class="mem-title">③ Prune</tspan><tspan x="355" dy="23">历史是否超预算？</tspan></text>
+        <g class="mem-node mem-warn"><rect x="30" y="460" width="245" height="122" rx="8"/><text x="47" y="487"><tspan class="mem-title">软裁剪 → 重算预算</tspan><tspan x="47" dy="24">仍超限：MemoryFlush</tspan><tspan x="47" dy="23">再 compaction → 再计数</tspan><tspan x="47" dy="23">仍超限：终止 Run</tspan></text></g>
+        <path class="mem-warning-edge" d="M245 370H150V460"/><text class="mem-edge-label" x="65" y="357">超阈值</text>
+        <g class="mem-node"><rect x="345" y="485" width="280" height="85" rx="8"/><text x="362" y="513"><tspan class="mem-title">④ Think：模型决策</tspan><tspan x="362" dy="24">生成 Tool Calls 或候选答案</tspan></text></g>
+        <path class="mem-edge" d="M355 425V449H485V485"/><text class="mem-edge-label" x="490" y="455">预算允许</text>
+        <path class="mem-warning-edge" d="M275 525H345"/><text class="mem-edge-label" x="282" y="509">已收敛</text>
+        <g class="mem-node"><rect x="345" y="635" width="280" height="90" rx="8"/><text x="362" y="663"><tspan class="mem-title">⑤ Tool → Observe</tspan><tspan x="362" dy="24">权限校验、执行、结果回填</tspan><tspan x="362" dy="22">按策略 Checkpoint 保存消息</tspan></text></g>
+        <path class="mem-edge" d="M485 570V635"/><text class="mem-edge-label" x="496" y="610">需要工具</text>
+        <path class="mem-edge" d="M625 675H665V370H465"/><text class="mem-edge-label" x="637" y="335" text-anchor="end">工具结果 → 下一次迭代重新检查预算</text>
+        <g class="mem-node"><rect x="345" y="820" width="280" height="90" rx="8"/><text x="362" y="848"><tspan class="mem-title">⑥ Finalize 收尾</tspan><tspan x="362" dy="24">保存消息 / 用量，尝试摘要</tspan><tspan x="362" dy="22">发布 session.completed</tspan></text></g>
+        <path class="mem-edge" d="M345 550H310V865H345"/><text class="mem-edge-label" x="300" y="768" text-anchor="end">可收尾／终止</text>
+        <path class="mem-edge" d="M625 853H705V160H900V140"/><text class="mem-edge-label" x="746" y="176">收尾持久化（独立于后台整理）</text>
+        <g class="mem-node mem-store"><rect x="755" y="490" width="295" height="115" rx="8"/><text x="774" y="517"><tspan class="mem-title">⑦ Episodic worker</tspan><tspan x="774" dy="24">来源去重 → 复用摘要或生成摘要</tspan><tspan x="774" dy="23">存 L0、Summary、Scope、来源</tspan><tspan x="774" dy="23">无摘要／重复：跳过，不伪造成功</tspan></text></g>
+        <g class="mem-node mem-store"><rect x="755" y="690" width="295" height="118" rx="8"/><text x="774" y="717"><tspan class="mem-title">⑧ Semantic worker</tspan><tspan x="774" dy="24">episodic.created → 抽实体/关系</tspan><tspan x="774" dy="23">按 Scope 写 KG，进入后续去重</tspan><tspan x="774" dy="23">提取失败：不阻塞已完成的回复</tspan></text></g>
+        <path class="mem-feedback" d="M625 885H735V547H755"/><text class="mem-edge-label" x="755" y="916">异步事件：不等于用户关闭 Session</text>
+        <path class="mem-feedback" d="M900 605V690"/><text class="mem-edge-label" x="908" y="651">成功保存后发布事件</text>
+        <path class="mem-feedback" d="M795 490V300"/><text class="mem-edge-label" x="807" y="400">摘要供后续召回</text>
+        <path class="mem-feedback" d="M1050 750H1072V325H1020V300"/><text class="mem-edge-label" x="1030" y="345" text-anchor="end">实体关系按需检索</text>
+        <text class="mem-footer" x="36" y="961">反馈 A：Tool Result 回到本轮循环。反馈 B：长期整理结果通过召回进入未来 Run。</text>
+        <text class="mem-footer" x="36" y="983">MemoryFlush 是压缩前的独立写入尝试；失败仍可能继续压缩，不能承诺“重要信息必然不丢”。</text>
+      </svg>

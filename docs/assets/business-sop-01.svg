@@ -1,0 +1,29 @@
+<svg class="design-flow-svg" viewBox="0 0 1050 820" role="img" aria-labelledby="controller-flow-title" xmlns="http://www.w3.org/2000/svg" width="1050" height="820"><style>svg{background:#fff;font-family:system-ui,-apple-system,'PingFang SC',sans-serif}
+text{font:14px 'PingFang SC',sans-serif;fill:#24495e}
+.lane{fill:#f2f7fa;stroke:#c7dce6}
+.node{fill:white;stroke:#82acc5;stroke-width:1.5}
+.decision{fill:#edf6f0;stroke:#71a68a;stroke-width:1.5}
+.edge{fill:none;stroke:#246b97;stroke-width:2;marker-end:url(#controller-arrow)}
+.feedback{fill:none;stroke:#ad7528;stroke-width:2;stroke-dasharray:6 4;marker-end:url(#controller-return)}
+.label{font-size:12px;fill:#667f8d}
+.title{font-size:17px;font-weight:600}</style><title id="controller-flow-title">模型、Controller、Runtime 与工具的协作和验收反馈</title>
+        <defs><marker id="controller-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#246b97"/></marker><marker id="controller-return" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#ad7528"/></marker></defs>
+        <rect class="lane" x="30" y="30" width="280" height="730" rx="8"/><rect class="lane" x="340" y="30" width="350" height="730" rx="8"/><rect class="lane" x="720" y="30" width="300" height="730" rx="8"/>
+        <text class="title" x="65" y="65">模型 · 提出建议</text><text class="title" x="370" y="65">Controller · 业务控制</text><text class="title" x="745" y="65">Runtime / 工具 · 执行</text>
+        <rect class="node" x="365" y="95" width="300" height="65" rx="5"/><text x="385" y="122">初始化目标与事实任务</text><text class="label" x="385" y="145">普通请求退出专项；对象歧义先澄清</text>
+        <rect class="node" x="365" y="195" width="300" height="65" rx="5"/><text x="385" y="222">PrepareQueryRound</text><text class="label" x="385" y="245">读状态，投影缺口、候选源和工具</text>
+        <rect class="node" x="55" y="195" width="230" height="65" rx="5"/><text x="75" y="222">提出 Tool Calls</text><text class="label" x="75" y="245">或尝试生成候选回答</text>
+        <rect class="node" x="365" y="300" width="300" height="65" rx="5"/><text x="385" y="327">ValidateToolCalls</text><text class="label" x="385" y="350">任务 / 权限 / 参数 / 依赖 / 预算</text>
+        <rect class="node" x="745" y="300" width="250" height="65" rx="5"/><text x="760" y="327">先应用补丁，再调度工具</text><text class="label" x="760" y="350">并行 I/O；返回真实结果或错误</text>
+        <rect class="node" x="365" y="410" width="300" height="70" rx="5"/><text x="385" y="438">ApplyToolResult</text><text class="label" x="385" y="462">存 Evidence，生成 Observation 补丁</text>
+        <rect class="node" x="745" y="410" width="250" height="70" rx="5"/><text x="760" y="438">提交状态与证据引用</text><text class="label" x="760" y="462">得到新进度，供下一轮读取</text>
+        <rect class="decision" x="365" y="525" width="300" height="70" rx="5"/><text x="385" y="553">DecideQueryCompletion</text><text class="label" x="385" y="577">事实覆盖？冲突？还有合法路径？</text>
+        <rect class="node" x="55" y="645" width="230" height="70" rx="5"/><text x="70" y="673">按事实白名单生成回答</text><text class="label" x="70" y="697">正常回答 / 披露缺口的降级回答</text>
+        <rect class="decision" x="365" y="645" width="300" height="70" rx="5"/><text x="385" y="673">ValidateFinalAnswer</text><text class="label" x="385" y="697">事实、引用、语义与限制共同检查</text>
+        <rect class="node" x="745" y="645" width="250" height="70" rx="5"/><text x="760" y="673">验收通过才输出</text><text class="label" x="760" y="697">持久化与收尾，记录成功 / 降级</text>
+        <path class="edge" d="M515 160V195M365 227H285M170 260V332H365M665 332H745M870 365V393H515V410M665 445H745M870 480V510H515V525M365 560H170V645M285 680H365M665 680H745"/>
+        <path class="feedback" d="M995 445H1035V175H515V195"/><text class="label" x="755" y="167">反馈①：结果回填，重算进度</text>
+        <path class="feedback" d="M665 560H705V225H665"/><text class="label" x="724" y="547">反馈②：缺证据且可补查</text>
+        <path class="feedback" d="M515 715V790H15V227H55"/><text class="label" x="55" y="785">反馈③：格式修复至多一次；事实缺口回查询；无路径则降级，均受预算限制</text>
+        <path class="edge" d="M55 247H40V560H365"/><text class="label" x="58" y="540">模型无工具调用时，仍要验收</text>
+      </svg>

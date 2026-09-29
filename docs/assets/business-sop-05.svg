@@ -1,0 +1,36 @@
+<svg viewBox="0 0 1060 740" role="img" aria-labelledby="school-tree-title school-tree-desc" xmlns="http://www.w3.org/2000/svg" width="1060" height="740"><style>svg{background:#fff;font-family:system-ui,-apple-system,'PingFang SC',sans-serif}
+text{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",sans-serif;fill:#244652;font-size:14px}
+.s-title{font-weight:700;font-size:17px;fill:#13585f}
+.s-small{font-size:12px;fill:#57727a}
+.s-box{fill:white;stroke:#9abdc1;stroke-width:1.4}
+.s-green{fill:#e7f5ed;stroke:#73a798;stroke-width:1.4}
+.s-amber{fill:#fff4df;stroke:#cda462;stroke-width:1.4}
+.s-path{fill:none;stroke:#507f87;stroke-width:1.7}
+.s-feedback{fill:none;stroke:#b57d2d;stroke-width:1.7;stroke-dasharray:6 4}</style>
+<title id="school-tree-title">从源文件到文档版本、结构节点、父子切块和带来源三元组的关系</title>
+<desc id="school-tree-desc">同一文档家族包含不同版本，每个版本保留原始资产与内容块；结构树产生不参与嵌入的父条款和参与嵌入的子项，命中子项后回填同版父条款，在线三元组始终回指这些来源。</desc>
+<defs><marker id="school-tree-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10Z" fill="#507f87"/></marker></defs>
+<rect x="22" y="20" width="300" height="80" rx="6" class="s-box"/><text x="39" y="49" class="s-title">SourceAsset · 原始资产</text><text x="39" y="76">PDF / 网页 / 附件，独立哈希</text>
+<rect x="389" y="20" width="290" height="80" rx="6" class="s-green"/><text x="406" y="49" class="s-title">DocumentFamily · 文档身份</text><text x="406" y="76">同一法规 / 政策的稳定身份</text>
+<path d="M322 61H387" class="s-path" marker-end="url(#school-tree-arrow)"/>
+<rect x="754" y="20" width="282" height="80" rx="6" class="s-amber"/><text x="771" y="49" class="s-title">历史版本 v1</text><text x="771" y="76">可查询历史，不混入 v2 父子结构</text>
+<path d="M679 61H752" class="s-path" marker-end="url(#school-tree-arrow)"/>
+<rect x="389" y="145" width="290" height="88" rx="6" class="s-green"/><text x="406" y="174" class="s-title">DocumentVersion · v2</text><text x="406" y="200">正文快照、效力状态、来源资产</text><text x="406" y="221" class="s-small">日期未知仍然保留未知</text>
+<path d="M534 100V143" class="s-path" marker-end="url(#school-tree-arrow)"/>
+<rect x="22" y="145" width="300" height="88" rx="6" class="s-box"/><text x="39" y="174" class="s-title">ContentBlock · 解析块</text><text x="39" y="200">正文 / 表格 / 页码 / bbox</text><text x="39" y="221" class="s-small">原始证据层，可回看原文件</text>
+<path d="M389 188H324" class="s-path" marker-end="url(#school-tree-arrow)"/>
+<rect x="389" y="279" width="290" height="88" rx="6" class="s-box"/><text x="406" y="308" class="s-title">StructureNode · 层级树</text><text x="406" y="334">第二章 → 第 X 条 → 第（一）项</text><text x="406" y="355" class="s-small">树结构来自原文，不是实体知识图谱</text>
+<path d="M534 233V277 M172 233V323H387" class="s-path" marker-end="url(#school-tree-arrow)"/>
+<rect x="754" y="279" width="282" height="88" rx="6" class="s-box"/><text x="771" y="308" class="s-title">同版本元数据</text><text x="771" y="334">标题 / 地区 / 生效日 / 条款路径</text><text x="771" y="355" class="s-small">发布日 ≠ 生效日 ≠ 规划期限</text>
+<path d="M679 323H752" class="s-path" marker-end="url(#school-tree-arrow)"/>
+<rect x="389" y="413" width="290" height="88" rx="6" class="s-box"/><text x="406" y="442" class="s-title">父 Chunk · 完整第 X 条</text><text x="406" y="468">保存适用前提、子项和例外</text><text x="406" y="489" class="s-small">法规条级父块不参与向量嵌入</text>
+<path d="M534 367V411" class="s-path" marker-end="url(#school-tree-arrow)"/>
+<rect x="22" y="550" width="282" height="89" rx="6" class="s-green"/><text x="39" y="579" class="s-title">子 Chunk A · 第（一）项</text><text x="39" y="605">正文 + 必要前导条件 + 层级路径</text><text x="39" y="627" class="s-small">embedding_eligible = true</text>
+<rect x="389" y="550" width="290" height="89" rx="6" class="s-green"/><text x="406" y="579" class="s-title">子 Chunk B · 第（二）项</text><text x="406" y="605">parent_chunk_id 指向同版父条款</text><text x="406" y="627" class="s-small">不同版本绝不共享父节点</text>
+<path d="M534 501V524H163V548 M534 524V548" class="s-path" marker-end="url(#school-tree-arrow)"/>
+<rect x="754" y="413" width="282" height="88" rx="6" class="s-box"/><text x="771" y="442" class="s-title">查询命中子项</text><text x="771" y="468">按 parent_chunk_id 回填父条款</text><text x="771" y="489" class="s-small">父块提供语义完整性，不重复算命中</text>
+<path d="M679 595H713V457H752 M754 457H681" class="s-path" marker-end="url(#school-tree-arrow)"/>
+<rect x="754" y="550" width="282" height="89" rx="6" class="s-amber"/><text x="771" y="579" class="s-title">在线事实 / 政策三元组</text><text x="771" y="605">主体、关系、对象 + 条件与证据 ID</text><text x="771" y="627" class="s-small">引用关系回指版本 / 块 / 原文定位</text>
+<path d="M895 501V548" class="s-path" marker-end="url(#school-tree-arrow)"/>
+<rect x="22" y="677" width="1014" height="45" rx="5" fill="#edf4f7"/><text x="39" y="705">ChunkEmbedding：记录模型与处理代次；语料发布快照：决定一次查询使用哪些文档版本和索引。</text>
+</svg>

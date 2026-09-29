@@ -1,0 +1,36 @@
+<svg class="memory-svg" viewBox="0 0 1100 1100" role="img" aria-labelledby="mem-group-title mem-group-desc" xmlns="http://www.w3.org/2000/svg" width="1100" height="1100"><style>svg{background:#fff;font-family:system-ui,-apple-system,'PingFang SC',sans-serif}
+text{font-size:14px;fill:#385465}
+.mem-title{font-size:16px;font-weight:650;fill:#174b6b}
+.mem-lane{fill:#f6f9fc;stroke:#d3e1eb}
+.mem-lane-store{fill:#f2f8f4;stroke:#d3e3d8}
+.mem-lane-title{font-size:18px;font-weight:650;fill:#1d526d}
+.mem-node rect{fill:#fff;stroke:#8bb3ce;stroke-width:1.5}
+.mem-store rect{fill:#f5fcf7;stroke:#7aaa94}
+.mem-warn rect{fill:#fff8eb;stroke:#c79c52}
+.mem-decision{fill:#e5f1f9;stroke:#246b97;stroke-width:1.5}
+.mem-edge{fill:none;stroke:#246b97;stroke-width:2;marker-end:url(#mem-blue-arrow)}
+.mem-feedback{fill:none;stroke:#378266;stroke-width:2;stroke-dasharray:7 5;marker-end:url(#mem-green-arrow)}
+.mem-warning-edge{fill:none;stroke:#af7424;stroke-width:2;marker-end:url(#mem-amber-arrow)}
+.mem-edge-label{font-size:12px;fill:#57717f;paint-order:stroke;stroke:#f6f9fc;stroke-width:4;stroke-linejoin:round}
+.mem-footer{font-size:13px;fill:#607986}</style>
+        <title id="mem-group-title">群聊动态装配与个人、群公共记忆分路治理反馈图</title><desc id="mem-group-desc">可信消息分出群身份和真实用户，按群读取 Session、Workspace 和群记忆，按用户读取个人记忆。运行结束分路提取候选，校验来源后决定新建、忽略、替代、合并或保留冲突；成功后更新处理游标并索引，失败重试。结果回灌下一次相同作用域的 Run。</desc>
+        <rect class="mem-lane" x="10" y="10" width="1080" height="1080" rx="12"/>
+        <text class="mem-lane-title" x="32" y="42">专项设计 · 同时保留“当前群”和“当前人”</text>
+        <g class="mem-node"><rect x="325" y="70" width="450" height="70" rx="8"/><text x="345" y="97"><tspan class="mem-title">D-Chat 回调校验 + message_key 去重</tspan><tspan x="345" dy="24">bot_id / channel_id / user_id / message_key</tspan></text></g>
+        <g class="mem-node"><rect x="70" y="205" width="420" height="104" rx="8"/><text x="90" y="232"><tspan class="mem-title">群身份：Bot + G1</tspan><tspan x="90" dy="24">读取 G1 Session 历史/摘要、Group Memory</tspan><tspan x="90" dy="24">挂载 G1 Workspace；同群 Run 串行</tspan></text></g>
+        <g class="mem-node mem-store"><rect x="610" y="205" width="420" height="104" rx="8"/><text x="630" y="232"><tspan class="mem-title">真实发言人：Bot + Sender A</tspan><tspan x="630" dy="24">只读取 A 的 Personal Memory</tspan><tspan x="630" dy="24">权限与审计归 A；B 发言时重新绑定 B</tspan></text></g>
+        <path class="mem-edge" d="M460 140V166H280V205"/><path class="mem-edge" d="M640 140V166H820V205"/>
+        <g class="mem-node"><rect x="295" y="385" width="510" height="108" rx="8"/><text x="315" y="413"><tspan class="mem-title">本轮动态 Context → Agent Loop → 回复</tspan><tspan x="315" dy="24">静态提示 + 群近期上下文 + 群记忆 + A 个人记忆</tspan><tspan x="315" dy="24">个人注入不回写共享历史，不跨 Sender 缓存</tspan></text></g>
+        <path class="mem-edge" d="M280 309V349H430V385"/><path class="mem-edge" d="M820 309V349H670V385"/>
+        <g class="mem-node"><rect x="70" y="565" width="420" height="111" rx="8"/><text x="90" y="593"><tspan class="mem-title">群公共支路：新增有效交互</tspan><tspan x="90" dy="24">按数量 / 空闲 / Token / 生命周期触发批次</tspan><tspan x="90" dy="24">只提群业务术语、口径、SOP、确认的结论</tspan></text></g>
+        <g class="mem-node mem-store"><rect x="610" y="565" width="420" height="111" rx="8"/><text x="630" y="593"><tspan class="mem-title">个人支路：A 自己的原始发言</tspan><tspan x="630" dy="24">相邻消息只帮助理解，不替他人建立画像</tspan><tspan x="630" dy="24">每条候选绑定 Sender + evidence message IDs</tspan></text></g>
+        <path class="mem-edge" d="M430 493V530H280V565"/><path class="mem-edge" d="M670 493V530H820V565"/>
+        <g class="mem-node mem-warn"><rect x="295" y="745" width="510" height="108" rx="8"/><text x="315" y="772"><tspan class="mem-title">同一 Scope 内：校验来源 → 判断新旧关系</tspan><tspan x="315" dy="24">CREATE / NOOP / SUPERSEDE / MERGE</tspan><tspan x="315" dy="24">条件或时间不同：KEEP_BOTH_CONFLICT</tspan></text></g>
+        <path class="mem-edge" d="M280 676V710H430V745"/><path class="mem-edge" d="M820 676V710H670V745"/>
+        <g class="mem-node mem-store"><rect x="295" y="920" width="510" height="100" rx="8"/><text x="315" y="947"><tspan class="mem-title">持久化正文 + 成功推进处理游标</tspan><tspan x="315" dy="24">群记忆只回 G1；个人记忆只回 A</tspan><tspan x="315" dy="24">索引失败重建；无有效候选也可成功推进游标</tspan></text></g>
+        <path class="mem-edge" d="M550 853V920"/><text class="mem-edge-label" x="563" y="891">通过校验／完成本批处理</text>
+        <path class="mem-warning-edge" d="M295 796H155V710H280V676"/><text class="mem-edge-label" x="142" y="769" text-anchor="end">提取失败</text><text class="mem-edge-label" x="142" y="792" text-anchor="end">不推进游标</text><text class="mem-edge-label" x="142" y="815" text-anchor="end">保留批次重试</text>
+        <path class="mem-feedback" d="M295 976H35V257H70"/><text class="mem-edge-label" x="63" y="1028">反馈：G1 后续 Run 可召回</text>
+        <path class="mem-feedback" d="M805 976H1065V257H1030"/><text class="mem-edge-label" x="840" y="1028">反馈：A 后续 Run 可召回</text>
+        <text class="mem-footer" x="240" y="1068">后台定期衰减、归档、纠错；治理始终限定在原 Scope，不能跨用户、跨群或跨 Bot 合并。</text>
+      </svg>

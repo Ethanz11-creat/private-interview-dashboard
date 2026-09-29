@@ -1,0 +1,36 @@
+<svg viewBox="0 0 1060 720" role="img" aria-labelledby="school-sgfke-title school-sgfke-desc" xmlns="http://www.w3.org/2000/svg" width="1060" height="720"><style>svg{background:#fff;font-family:system-ui,-apple-system,'PingFang SC',sans-serif}
+text{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",sans-serif;fill:#244652;font-size:14px}
+.s-title{font-weight:700;font-size:17px;fill:#13585f}
+.s-small{font-size:12px;fill:#57727a}
+.s-box{fill:white;stroke:#9abdc1;stroke-width:1.4}
+.s-green{fill:#e7f5ed;stroke:#73a798;stroke-width:1.4}
+.s-amber{fill:#fff4df;stroke:#cda462;stroke-width:1.4}
+.s-path{fill:none;stroke:#507f87;stroke-width:1.7}
+.s-feedback{fill:none;stroke:#b57d2d;stroke-width:1.7;stroke-dasharray:6 4}</style>
+<title id="school-sgfke-title">子问题引导三元组抽取，与候选证据相汇合，再经来源和条件核验回答</title>
+<desc id="school-sgfke-desc">原问题分别输入候选检索与子问题生成。子问题经过约束检查后，与候选原文共同引导抽取；来源或限定条件不完整时回到抽取或有界补检，合格事实进入证据路径和引用答案。</desc>
+<defs><marker id="school-sg-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10Z" fill="#507f87"/></marker><marker id="school-sg-back" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10Z" fill="#b57d2d"/></marker></defs>
+<rect x="25" y="25" width="280" height="100" rx="6" class="s-box"/><text x="43" y="54" class="s-title">Q · 原始复杂问题</text><text x="43" y="80">主体、地区、目标与时间约束</text><text x="43" y="103" class="s-small">保留原问题，所有分支都受它约束</text>
+<rect x="378" y="25" width="295" height="100" rx="6" class="s-box"/><text x="395" y="54" class="s-title">S · 生成抽取子问题</text><text x="395" y="80">“需要找清楚哪些事实？”</text><text x="395" y="103" class="s-small">论文设置：few-shot 生成两个子问题</text>
+<rect x="746" y="25" width="288" height="100" rx="6" class="s-amber"/><text x="763" y="54" class="s-title">检查是否改变问题含义</text><text x="763" y="80">是否新增假设 / 遗漏时间 / 重复</text><text x="763" y="103" class="s-small">设计校验：错误则修正或保守少拆</text>
+<path d="M305 75H376 M673 75H744" class="s-path" marker-end="url(#school-sg-arrow)"/>
+<path d="M890 125V153H526V127" class="s-feedback" marker-end="url(#school-sg-back)"/>
+<rect x="25" y="220" width="280" height="104" rx="6" class="s-box"/><text x="43" y="250" class="s-title">C · 已检索的候选原文</text><text x="43" y="278">条款 + 父上下文 + 来源标识</text><text x="43" y="301" class="s-small">召回不足不能靠子问题凭空补事实</text>
+<path d="M165 125V218" class="s-path" marker-end="url(#school-sg-arrow)"/>
+<rect x="378" y="220" width="295" height="104" rx="6" class="s-green"/><text x="395" y="250" class="s-title">T · 子问题引导三元组抽取</text><text x="395" y="278">输入 Q + S + C + 抽取示例</text><text x="395" y="301" class="s-small">只抽与问题有关、原文能够支持的关系</text>
+<path d="M305 272H376 M890 153V181H526V218" class="s-path" marker-end="url(#school-sg-arrow)"/><text x="684" y="200" class="s-small">子问题约束抽取，不直接输出答案</text>
+<rect x="746" y="220" width="288" height="104" rx="6" class="s-box"/><text x="763" y="250" class="s-title">绑定来源与限定条件</text><text x="763" y="278">subject / relation / object</text><text x="763" y="301" class="s-small">+ 条件、例外、时间、证据 ID</text>
+<path d="M673 272H744" class="s-path" marker-end="url(#school-sg-arrow)"/>
+<path d="M890 324V397" class="s-path" marker-end="url(#school-sg-arrow)"/>
+<rect x="746" y="399" width="288" height="107" rx="6" class="s-amber"/><text x="763" y="429" class="s-title">融合设计 · 证据门控</text><text x="763" y="457">原文对齐？条件完整？覆盖各子问题？</text><text x="763" y="481" class="s-small">格式正确不等于事实正确</text>
+<rect x="378" y="399" width="295" height="107" rx="6" class="s-amber"/><text x="395" y="429" class="s-title">不通过：定位具体缺口</text><text x="395" y="457">关系错 → 重抽；缺证据 → 补检</text><text x="395" y="481" class="s-small">冲突 → 并列说明；无来源 → 不采纳</text>
+<path d="M746 452H675 M526 399V326" class="s-feedback" marker-end="url(#school-sg-back)"/>
+<path d="M378 452H165V326" class="s-feedback" marker-end="url(#school-sg-back)"/>
+<rect x="25" y="552" width="280" height="105" rx="6" class="s-box"/><text x="43" y="582" class="s-title">保守出口</text><text x="43" y="609">只答有依据的部分 / 回原文</text><text x="43" y="633" class="s-small">预算耗尽、冲突未决时明确说明</text>
+<path d="M526 506V528H165V550" class="s-feedback" marker-end="url(#school-sg-back)"/>
+<rect x="378" y="552" width="295" height="105" rx="6" class="s-green"/><text x="395" y="582" class="s-title">结构化证据路径</text><text x="395" y="609">子问题 → 事实组 → 来源条款</text><text x="395" y="633" class="s-small">核对主体和限定条件，显式组织关联</text>
+<path d="M890 506V530H526V550" class="s-path" marker-end="url(#school-sg-arrow)"/><text x="823" y="549" class="s-small">通过</text>
+<rect x="746" y="572" width="288" height="85" rx="6" class="s-green"/><text x="763" y="601" class="s-title">回答 + 对应来源</text><text x="763" y="628">研究：Q + T；融合：加必要原文核验</text>
+<path d="M673 615H744" class="s-path" marker-end="url(#school-sg-arrow)"/>
+<text x="25" y="697" class="s-small">论文核心：子问题生成 → 引导抽取 → 三元组与原问题生成答案。图中门控与回退是融合系统的可靠性设计。</text>
+</svg>

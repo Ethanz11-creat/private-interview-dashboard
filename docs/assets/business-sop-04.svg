@@ -1,0 +1,41 @@
+<svg viewBox="0 0 1060 900" role="img" aria-labelledby="school-arch-title school-arch-desc" xmlns="http://www.w3.org/2000/svg" width="1060" height="900"><style>svg{background:#fff;font-family:system-ui,-apple-system,'PingFang SC',sans-serif}
+text{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",sans-serif;fill:#244652;font-size:14px}
+.s-title{font-weight:700;font-size:17px;fill:#13585f}
+.s-small{font-size:12px;fill:#57727a}
+.s-box{fill:white;stroke:#9abdc1;stroke-width:1.4}
+.s-green{fill:#e7f5ed;stroke:#73a798;stroke-width:1.4}
+.s-amber{fill:#fff4df;stroke:#cda462;stroke-width:1.4}
+.s-path{fill:none;stroke:#507f87;stroke-width:1.7}
+.s-feedback{fill:none;stroke:#b57d2d;stroke-width:1.7;stroke-dasharray:6 4}</style>
+<title id="school-arch-title">低空经济系统离线语料链路、在线问答分支及反馈闭环</title>
+<desc id="school-arch-desc">原始文件经格式解析、OCR、类型结构化与审校后形成版本化语料；查询经过滤检索后分流为政策 SG-FKE 或安全条款回答；验证失败回到补检或人工审校，验证通过输出带引用答案。</desc>
+<defs><marker id="school-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10Z" fill="#507f87"/></marker><marker id="school-back-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10Z" fill="#b57d2d"/></marker></defs>
+<rect x="12" y="12" width="1036" height="380" rx="12" fill="#edf6f5" stroke="#c8dddf"/>
+<text x="32" y="42" class="s-title">离线｜把文件加工成带来源、结构和版本的证据</text>
+<rect x="35" y="67" width="220" height="95" rx="6" class="s-box"/><text x="52" y="94" class="s-title">原始资料 · 只读保留</text><text x="52" y="119">政策 / 法规 / CCAR / 标准</text><text x="52" y="143" class="s-small">来源地址、采集时间、文件哈希</text>
+<rect x="308" y="67" width="230" height="95" rx="6" class="s-box"/><text x="325" y="94" class="s-title">按载体解析</text><text x="325" y="119">原生文本优先 · 必要页 OCR</text><text x="325" y="143" class="s-small">版面块 / 表格 / 页码 / bbox</text>
+<rect x="596" y="67" width="230" height="95" rx="6" class="s-box"/><text x="613" y="94" class="s-title">按类型还原结构</text><text x="613" y="119">章节 / 条款 / 措施 / 表格行</text><text x="613" y="143" class="s-small">抽取字段 + 证据，不丢原文</text>
+<path d="M255 114H306 M538 114H594" class="s-path" marker-end="url(#school-arrow)"/>
+<rect x="865" y="67" width="150" height="95" rx="6" class="s-amber"/><text x="882" y="98" class="s-title">质量与字段审校</text><text x="882" y="125">错页 / 冲突 / 缺文</text><text x="882" y="147" class="s-small">不合格 → 隔离队列</text>
+<path d="M826 114H863" class="s-path" marker-end="url(#school-arrow)"/>
+<path d="M940 67V53H423V65" class="s-feedback" marker-end="url(#school-back-arrow)"/>
+<rect x="300" y="231" width="715" height="120" rx="6" class="s-green"/><text x="320" y="259" class="s-title">统一语料底座 · 版本化证据</text><text x="320" y="284">原始资产 → 文档身份 → 文档版本 → 内容块 / 结构树 → 父子 Chunk</text><text x="320" y="309">向量索引 · 嵌入代次 · 已发布语料快照</text><text x="320" y="332" class="s-small">草稿和隔离文档不参与默认检索；父节点提供上下文，合格子节点参与向量检索</text>
+<path d="M940 162V229" class="s-path" marker-end="url(#school-arrow)"/><text x="948" y="201" class="s-small">通过</text>
+<rect x="35" y="231" width="220" height="120" rx="6" class="s-box"/><text x="52" y="260" class="s-title">统一服务边界</text><text x="52" y="286">检索 / 文档阅读 / 引用定位</text><text x="52" y="311">网页、问答与工具共用证据</text><text x="52" y="333" class="s-small">不同入口不复制知识内容</text>
+<path d="M300 291H257" class="s-path" marker-end="url(#school-arrow)"/>
+<rect x="12" y="414" width="1036" height="470" rx="12" fill="#f6f9fc" stroke="#cbdde6"/>
+<text x="32" y="447" class="s-title">在线｜先选择适用证据，再按问题类型组织答案</text>
+<rect x="35" y="475" width="220" height="93" rx="6" class="s-box"/><text x="52" y="503" class="s-title">用户问题与约束</text><text x="52" y="528">主体 / 地区 / 时间 / 版本</text><text x="52" y="550" class="s-small">缺少关键适用信息时先澄清</text>
+<rect x="308" y="475" width="250" height="93" rx="6" class="s-box"/><text x="325" y="503" class="s-title">过滤 + 混合检索 + 排序</text><text x="325" y="528">精确编号 / 关键词 / 向量</text><text x="325" y="550" class="s-small">子块命中 → 回填同版本父上下文</text>
+<path d="M255 520H306 M657 351V431H434V473" class="s-path" marker-end="url(#school-arrow)"/>
+<rect x="640" y="472" width="375" height="82" rx="6" class="s-green"/><text x="657" y="499" class="s-title">政策多跳 → SG-FKE</text><text x="657" y="524">子问题引导抽取 → 带来源三元组 → 证据路径</text><text x="657" y="545" class="s-small">子问题是抽取提示，不直接等于独立检索</text>
+<rect x="640" y="583" width="375" height="82" rx="6" class="s-box"/><text x="657" y="610" class="s-title">安全 / 标准 → 原结构证据</text><text x="657" y="635">义务与例外 / 条款号 / 参数表 / 适用条件</text><text x="657" y="656" class="s-small">不强行把表格、公式和复杂条件压成三元组</text>
+<path d="M558 520H595V513H638 M595 520V624H638" class="s-path" marker-end="url(#school-arrow)"/>
+<rect x="308" y="722" width="382" height="104" rx="6" class="s-box"/><text x="327" y="750" class="s-title">证据合并与回答核验</text><text x="327" y="777">同主体？同时间？原文支持？例外保留？</text><text x="327" y="802" class="s-small">混合问题按分支分别作答，再说明它们的关系</text>
+<path d="M1015 513H1030V696H605V720 M830 665V696H605" class="s-path" marker-end="url(#school-arrow)"/>
+<rect x="767" y="722" width="248" height="104" rx="6" class="s-green"/><text x="785" y="751" class="s-title">答案 + 引用 + 适用边界</text><text x="785" y="778">结论可回到版本 / 页 / 条款</text><text x="785" y="803" class="s-small">不足或冲突明确呈现，交给用户判断</text>
+<path d="M690 772H765" class="s-path" marker-end="url(#school-arrow)"/>
+<rect x="35" y="699" width="220" height="127" rx="6" class="s-amber"/><text x="52" y="729" class="s-title">缺口与错误反馈</text><text x="52" y="757">漏证据 → 有界补检</text><text x="52" y="782">错解析 → 语料审校</text><text x="52" y="807" class="s-small">达到预算 → 部分回答 / 明确不足</text>
+<path d="M308 772H257 M145 699V622H430V570" class="s-feedback" marker-end="url(#school-back-arrow)"/><text x="160" y="611" class="s-small">只带缺口补检，不无限循环</text>
+<text x="35" y="864" class="s-small">实线：主处理链路　虚线：核验失败后的反馈　研究验证：政策 SG-FKE　融合设计：完整双域系统</text>
+</svg>
