@@ -10,6 +10,7 @@
   const searchEmpty = document.getElementById('topic-search-empty');
   const collapse = document.getElementById('topic-collapse');
   const readingSize = document.getElementById('reading-size');
+  const ipadReading = document.getElementById('ipad-reading');
   const compact = matchMedia('(max-width: 1199px)');
   let entries = [];
   let active = null;
@@ -28,6 +29,19 @@
     const large = !document.body.classList.contains('reading-large');
     setReadingSize(large);
     try { localStorage.setItem('interview-reading-size', large ? 'large' : 'normal'); } catch {}
+  });
+
+  function setIpadReading(enabled) {
+    document.body.classList.toggle('ipad-reading', enabled);
+    ipadReading.setAttribute('aria-pressed', String(enabled));
+    ipadReading.title = enabled ? '关闭 iPad 9 阅读布局' : '启用 iPad 9 阅读布局';
+    schedulePosition();
+  }
+  try { setIpadReading(localStorage.getItem('interview-ipad-reading') === 'on'); } catch { /* The toggle still works without browser storage. */ }
+  ipadReading.addEventListener('click', () => {
+    const enabled = !document.body.classList.contains('ipad-reading');
+    setIpadReading(enabled);
+    try { localStorage.setItem('interview-ipad-reading', enabled ? 'on' : 'off'); } catch {}
   });
 
   function labelOf(element) {
