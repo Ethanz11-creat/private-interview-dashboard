@@ -860,7 +860,7 @@ body.ipad-reading .topic-nav { font-size: 13px; }
   }
 }
 
-/* iPad 9 portrait: turn the round rail into a quiet four-tab strip. */
+/* iPad 9 portrait: turn the round rail into a quiet five-tab strip. */
 @media (max-width: 820px) {
   body.ipad-reading .layout { display: block; }
   body.ipad-reading .round-sidebar {
@@ -873,7 +873,7 @@ body.ipad-reading .topic-nav { font-size: 13px; }
     box-shadow: 0 4px 14px rgba(24, 64, 70, .05);
   }
   body.ipad-reading .round-sidebar .side-nav {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: 8px;
   }
   body.ipad-reading .round-sidebar .side-nav .nav {
