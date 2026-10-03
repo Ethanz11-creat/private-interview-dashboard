@@ -70,6 +70,9 @@
     } else if (round === 'hr') {
       if (element.matches('h4,.hr-panel > details > summary')) return 1;
       if (element.matches('h5,.qa-bilingual > b,.offer-item > b,.offer-table-wrap,.hr-panel h3')) return 2;
+    } else if (round === 'handwriting') {
+      if (element.matches('.handwriting-index-head h3')) return 1;
+      if (element.matches('.handwriting-card > h4')) return 2;
     }
     return 0;
   }

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>P4484 线性回归（最小二乘法）· 题干与手撕代码</title>
+<style>
+:root{--bg:#f4f6fa;--paper:#fff;--ink:#17233c;--soft:#52627a;--line:#dce3ee;--blue:#235cce;--blue-soft:#edf3ff;--green:#087967;--orange:#b65612;--code:#142038;--code-ink:#e4edfa}*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:80px}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.8 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}a{color:var(--blue);text-decoration:none}button,input{font:inherit}button{cursor:pointer}button:disabled{opacity:.4;cursor:default}button:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid #6c9dff;outline-offset:3px}code,pre,.mono{font-family:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace}code{font-size:.91em;background:#edf1f7;padding:2px 5px;border-radius:4px}pre{background:var(--code);color:var(--code-ink);padding:20px;border-radius:12px;overflow:auto;font-size:14px;line-height:1.75;tab-size:4}pre code{background:none;padding:0;color:inherit;font-size:inherit}.wrap{max-width:1240px;margin:auto;padding:0 30px}header{background:var(--paper);border-bottom:1px solid var(--line)}.hero{padding:46px 0 30px}.eyebrow{font-size:12px;font-weight:700;letter-spacing:.13em;color:var(--blue)}h1{font-size:35px;line-height:1.3;margin:10px 0 14px;letter-spacing:-1px}h2{font-size:25px;line-height:1.4;margin:0 0 16px}h3{font-size:19px;margin:22px 0 10px}p{margin:10px 0}.lead{color:var(--soft);max-width:850px}.pills{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}.pill{font-size:13px;background:var(--blue-soft);padding:4px 11px;border-radius:6px;color:var(--blue)}nav{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.96);border-bottom:1px solid var(--line);backdrop-filter:blur(10px)}.nav-links{display:flex;gap:24px;overflow:auto;white-space:nowrap;padding:14px 0;font-size:14px}main{padding-bottom:45px}.section{margin-top:30px;padding:28px;background:var(--paper);border:1px solid var(--line);border-radius:16px}.sec-no{font-size:13px;color:var(--blue);margin-bottom:5px;font-weight:600}.muted{color:var(--soft)}.callout{border-left:3px solid var(--blue);background:var(--blue-soft);padding:13px 17px;margin:18px 0;border-radius:0 8px 8px 0}.note{border-left-color:var(--orange);background:#fff6ed}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;padding:11px 13px;border-bottom:1px solid var(--line);vertical-align:top}th{font-weight:600;color:var(--soft);background:#f7f9fc}td code{white-space:nowrap}.matrix td{font-family:ui-monospace,Consolas,monospace;font-variant-numeric:tabular-nums}.controls{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin:15px 0}.btn{border:1px solid var(--line);background:var(--paper);color:var(--ink);padding:7px 13px;border-radius:7px;font-size:14px;line-height:1.6}.btn:hover{background:#f1f5fb}.btn.active,.btn.primary{background:var(--blue);color:white;border-color:var(--blue)}.editor-grid{display:grid;grid-template-columns:minmax(0,1.14fr) minmax(0,1fr);gap:20px;align-items:start}.code-panel{background:var(--code);border-radius:12px;overflow:hidden}.code-toolbar{padding:12px 15px;border-bottom:1px solid #354159;color:#b9c9e6;display:flex;justify-content:space-between;align-items:center;font-size:12px}.code-scroll{overflow:auto;padding:10px 0}.code-line{display:flex;align-items:baseline;min-width:max-content;width:100%;border:0;border-left:3px solid transparent;background:none;color:var(--code-ink);text-align:left;padding:4px 18px 4px 0;font:13px/1.7 ui-monospace,SFMono-Regular,Consolas,monospace}.code-line:hover{background:#223453}.code-line.active{background:#263e66;border-left-color:#83adff}.line-no{display:inline-block;width:40px;flex:none;text-align:right;margin-right:16px;color:#8a9bb6;font-size:11px}.code-text{white-space:pre}.detail-panel{position:sticky;top:78px;border:1px solid var(--line);border-radius:12px;padding:22px;min-height:390px}.detail-kicker{font-size:12px;color:var(--blue);font-weight:600}.detail-panel h3{margin:9px 0 14px}.detail-panel pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px;padding:14px}.detail-panel p{font-size:15px}.example{background:#f5f8fd;border:1px solid var(--line);padding:13px 15px;border-radius:8px;font-size:14px;margin-top:15px;white-space:pre-wrap}.purpose{color:var(--green);font-size:14px;margin-top:15px}.small,.index-status{font-size:13px;color:var(--soft)}.formula{background:#f5f8fd;padding:18px;border-radius:9px;overflow:auto;font-size:17px}.fraction{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;margin:0 5px;white-space:nowrap;font-family:Georgia,"Times New Roman",serif}.fraction .top{border-bottom:1px solid var(--ink);padding:0 8px 3px}.fraction .bottom{padding-top:3px}.formula-row{white-space:nowrap;margin:6px 0}.trace-summary{padding:14px 17px;border-radius:8px;background:var(--blue-soft);margin-top:15px;font-size:14px}.plot-area{background:#fafcff;border:1px solid var(--line);border-radius:12px;overflow:hidden}.plot-area svg{display:block;width:100%;height:auto}.fit-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:20px}.legend{display:flex;flex-wrap:wrap;gap:18px;margin:10px 0;font-size:13px}.legend span{display:flex;align-items:center;gap:7px}.dot{display:inline-block;width:9px;height:9px;background:var(--ink);border-radius:50%}.line{display:inline-block;width:20px;height:2px;background:var(--blue)}.residual{display:inline-block;width:2px;height:14px;background:var(--orange)}.input-label{font-size:14px;display:inline-flex;gap:7px;align-items:center}input[type=number]{width:110px;padding:7px 10px;border:1px solid var(--line);border-radius:7px;color:var(--ink);background:var(--paper);font-size:14px}.result{background:var(--blue-soft);border-radius:9px;padding:14px 17px;margin:14px 0;font-size:15px}.comparison h3{margin-top:0}.comparison pre{margin-top:8px}details{border:1px solid var(--line);padding:13px 17px;border-radius:9px;margin:12px 0}summary{cursor:pointer;font-weight:500}details p,details li{font-size:14px}.memory-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}.memory-card{border:1px solid var(--line);border-radius:10px;padding:16px}.memory-card h3{margin:0 0 8px}.answer{margin-top:10px;font-size:14px;color:var(--green)}ol,ul{padding-left:24px}.footer{margin-top:22px;font-size:13px;color:var(--soft);text-align:center}.mobile-hint{display:none}.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:20px}.step{border:1px solid var(--line);border-radius:10px;padding:15px}.step b{color:var(--blue)}.step p{font-size:14px;margin:5px 0 0}@media(max-width:900px){.editor-grid,.fit-grid{grid-template-columns:1fr}.detail-panel{position:static;min-height:0}.code-scroll{max-height:430px}h1{font-size:29px}.mobile-hint{display:block;font-size:13px;color:var(--soft)}}@media(max-width:620px){.wrap{padding:0 16px}.hero{padding:30px 0 24px}.section{padding:19px;margin-top:20px;border-radius:12px}.grid2,.memory-grid,.steps{grid-template-columns:1fr}h1{font-size:26px}h2{font-size:22px}.nav-links{gap:19px;font-size:13px}.code-line{font-size:12px}.detail-panel{padding:17px}.btn{font-size:13px}.formula{font-size:15px}input[type=number]{width:94px}}@media print{nav,.controls,.code-toolbar button,.footer{display:none}body{background:white;font-size:12px}.wrap{padding:0;max-width:none}.section{break-inside:avoid;margin-top:16px;padding:14px;border-radius:0}.detail-panel{position:static}.code-panel,pre{background:#f4f4f4;color:black}.code-line{color:black;font-size:10px}.code-scroll{max-height:none}h1{font-size:24px}details{break-inside:avoid}}
+</style>
+  <link rel="stylesheet" href="./handwriting.css?v=20261003-2">
+</head>
+<body>
+<header><div class="wrap hero"><div class="eyebrow">P4484 / PYTHON / 最小二乘法 / 手撕学习</div><h1>线性回归：题干、公式与代码一起复习</h1><p class="lead">从完整题干开始，逐行理解“取坐标 → 求均值 → 算偏差 → 累加 → 求 w、b”。无需记梯度下降，也无需迭代；这道题直接使用一元线性回归的闭式解。</p><div class="pills"><span class="pill">完整题干与示例</span><span class="pill">逐行点读代码</span><span class="pill">计算过程可切换数据</span><span class="pill">普通循环与盲写骨架</span></div></div></header>
+<nav aria-label="学习目录"><div class="wrap nav-links"><a href="#problem">① 完整题干</a><a href="#overview">② 变量与公式</a><a href="#code">③ 逐行拆解</a><a href="#trace">④ 手算一遍</a><a href="#fit">⑤ 看懂最小二乘</a><a href="#loops">⑥ 普通循环</a><a href="#practice">⑦ 盲写复盘</a></div></nav>
+<main class="wrap">
+<section class="section" id="problem"><div class="sec-no">01 / 练习前先看这一段</div><h2>P4484. 线性回归（最小二乘法）</h2><p class="small">难度：5。以下题干与约束整理自你提供的题面；网页尝试次数、通过次数不参与算法要求。</p><h3>题目描述</h3><p>实现一元线性回归，使用最小二乘法求解 <code>y = wx + b</code>。给定训练样本点集合 <code>points</code>，其中每个元素为 <code>[x, y]</code>，请计算并返回拟合得到的参数 <code>w</code> 和 <code>b</code>。</p><h3>输入参数</h3><p><code>points</code>：二维列表，每个元素为长度为 2 的浮点数列表 <code>[x, y]</code>，表示一个训练样本点。</p><h3>返回值</h3><p><code>[w, b]</code>：长度为 2 的列表，分别为拟合直线的斜率 w 和截距 b，可按浮点数形式返回。</p><h3>示例 1</h3><pre><code>输入：
+points = [[1.0, 2.0], [2.0, 4.0], [3.0, 6.0],
+          [4.0, 8.0], [5.0, 10.0]]
+
+输出：
+[w, b] = [2.0000, 0.0000]</code></pre><h3>数据范围与保证</h3><ul><li><code>1 ≤ len(points) ≤ 5 × 10⁴</code>。</li><li><code>−10⁵ ≤ x, y ≤ 10⁵</code>。</li><li><strong>至少存在两个不同的 x 值。</strong></li></ul><div class="callout"><strong>最后一条是关键：</strong>它保证分母 Σ(xᵢ−x̄)² 大于 0。虽然给出的数量范围从 1 开始，但满足“两个不同 x”也意味着实际有效输入至少有两个点。</div><h3>题面给出的闭式解</h3><div class="formula"><div class="formula-row">w = <span class="fraction" aria-label="分子为偏差乘积之和，分母为 x 偏差平方之和"><span class="top">∑ᵢ (xᵢ − x̄)(yᵢ − ȳ)</span><span class="bottom">∑ᵢ (xᵢ − x̄)²</span></span></div><div class="formula-row">b = ȳ − w x̄</div></div><p>x̄ 是所有 x 的均值，ȳ 是所有 y 的均值。目标是返回两个参数，不是预测某一个新点，也不是返回整条直线上的坐标。</p></section>
+
+<section class="section" id="overview"><div class="sec-no">02 / 把公式和变量一一对应</div><h2>先算平均位置，再算每个点偏离多少</h2><div class="table-wrap"><table><thead><tr><th>变量</th><th>形状 / 类型</th><th>原题示例</th></tr></thead><tbody><tr><td><code>data</code></td><td><code>(n,2)</code>，二维浮点数组</td><td>每行一个 [x,y] 点。</td></tr><tr><td><code>X</code> / <code>Y</code></td><td><code>(n,)</code>，一维数组</td><td>X=[1,2,3,4,5]；Y=[2,4,6,8,10]。</td></tr><tr><td><code>mean_x</code> / <code>mean_y</code></td><td>两个标量</td><td>x̄=3，ȳ=6。</td></tr><tr><td><code>dx</code> / <code>dy</code></td><td><code>(n,)</code>，一维数组</td><td>dx=[−2,−1,0,1,2]；dy=[−4,−2,0,2,4]。</td></tr><tr><td><code>num</code></td><td>一个标量</td><td>偏差乘积之和：8+2+0+2+8=20。</td></tr><tr><td><code>den</code></td><td>一个标量</td><td>x 偏差平方之和：4+1+0+1+4=10。</td></tr><tr><td><code>w</code> / <code>b</code></td><td>两个标量</td><td>w=20/10=2；b=6−2×3=0。</td></tr></tbody></table></div><div class="steps"><div class="step"><b>先求均值</b><p>找到数据的平均位置 (x̄,ȳ)。</p></div><div class="step"><b>再算偏差</b><p>每个 x、y 分别减自己的均值。</p></div><div class="step"><b>最后累加求解</b><p>偏差乘积之和除以 x 偏差平方之和，再求截距。</p></div></div><div class="callout"><strong>记公式可以这样读：</strong>“w 的分子是 x 偏差乘 y 偏差再求和，分母是 x 偏差平方再求和；b 是 y 均值减 w 乘 x 均值。”不要把分母写成 dy²。</div></section>
+
+<section class="section" id="code"><div class="sec-no">03 / 对照你提供的 NumPy 代码</div><h2>点一行，看语法、数值和作用</h2><p class="muted">下面保留原代码的计算步骤，包括并未参与后续计算的 n。解释注释合并到右侧，代码可以整段复制。</p><div class="controls"><button class="btn" id="prev-line" type="button">上一行</button><button class="btn primary" id="next-line" type="button">下一行</button><span class="index-status" id="line-status"></span></div><p class="mobile-hint">所选行的解释显示在代码下方。</p><div class="editor-grid"><div class="code-panel"><div class="code-toolbar"><span>linear_regression.py · 点击任意行</span><button class="btn" id="copy-code" type="button">复制完整代码</button></div><div class="code-scroll" id="code-lines" aria-label="逐行代码"></div></div><article class="detail-panel" id="line-detail" aria-live="polite"></article></div>
+<div class="callout note"><strong>这份代码使用 NumPy。</strong>题目的计算方法可以不用额外库，但你贴的这份实现确实依赖 NumPy。“算法可不用库”和“当前代码没有库”不是同一回事。后面附有不依赖 NumPy 的完整版本。</div></section>
+
+<section class="section" id="trace"><div class="sec-no">04 / 按代码顺序展开数值</div><h2>每个数组、每次求和，都能对上表格</h2><div class="controls" id="dataset-controls" aria-label="选择演示数据"></div><div class="controls" id="trace-controls" aria-label="选择计算步骤"></div><div id="trace-content" aria-live="polite"></div><div class="trace-summary" id="trace-summary"></div>
+<h3>这三句分别在做什么？</h3><pre><code>dx = X - mean_x        # 每个 x 都减去同一个 x 均值
+num = np.sum(dx * dy)  # 对应元素相乘，再把全部乘积相加
+den = np.sum(dx * dx)  # 每个 dx 乘自己，再把全部平方相加</code></pre><div class="grid2"><div><h3>数组减标量：为什么只写一次？</h3><p>NumPy 会把标量广播到数组的每一项。例如 <code>[1,2,3,4,5] − 3</code> 得到 <code>[−2,−1,0,1,2]</code>。普通 Python 列表不能直接这样减，要用循环或列表推导式。</p></div><div><h3>dx * dy 不是矩阵乘法</h3><p>对 NumPy 数组，<code>*</code> 表示对应元素相乘。例如 <code>[−2,−1] * [−4,−2]</code> 得到 <code>[8,2]</code>。再用 <code>np.sum</code> 才得到总和 10。</p><p>这里 <code>np.sum(dx * dy)</code> 对一维数组所有元素求和，不需要额外指定 axis。</p></div></div>
+<div class="callout"><strong>分子为什么可能为负？</strong>dx 和 dy 的符号可以相反，所以乘积及总和可能为负，w 也可能为负。分母是平方和，至少两个不同 x 保证它严格大于 0。</div></section>
+
+<section class="section" id="fit"><div class="sec-no">05 / 理解最小二乘在“最小”什么</div><h2>最小化的是纵向误差的平方和</h2><p>真实值是 yᵢ，预测值是 ŷᵢ = wxᵢ+b。残差是 <code>yᵢ − ŷᵢ</code>；最小二乘让 <code>∑(yᵢ−ŷᵢ)²</code> 最小。橙色竖线表示残差，不是点到直线的垂直最短距离。</p><p class="small">上面的数据选择会同步改变这里的图。你可以输入其他 w、b，比较平方误差；“恢复最小二乘解”会回到代码求得的参数。</p><div class="controls"><label class="input-label">w <input id="input-w" type="number" step="any" value="2" aria-label="直线斜率 w"></label><label class="input-label">b <input id="input-b" type="number" step="any" value="0" aria-label="直线截距 b"></label><button class="btn primary" id="reset-fit" type="button">恢复最小二乘解</button><button class="btn" id="try-fit" type="button">试试 w=1，b=0</button></div><div class="fit-grid"><div><div class="plot-area"><svg id="fit-plot" viewBox="0 0 540 400" role="img" aria-label="训练点、当前直线和纵向残差"></svg></div><div class="legend"><span><i class="dot"></i>训练点</span><span><i class="line"></i>当前直线</span><span><i class="residual"></i>纵向残差</span></div></div><div><div id="fit-table"></div><div class="result" id="fit-result" aria-live="polite"></div></div></div>
+<details><summary>为什么 b = mean_y − w * mean_x？</summary><p>带截距的一元最小二乘直线经过平均点 (x̄,ȳ)。把这个点代入 <code>ȳ = w x̄ + b</code>，移项就得到 <code>b = ȳ − w x̄</code>。</p><p>比如 x̄=3、ȳ=6、w=2，就有 b=6−2×3=0。</p></details>
+<details><summary>想知道 w 的公式从哪里来？可以看这段简短推导</summary><p>目标函数是 <code>L(w,b)=∑(yᵢ−wxᵢ−b)²</code>。对 b 求导并令其为 0，得到 <code>∑(yᵢ−wxᵢ−b)=0</code>，因此 b=ȳ−wx̄。</p><p>代回去，每个残差变成 <code>(yᵢ−ȳ)−w(xᵢ−x̄)</code>。对 w 求导并令其为 0，得到 <code>∑(xᵢ−x̄)(yᵢ−ȳ) = w∑(xᵢ−x̄)²</code>。</p><p>分母非零，除过去就是代码中的 w 公式。你手撕时主要要能把公式对应到变量和累加过程。</p></details>
+<details><summary>最小二乘是不是必须穿过每个训练点？</summary><p>不是。原题示例恰好都在 y=2x 上，所以误差能为 0。切换到“带噪声的三个点”时，最优直线也有非零残差，只是所有可能的 w、b 中平方误差最小。</p></details></section>
+
+<section class="section" id="loops"><div class="sec-no">06 / 不依赖 NumPy 的完整对照</div><h2>两遍循环，额外空间 O(1)</h2><pre><code>class Solution:
+    def linear_regression(self, points):
+        n = len(points)
+        sum_x = 0.0
+        sum_y = 0.0
+        for x, y in points:
+            sum_x += x
+            sum_y += y
+
+        mean_x = sum_x / n
+        mean_y = sum_y / n
+
+        num = 0.0
+        den = 0.0
+        for x, y in points:
+            dx = x - mean_x
+            dy = y - mean_y
+            num += dx * dy
+            den += dx * dx
+
+        w = num / den
+        b = mean_y - w * mean_x
+        return [w, b]</code></pre><p><code>for x, y in points</code> 把每个 [x,y] 解包成两个变量。第一遍只求总和和均值，第二遍逐点求偏差并累加；不创建 X、Y、dx、dy 数组。</p><div class="grid2 comparison"><div><h3>NumPy 的逐元素运算</h3><pre><code>dx = X - mean_x
+dy = Y - mean_y
+num = np.sum(dx * dy)
+den = np.sum(dx * dx)</code></pre><p class="small">dx、dy 是长度为 n 的数组；NumPy 一次处理全部元素。</p></div><div><h3>普通循环的逐点累加</h3><pre><code>num = 0.0
+den = 0.0
+for x, y in points:
+    dx = x - mean_x
+    dy = y - mean_y
+    num += dx * dy
+    den += dx * dx</code></pre><p class="small">dx、dy 是当前点的两个标量；每次循环更新同一组变量。</p></div></div>
+<h3>两种实现的复杂度分别是什么？</h3><div class="table-wrap"><table><thead><tr><th>实现</th><th>时间</th><th>额外空间</th><th>为什么</th></tr></thead><tbody><tr><td>你贴的 NumPy 版本</td><td>O(n)</td><td><strong>O(n)</strong></td><td>data、dx、dy 以及逐元素乘法结果都有随 n 增长的存储。</td></tr><tr><td>上面的普通循环版本</td><td>O(n)</td><td><strong>O(1)</strong></td><td>只保留固定数量的均值、累加值和当前点变量。</td></tr></tbody></table></div><div class="callout"><strong>为什么两遍循环仍然是 O(n)？</strong>第一遍 n 次，第二遍 n 次，共约 2n 次，忽略常数 2 后仍然是 O(n)。空间看同时需要多少存储位置，不是看循环执行了多少次。</div><p class="small">X 和 Y 通常是 data 的列切片视图，本身不必各复制一整列；但 data 已经是新建的 n×2 数组，dx、dy 和乘法结果也要存储，整体仍是 O(n)。</p></section>
+
+<section class="section" id="practice"><div class="sec-no">07 / 从看懂到盲写</div><h2>先背计算顺序，再写具体语法</h2><ol><li><strong>取列：</strong>data[:,0] 是 X，data[:,1] 是 Y。</li><li><strong>求均值：</strong>mean_x=np.mean(X)，mean_y=np.mean(Y)。</li><li><strong>算偏差：</strong>dx=X−mean_x，dy=Y−mean_y。</li><li><strong>求两项和：</strong>num=sum(dx×dy)，den=sum(dx×dx)。</li><li><strong>求参数：</strong>w=num/den，b=mean_y−w×mean_x。</li><li><strong>返回：</strong>[float(w),float(b)]。</li></ol><div class="memory-grid"><div class="memory-card"><h3>复盘 1：冒号与 0 各代表什么？</h3><p><code>X = data[:, 0]</code></p><details><summary>查看答案</summary><div class="answer">冒号选择所有行，0 选择第 0 列，也就是所有点的 x。输出形状 (n,)，不是 (n,1)。</div></details></div><div class="memory-card"><h3>复盘 2：分母为什么不是 dy * dy？</h3><p>本题拟合 <code>y = wx+b</code>。</p><details><summary>查看答案</summary><div class="answer">w 是 y 对 x 的斜率，闭式解的分母是 x 偏差平方和。把它换成 y 偏差平方和是在改变公式。</div></details></div><div class="memory-card"><h3>复盘 3：至少两个不同 x 有什么用？</h3><p><code>den = Σ(xᵢ−x̄)²</code></p><details><summary>查看答案</summary><div class="answer">每项都是非负数；两个不同 x 意味着不可能全等于 x̄，因此至少一项大于 0，den&gt;0，不会除以 0。</div></details></div><div class="memory-card"><h3>复盘 4：普通循环里 dx 占多少空间？</h3><p><code>dx = x - mean_x</code> 每轮执行一次。</p><details><summary>查看答案</summary><div class="answer">它只是当前点的一个标量，循环中反复更新，O(1)。NumPy 的 dx=X−mean_x 却保存 n 个偏差，O(n)。</div></details></div></div><h3>NumPy 盲写骨架</h3><pre><code>data = ____________________________
+X = _______________________________
+Y = _______________________________
+mean_x = __________________________
+mean_y = __________________________
+dx = ______________________________
+dy = ______________________________
+num = _____________________________
+den = _____________________________
+w = _______________________________
+b = _______________________________
+return ____________________________</code></pre><h3>普通循环盲写骨架</h3><pre><code>n = len(points)
+sum_x = sum_y = 0.0
+for x, y in points:
+    _______________________________
+    _______________________________
+mean_x = __________________________
+mean_y = __________________________
+
+num = den = 0.0
+for x, y in points:
+    dx = __________________________
+    dy = __________________________
+    num += ________________________
+    den += ________________________
+w = _______________________________
+b = _______________________________
+return [w, b]</code></pre><div class="callout"><strong>面试口述：</strong>“我先求 x、y 的均值，再累计 x 偏差与 y 偏差的乘积之和，以及 x 偏差的平方和，两者相除得到斜率 w。最后由直线经过平均点，计算 b=mean_y−w×mean_x。题目保证至少两个不同 x，因此分母大于 0。用两遍普通循环，时间 O(n)、额外空间 O(1)。”</div><details><summary>返回浮点数为什么没有四个尾随零？</summary><p>题目允许按浮点数返回，不要求把参数变成字符串。返回 2.0 与展示 2.0000 是同一个数。只有打印文本需要固定四位小数时，才用 <code>f"{w:.4f}"</code>；计算途中不要提前 round。</p></details></section>
+<div class="footer">P4484 线性回归（最小二乘法）· 完整题干 + 逐行代码 + 手算演示 + 盲写骨架</div>
+</main>
+<script>
+'use strict';
+const entries=[
+['import numpy as np','导入 NumPy，并简称 np','NumPy 提供数组计算、均值和求和函数。后面的 np.array、np.mean、np.sum 都来自这个库。','import numpy as np\n把 numpy 这个模块以 np 这个名字使用。','准备数组运算工具。'],
+['from typing import List','导入 List 类型标注','List 用来描述函数的输入输出，不负责创建数组或计算参数。','List[List[float]] 表示嵌套浮点列表。','说明接口类型。'],
+['class Solution:','定义提交平台要求的类','Solution 是核心代码的包装，方法写在类内部。它不是数学计算的一步。','实例调用：Solution().linear_regression(points)','满足平台接口。'],
+['    def linear_regression(self, points: List[List[float]]) -> List[float]:','定义方法、参数与返回类型','self 是实例；points 是二维列表；-> List[float] 表示返回浮点数列表。标注本身不自动改变数据类型。','返回值应是 [w,b]，不是所有预测 y。','定义线性回归入口。'],
+['        data = np.array(points, dtype=float)','创建二维浮点数组','np.array 转换输入列表。dtype=float 指定浮点类型，保证减均值和除法都使用浮点数据。','data.shape == (5,2)\ndata[0] == [1.0,2.0]','准备统一的数组数据。'],
+['        X = data[:, 0]','取所有点的 x 坐标','二维索引里，逗号前是行、后是列。: 保留所有行，0 选第 0 列。这里用单个列下标，结果是一维数组。','X = [1,2,3,4,5]\nX.shape == (5,)\ndata[:,0:1] 则是 (5,1)，与这里不同。','拿到全部自变量。'],
+['        Y = data[:, 1]','取所有点的 y 坐标',': 仍然保留所有行；1 选第 1 列。X[i] 和 Y[i] 仍然属于同一个训练点。','Y = [2,4,6,8,10]\nY.shape == (5,)','拿到全部目标值。'],
+['        n = len(points)','计算训练点数量','len(points) 返回外层列表长度，也就是点数。原 NumPy 实现后面没有用 n，这一行可以删除，不影响结果。','n = 5\n普通循环版本会用 n 做总和除以点数。','记录点数；本版后续并未使用。'],
+['        mean_x = np.mean(X)','计算所有 x 的平均值','np.mean 对 X 全部元素求平均。X 是一维数组，结果是一个标量，不是每个点各算一个均值。','mean_x = (1+2+3+4+5)/5 = 3','得到 x 的平均位置。'],
+['        mean_y = np.mean(Y)','计算所有 y 的平均值','同样对全部 Y 元素求平均。均值点是 (mean_x,mean_y)。','mean_y = (2+4+6+8+10)/5 = 6','得到 y 的平均位置。'],
+['        dx = X - mean_x','每个 x 减去 x 的均值','NumPy 将标量 mean_x 广播到每个元素。结果 dx 是一个长度为 n 的数组，而不是单个数。','[1,2,3,4,5] - 3\n→ [-2,-1,0,1,2]','计算横坐标偏差。'],
+['        dy = Y - mean_y','每个 y 减去 y 的均值','与上一行相同，但必须减 mean_y，不是 mean_x。dx[i]、dy[i] 对应同一个点的两种偏差。','[2,4,6,8,10] - 6\n→ [-4,-2,0,2,4]','计算纵坐标偏差。'],
+['        num = np.sum(dx * dy)','对应偏差相乘，然后累计分子','* 对两个 NumPy 数组做逐元素乘法，得到 n 个乘积。np.sum 将这些乘积全部相加，得到一个标量。','dx*dy = [8,2,0,2,8]\nnum = 8+2+0+2+8 = 20','实现公式的分子 Σ(xᵢ−x̄)(yᵢ−ȳ)。'],
+['        den = np.sum(dx * dx)','x 偏差平方，然后累计分母','每个 dx 乘自己，相当于平方。np.sum 将 n 个平方相加。不是 dy 的平方，也不是 num 再平方。','dx*dx = [4,1,0,1,4]\nden = 4+1+0+1+4 = 10','实现公式的分母 Σ(xᵢ−x̄)²。'],
+['        w = num / den','分子除以分母，得到斜率','/ 是普通除法，保留小数。不要写成 // 整除。题目保证至少两个不同 x，所以 den>0。','w = 20 / 10 = 2.0\n表示 x 增加 1 时，拟合 y 增加 2。','得到斜率参数。'],
+['        b = mean_y - w * mean_x','根据平均点求截距','带截距的最小二乘直线经过平均点。由 mean_y=w*mean_x+b 移项，得到这一行。乘法先于减法计算。','b = 6 - 2*3 = 0.0\n拟合直线：y = 2x + 0','得到截距参数。'],
+['        return [float(w), float(b)]','返回普通 Python 浮点列表','NumPy 运算得到的标量可以用 float 转为普通 Python 浮点数。方括号按 [w,b] 的顺序构造列表；return 交给调用者。','返回 [2.0,0.0]\n不能写反成 [b,w]，也不是 print。','交回两个拟合参数。']
+];
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const $=id=>document.getElementById(id);
+let lineIndex=0;
+function renderLine(index,scroll=false){lineIndex=Math.max(0,Math.min(entries.length-1,index));const e=entries[lineIndex];document.querySelectorAll('.code-line').forEach((el,i)=>{el.classList.toggle('active',i===lineIndex);el.setAttribute('aria-pressed',String(i===lineIndex));});$('line-detail').innerHTML=`<div class="detail-kicker">第 ${lineIndex+1} 行 / ${entries.length} 行</div><h3>${esc(e[1])}</h3><pre><code>${esc(e[0].trim())}</code></pre><p>${esc(e[2])}</p><div class="example">${esc(e[3])}</div><div class="purpose">这一行的作用：${esc(e[4])}</div>`;$('line-status').textContent=`${lineIndex+1} / ${entries.length}`;$('prev-line').disabled=lineIndex===0;$('next-line').disabled=lineIndex===entries.length-1;if(scroll){const active=document.querySelector('.code-line.active'),box=$('code-lines');if(active.offsetTop<box.offsetTop+box.scrollTop||active.offsetTop+active.offsetHeight>box.offsetTop+box.scrollTop+box.clientHeight)box.scrollTop=active.offsetTop-box.offsetTop-box.clientHeight/2;}}
+entries.forEach((e,i)=>{const b=document.createElement('button');b.type='button';b.className='code-line';b.innerHTML=`<span class="line-no">${i+1}</span><span class="code-text">${esc(e[0])}</span>`;b.setAttribute('aria-label',`第${i+1}行：${e[1]}`);b.addEventListener('click',()=>renderLine(i));$('code-lines').appendChild(b);});
+$('prev-line').addEventListener('click',()=>renderLine(lineIndex-1,true));$('next-line').addEventListener('click',()=>renderLine(lineIndex+1,true));
+$('copy-code').addEventListener('click',async()=>{const text=entries.map(e=>e[0]).join('\n')+'\n';try{await navigator.clipboard.writeText(text);$('copy-code').textContent='已复制';}catch(e){const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();const ok=document.execCommand('copy');ta.remove();$('copy-code').textContent=ok?'已复制':'请选择代码手动复制';}setTimeout(()=>{$('copy-code').textContent='复制完整代码'},2500);});renderLine(0);
+function matrix(headers,rows){return `<div class="table-wrap"><table class="matrix"><thead><tr>${headers.map(x=>`<th>${esc(x)}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map(x=>`<td>${esc(x)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;}
+const datasets=[{name:'原题示例 · y=2x',points:[[1,2],[2,4],[3,6],[4,8],[5,10]]},{name:'非零截距 · y=2x+1',points:[[1,3],[2,5],[3,7]]},{name:'带噪声的三个点',points:[[1,2],[2,3],[3,5]]}];
+function calculate(points){const n=points.length,mx=points.reduce((s,p)=>s+p[0],0)/n,my=points.reduce((s,p)=>s+p[1],0)/n,dx=points.map(p=>p[0]-mx),dy=points.map(p=>p[1]-my),products=dx.map((x,i)=>x*dy[i]),squares=dx.map(x=>x*x),num=products.reduce((s,x)=>s+x,0),den=squares.reduce((s,x)=>s+x,0),w=num/den,b=my-w*mx;return{points,n,mx,my,dx,dy,products,squares,num,den,w,b};}
+const fmt=x=>Math.abs(x)<1e-12?'0.0000':Number(x).toFixed(4);
+let datasetIndex=0,traceIndex=0,current=calculate(datasets[0].points),fitW=current.w,fitB=current.b;
+const traceSteps=['取 X、Y','求均值','减均值','乘积与平方','求和','求 w、b'];
+function renderTrace(index){traceIndex=index;document.querySelectorAll('#trace-controls button').forEach((b,i)=>{b.classList.toggle('active',i===index);b.setAttribute('aria-pressed',String(i===index));});const c=current;let title='',body='';
+ if(index===0){title='data[:,0] 取 x，data[:,1] 取 y';body=matrix(['点下标','X[i]','Y[i]'],c.points.map((p,i)=>[i,p[0],p[1]]));}
+ if(index===1){title='先得到两个均值标量';body=matrix(['变量','计算','结果'],[['mean_x',c.points.map(p=>p[0]).join(' + ')+'，再除以 '+c.n,fmt(c.mx)],['mean_y',c.points.map(p=>p[1]).join(' + ')+'，再除以 '+c.n,fmt(c.my)]]);}
+ if(index===2){title='每个坐标减去自己的均值';body=matrix(['点','x','y','dx=x−x̄','dy=y−ȳ'],c.points.map((p,i)=>[i,p[0],p[1],fmt(c.dx[i]),fmt(c.dy[i])]));}
+ if(index===3){title='对应位置相乘，保留每个点的贡献';body=matrix(['点','dx','dy','dx×dy','dx²'],c.points.map((p,i)=>[i,fmt(c.dx[i]),fmt(c.dy[i]),fmt(c.products[i]),fmt(c.squares[i])]));}
+ if(index===4){title='np.sum 把一串数变成一个数';body=matrix(['变量','要相加的数组','求和结果'],[['num','['+c.products.map(fmt).join(', ')+']',fmt(c.num)],['den','['+c.squares.map(fmt).join(', ')+']',fmt(c.den)]]);}
+ if(index===5){title='最后求两个参数，按 [w,b] 返回';body=matrix(['参数','计算','结果'],[['w',fmt(c.num)+' / '+fmt(c.den),fmt(c.w)],['b',fmt(c.my)+' − '+fmt(c.w)+' × '+fmt(c.mx),fmt(c.b)]]);}
+ $('trace-content').innerHTML=`<h3>${esc(title)}</h3>${body}`;$('trace-summary').innerHTML=`当前数据：<strong>${esc(datasets[datasetIndex].name)}</strong>；n=${c.n}，均值点 (${fmt(c.mx)}, ${fmt(c.my)})。<br>num=${fmt(c.num)}，den=${fmt(c.den)}，最终 <code>[w,b]=[${fmt(c.w)},${fmt(c.b)}]</code>。<br><span class="small">表格为了阅读保留四位小数，计算过程中不提前舍入。</span>`;
+}
+function plotFit(){const points=current.points;const minX=Math.min(...points.map(p=>p[0])),maxX=Math.max(...points.map(p=>p[0])),padX=(maxX-minX)*.15||1,xlo=minX-padX,xhi=maxX+padX;const yValues=points.map(p=>p[1]).concat([fitW*xlo+fitB,fitW*xhi+fitB]);let ylo=Math.min(...yValues),yhi=Math.max(...yValues);const padY=(yhi-ylo)*.15||1;ylo-=padY;yhi+=padY;const sx=x=>60+(x-xlo)/(xhi-xlo)*427,sy=y=>335-(y-ylo)/(yhi-ylo)*277;let out='<title>线性回归与纵向残差</title><desc>深色点为训练数据，蓝线为当前 y=wx+b，橙色竖线为真实 y 与预测 y 的差。</desc>';for(let i=0;i<5;i++){const x=xlo+(xhi-xlo)*i/4,y=ylo+(yhi-ylo)*i/4;out+=`<line x1="${sx(x)}" y1="58" x2="${sx(x)}" y2="335" stroke="#e2e8f1"/><line x1="60" y1="${sy(y)}" x2="487" y2="${sy(y)}" stroke="#e2e8f1"/><text x="${sx(x)}" y="360" text-anchor="middle" fill="#52627a" font-size="12">${x.toFixed(1)}</text><text x="48" y="${sy(y)+4}" text-anchor="end" fill="#52627a" font-size="12">${y.toFixed(1)}</text>`;}out+='<text x="487" y="382" text-anchor="end" fill="#52627a" font-size="14">x</text><text x="43" y="40" fill="#52627a" font-size="14">y</text>';out+=`<line x1="${sx(xlo)}" y1="${sy(fitW*xlo+fitB)}" x2="${sx(xhi)}" y2="${sy(fitW*xhi+fitB)}" stroke="#235cce" stroke-width="2"/>`;points.forEach((p,i)=>{const predicted=fitW*p[0]+fitB;out+=`<line x1="${sx(p[0])}" y1="${sy(p[1])}" x2="${sx(p[0])}" y2="${sy(predicted)}" stroke="#b65612" stroke-width="2"/><circle cx="${sx(p[0])}" cy="${sy(p[1])}" r="5" fill="#17233c"/><text x="${sx(p[0])+8}" y="${sy(p[1])-10}" fill="#17233c" font-size="12">P${i}</text>`;});$('fit-plot').innerHTML=out;}
+function renderFit(){const rows=current.points.map((p,i)=>{const predicted=fitW*p[0]+fitB,r=p[1]-predicted;return[i,fmt(p[1]),fmt(predicted),fmt(r),fmt(r*r)];}),sse=current.points.reduce((s,p)=>s+(p[1]-(fitW*p[0]+fitB))**2,0),best=current.points.reduce((s,p)=>s+(p[1]-(current.w*p[0]+current.b))**2,0);$('fit-table').innerHTML='<h3>预测与残差</h3>'+matrix(['点','真实 y','预测 ŷ','残差','残差²'],rows);$('fit-result').innerHTML=`当前直线：<code>y = ${fmt(fitW)}x + (${fmt(fitB)})</code><br>当前平方误差和：<strong>${fmt(sse)}</strong><br>最小二乘解的平方误差和：<strong>${fmt(best)}</strong><br><span class="small">最优参数是 w=${fmt(current.w)}，b=${fmt(current.b)}。</span>`;plotFit();}
+function resetFit(){fitW=current.w;fitB=current.b;$('input-w').value=String(fitW);$('input-b').value=String(fitB);renderFit();}
+function selectDataset(index){datasetIndex=index;current=calculate(datasets[index].points);document.querySelectorAll('#dataset-controls button').forEach((b,i)=>{b.classList.toggle('active',i===index);b.setAttribute('aria-pressed',String(i===index));});renderTrace(traceIndex);resetFit();}
+datasets.forEach((d,i)=>{const b=document.createElement('button');b.type='button';b.className='btn';b.textContent=d.name;b.addEventListener('click',()=>selectDataset(i));$('dataset-controls').appendChild(b);});traceSteps.forEach((s,i)=>{const b=document.createElement('button');b.type='button';b.className='btn';b.textContent=s;b.addEventListener('click',()=>renderTrace(i));$('trace-controls').appendChild(b);});
+function updateFit(){if($('input-w').value.trim()===''||$('input-b').value.trim()==='')return;const w=Number($('input-w').value),b=Number($('input-b').value);if(!Number.isFinite(w)||!Number.isFinite(b)||Math.abs(w)>1e6||Math.abs(b)>1e6)return;fitW=w;fitB=b;renderFit();}
+$('input-w').addEventListener('input',updateFit);$('input-b').addEventListener('input',updateFit);$('reset-fit').addEventListener('click',resetFit);$('try-fit').addEventListener('click',()=>{fitW=1;fitB=0;$('input-w').value='1';$('input-b').value='0';renderFit();});selectDataset(0);
+</script>
+  <script src="./math-render.js?v=20261003-13"></script>
+</body>
+</html>

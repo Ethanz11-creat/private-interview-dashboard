@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>K-Means 手撕代码 · 逐行拆解 · 完整题干</title>
+<style>
+:root{--bg:#f4f6fa;--paper:#fff;--ink:#17233c;--soft:#52627a;--line:#dce3ee;--blue:#235cce;--blue-soft:#edf3ff;--green:#087967;--orange:#b65612;--code:#142038;--code-ink:#e4edfa;--c0:#235cce;--c1:#b65612}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:80px}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.8 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}a{color:var(--blue);text-decoration:none}button,input{font:inherit}button{cursor:pointer}button:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid #6c9dff;outline-offset:3px}button:disabled{cursor:default;opacity:.4}code,pre,.mono{font-family:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace}code{font-size:.91em;background:#edf1f7;padding:2px 5px;border-radius:4px}pre{background:var(--code);color:var(--code-ink);padding:20px;border-radius:12px;overflow:auto;font-size:14px;line-height:1.75;tab-size:4}pre code{background:none;padding:0;color:inherit;font-size:inherit}.wrap{max-width:1240px;margin:auto;padding:0 30px}header{background:var(--paper);border-bottom:1px solid var(--line)}.hero{padding:46px 0 30px}.eyebrow{font-size:12px;font-weight:700;letter-spacing:.13em;color:var(--blue)}h1{font-size:36px;line-height:1.3;margin:10px 0 14px;letter-spacing:-1px}h2{font-size:25px;line-height:1.4;margin:0 0 16px}h3{font-size:19px;margin:22px 0 10px}p{margin:10px 0}.lead{color:var(--soft);max-width:790px}.pills{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}.pill{font-size:13px;background:var(--blue-soft);padding:4px 11px;border-radius:6px;color:var(--blue)}nav{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.96);border-bottom:1px solid var(--line);backdrop-filter:blur(10px)}.nav-links{display:flex;gap:25px;overflow:auto;white-space:nowrap;padding:14px 0;font-size:14px}main{padding-bottom:50px}.section{margin-top:30px;padding:28px;background:var(--paper);border:1px solid var(--line);border-radius:16px}.sec-no{font-size:13px;color:var(--blue);margin-bottom:5px;font-weight:600}.muted{color:var(--soft)}.callout{border-left:3px solid var(--blue);background:var(--blue-soft);padding:13px 17px;margin:18px 0;border-radius:0 8px 8px 0}.note{border-left-color:var(--orange);background:#fff6ed}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;padding:11px 13px;border-bottom:1px solid var(--line);vertical-align:top}th{font-weight:600;color:var(--soft);background:#f7f9fc}td code{white-space:nowrap}.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.step{border:1px solid var(--line);border-radius:10px;padding:15px}.step b{display:block;color:var(--blue)}.step p{font-size:14px;line-height:1.65;margin:7px 0 0}.controls{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin:15px 0}.btn{border:1px solid var(--line);background:var(--paper);color:var(--ink);padding:7px 13px;border-radius:7px;font-size:14px;line-height:1.6}.btn:hover{background:#f1f5fb}.btn.active,.btn.primary{background:var(--blue);color:white;border-color:var(--blue)}.editor-grid{display:grid;grid-template-columns:minmax(0,1.14fr) minmax(0,1fr);gap:20px;align-items:start}.code-panel{background:var(--code);border-radius:12px;overflow:hidden}.code-toolbar{padding:12px 15px;border-bottom:1px solid #354159;color:#b9c9e6;display:flex;justify-content:space-between;align-items:center;font-size:12px}.code-scroll{overflow:auto;padding:10px 0}.code-line{display:flex;align-items:baseline;min-width:max-content;width:100%;border:0;border-left:3px solid transparent;background:none;color:var(--code-ink);text-align:left;padding:3px 18px 3px 0;font:13px/1.7 ui-monospace,SFMono-Regular,Consolas,monospace}.code-line:hover{background:#223453}.code-line.active{background:#263e66;border-left-color:#83adff}.line-no{display:inline-block;width:40px;flex:none;text-align:right;margin-right:16px;color:#8a9bb6;font-size:11px}.code-text{white-space:pre}.detail-panel{position:sticky;top:78px;border:1px solid var(--line);border-radius:12px;padding:22px;min-height:410px}.detail-kicker{font-size:12px;color:var(--blue);font-weight:600}.detail-panel h3{margin:9px 0 14px}.detail-panel pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px;padding:14px}.detail-panel p{font-size:15px}.detail-panel .example{background:#f5f8fd;border:1px solid var(--line);padding:13px 15px;border-radius:8px;font-size:14px;margin-top:15px;white-space:pre-wrap}.detail-panel .purpose{color:var(--green);font-size:14px;margin-top:15px}.index-status{font-size:13px;color:var(--soft)}.small{font-size:13px}.shape-chain{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:20px 0}.shape{padding:7px 13px;border:1px solid var(--line);border-radius:7px;font-size:14px}.shape.selected{background:var(--blue-soft);border-color:#b8cef7;color:var(--blue)}.tensor-content{min-height:240px}.matrix{font-variant-numeric:tabular-nums}.matrix td{font-family:ui-monospace,Consolas,monospace}.tensor-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}.tensor-caption{font-size:14px;color:var(--soft);margin-bottom:10px}.equation{background:#f5f8fd;padding:15px;border-radius:8px;font-size:15px}.plot-area{background:#fafcff;border:1px solid var(--line);border-radius:12px;overflow:hidden}.plot-area svg{display:block;width:100%;height:auto}.legend{display:flex;flex-wrap:wrap;gap:18px;font-size:13px;margin:12px 0}.legend span{display:inline-flex;align-items:center;gap:7px}.dot{width:10px;height:10px;border-radius:50%;display:inline-block}.c0{background:var(--c0)}.c1{background:var(--c1)}.neutral{background:#77849a}.iteration-layout{display:grid;grid-template-columns:1fr 1fr;gap:20px}.stage-copy{min-height:75px}.stage-copy h3{margin:0 0 6px}.stage-copy p{font-size:14px}.state-result{font-size:14px;margin-top:15px;background:#f5f8fd;padding:15px;border-radius:8px}.formula{color:var(--green);font-size:14px}.phase-badge{font-size:12px;background:var(--blue-soft);color:var(--blue);padding:3px 9px;border-radius:5px}.comparison pre{margin-top:8px}.comparison h3{margin-top:0}details{border:1px solid var(--line);padding:13px 17px;border-radius:9px;margin:12px 0}summary{cursor:pointer;font-weight:500}details p,details li{font-size:14px}ul,ol{padding-left:23px}.memory-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}.memory-card{border:1px solid var(--line);border-radius:10px;padding:16px}.memory-card h3{margin:0 0 8px}.answer-box{margin-top:8px;color:var(--green);font-size:14px}.skeleton pre{margin-bottom:0}.footer{margin-top:22px;font-size:13px;color:var(--soft);text-align:center}.mobile-detail{display:none}@media(max-width:900px){.editor-grid,.iteration-layout{grid-template-columns:1fr}.detail-panel{position:static;min-height:0}.code-scroll{max-height:400px}.steps{grid-template-columns:1fr 1fr}h1{font-size:29px}.mobile-detail{display:block;font-size:13px;color:var(--soft);margin:0 0 10px}}@media(max-width:620px){.wrap{padding:0 16px}.hero{padding:30px 0 24px}.section{padding:19px;margin-top:20px;border-radius:12px}.grid2,.tensor-grid,.memory-grid{grid-template-columns:1fr}.steps{grid-template-columns:1fr 1fr}.nav-links{gap:19px;font-size:13px}h1{font-size:26px}h2{font-size:22px}.code-line{font-size:12px}.detail-panel{padding:17px}.btn{font-size:13px}.plot-area svg text{font-size:13px}}@media print{nav,.controls,.code-toolbar button,.footer{display:none}.wrap{max-width:none;padding:0}body{background:white;font-size:12px}.section{break-inside:avoid;border-radius:0}.detail-panel{position:static}.code-line{color:black;font-size:10px}.code-panel,pre{background:#f4f4f4;color:black}.code-scroll{max-height:none}.line-no{color:#666}.section{margin-top:18px;padding:15px}.editor-grid{grid-template-columns:1fr 1fr}h1{font-size:24px}details{break-inside:avoid}}
+</style>
+  <link rel="stylesheet" href="./handwriting.css?v=20261003-2">
+</head>
+<body>
+<header><div class="wrap hero"><div class="eyebrow">PYTHON / NUMPY / 手撕代码学习</div><h1>K-Means：把每一行代码讲明白</h1><p class="lead">你已经知道“分组，再求均值”的思想。现在把它落到变量、下标、数组形状和循环顺序上：看懂一行，知道它读什么、算什么、写回哪里。</p><div class="pills"><span class="pill">完整题干与示例</span><span class="pill">使用你已经通过的代码</span><span class="pill">点击代码逐行看解释</span><span class="pill">示例按真实计算逐步演示</span><span class="pill">离线可用</span></div></div></header>
+<nav aria-label="页面目录"><div class="wrap"><div class="nav-links"><a href="#problem">① 完整题干</a><a href="#overview">② 先认变量</a><a href="#code">③ 逐行拆解</a><a href="#broadcast">④ 拆开距离公式</a><a href="#iterations">⑤ 跑一遍示例</a><a href="#loops">⑥ 普通循环对照</a><a href="#practice">⑦ 盲写复盘</a></div></div></nav>
+<main class="wrap">
+<section class="section" id="problem">
+<div class="sec-no">01 / 完整题干 · 手撕前先看</div>
+<h2>K-Means 聚类算法</h2>
+<p class="small">难度：5。以下题干根据你提供的题面整理，输入、返回值、初始中心、示例和数据范围完整保留。</p>
+<h3>题目描述</h3>
+<p>实现一个二维数据的 K-Means 聚类算法。给定 n 个二维数据点 <code>nums</code>，将它们划分为 <code>k</code> 个簇，并返回最终的聚类中心和每个数据点所属的聚类标签。</p>
+<p>其中 <code>nums[i] = [xᵢ, yᵢ]</code> 表示第 i 个二维数据点。聚类最多进行 <code>max_iter</code> 次迭代；如果在此之前收敛，可以提前停止。</p>
+<div class="callout"><strong>初始聚类中心：</strong>必须从输入的数据点中，选择读入顺序的前 k 个点作为初始中心，即 <code>nums[:k]</code>，不是随机选择。</div>
+<h3>输入参数</h3>
+<div class="table-wrap"><table><thead><tr><th>参数</th><th>含义</th></tr></thead><tbody>
+<tr><td><code>n</code></td><td>数据点数量。</td></tr>
+<tr><td><code>k</code></td><td>聚类数，即最终中心的数量。</td></tr>
+<tr><td><code>max_iter</code></td><td>最大迭代次数；提前收敛时可停止。</td></tr>
+<tr><td><code>nums</code></td><td>n 行、2 列的二维坐标列表，每行是一个 [x,y] 点。</td></tr>
+</tbody></table></div>
+<h3>返回值</h3>
+<ol>
+<li>长度为 k 的二维中心列表：<code>[[x₁,y₁], [x₂,y₂], …, [xₖ,yₖ]]</code>，每个元素是一个最终聚类中心。</li>
+<li>长度为 n 的整数标签列表：每个标签范围是 <code>[0,k−1]</code>，顺序必须与 nums 中的数据点顺序一致。</li>
+</ol>
+<p><strong>精度要求：</strong>中心坐标保留 4 位小数，误差容忍度为 <code>1e−3</code>。</p>
+<h3>示例</h3>
+<pre><code>输入：
+n = 4
+k = 2
+max_iter = 100
+nums = [[1.0, 1.0], [1.5, 2.0], [5.0, 8.0], [8.0, 8.0]]
+
+输出：
+[[1.2500, 1.5000], [6.5000, 8.0000]]
+[0, 0, 1, 1]</code></pre>
+<h3>数据范围</h3>
+<ul>
+<li><code>1 ≤ n ≤ 2 × 10⁴</code>。</li>
+<li><code>1 ≤ k ≤ 20</code>，并且 <code>k ≤ n</code>。</li>
+<li><code>1 ≤ max_iter ≤ 100</code>。</li>
+<li><code>−10⁴ ≤ nums[i][0], nums[i][1] ≤ 10⁴</code>。</li>
+</ul>
+<h3>本页代码如何完成聚类？</h3>
+<ol>
+<li>复制前 k 个点作为中心。</li>
+<li>每轮将每个点分配给最近的中心。</li>
+<li>若新旧标签完全相同，则提前停止。</li>
+<li>否则按当前分组，对每个簇的 x、y 分别求均值，更新中心；重复直到停止或达到迭代上限。</li>
+</ol>
+<p class="small">手撕提交的方法：<code>kMeans(self, n, k, max_iter, nums)</code>。本页实现用“标签不变”判定收敛；遇到空簇时保留该簇的旧中心，相同距离时 argmin 选择下标最小的中心。这些实现细节在后文逐行解释。</p>
+</section>
+
+<section class="section" id="overview"><div class="sec-no">02 / 先把变量对上号</div><h2>整个程序只在反复更新两样东西</h2><p><code>labels</code> 记录每个点属于哪个簇；<code>centers</code> 记录每个簇的中心在哪。<code>points</code> 是原始数据，整个过程保持不变。</p>
+<div class="table-wrap"><table><thead><tr><th>变量</th><th>形状 / 类型</th><th>示例与含义</th></tr></thead><tbody><tr><td><code>n, k, max_iter</code></td><td>三个整数</td><td><code>4, 2, 100</code>：4 个点，2 个簇，最多循环 100 轮。</td></tr><tr><td><code>points</code></td><td><code>(n, 2)</code>，浮点数组</td><td>每行一个点，每行两列分别是 x、y。</td></tr><tr><td><code>centers</code></td><td><code>(k, 2)</code>，浮点数组</td><td>每行一个中心；第 j 行就是簇 j 的中心。</td></tr><tr><td><code>labels</code></td><td><code>(n,)</code>，整数数组</td><td><code>[0, 0, 1, 1]</code>：前两个点属于簇 0，后两个属于簇 1。</td></tr><tr><td><code>dists</code></td><td><code>(n, k)</code>，浮点数组</td><td><code>dists[i, j]</code> 是第 i 个点到第 j 个中心的距离平方。</td></tr><tr><td><code>cluster_points</code></td><td><code>(m, 2)</code>，浮点数组</td><td>筛选出当前簇中的 m 个点；m 可以是 0。</td></tr></tbody></table></div>
+<div class="steps"><div class="step"><b>1. 初始化</b><p>前 k 个点当中心；旧标签全部设成 -1。</p></div><div class="step"><b>2. 给点分组</b><p>计算距离，每个点选择最近中心的下标。</p></div><div class="step"><b>3. 判断停止</b><p>新旧标签相同，分组稳定，退出循环。</p></div><div class="step"><b>4. 更新中心</b><p>按新标签筛点，分别对 x、y 求平均。</p></div></div>
+<div class="callout"><strong>形状 <code>(n, 2)</code> 的意思：</strong>这是一个 n 行、2 列的数组。<code>(n,)</code> 则是一维数组，有 n 个元素；括号里的逗号是 Python 单元素元组的写法。</div></section>
+
+<section class="section" id="code"><div class="sec-no">03 / 对照已经通过的实现</div><h2>点击任意一行，查看它具体做了什么</h2><p class="muted">先按顺序看一遍，再单独复习不熟悉的 NumPy 写法。右侧给出语法、示例和这一行在算法中的作用。</p><div class="controls"><button class="btn" id="prev-line" type="button">上一行</button><button class="btn primary" id="next-line" type="button">下一行</button><span class="index-status" id="line-status"></span></div><p class="mobile-detail">小屏幕上，所选行的解释位于代码下方。</p>
+<div class="editor-grid"><div class="code-panel"><div class="code-toolbar"><span>kMeans.py · 点击行号或代码</span><button class="btn" id="copy-code" type="button">复制完整代码</button></div><div class="code-scroll" id="code-lines" aria-label="逐行代码"></div></div><article class="detail-panel" id="line-detail" aria-live="polite"></article></div>
+<div class="callout note"><strong>你之前的两个错误：</strong><code>.copy</code> 是方法本身，<code>.copy()</code> 才会执行复制；<code>lables</code> 是拼写错误，筛选时应使用已经得到的 <code>labels</code>。</div></section>
+
+<section class="section" id="broadcast"><div class="sec-no">04 / 最值得单独理解的一行</div><h2>距离公式：先两两相减，再平方，再加起来</h2><pre><code>dists = np.sum((points[:, None, :] - centers[None, :, :]) ** 2, axis=2)</code></pre><p>目标是得到一张“距离表”：每行对应一个点，每列对应一个中心。下面展示第一轮实际使用的数组。</p><div class="controls" id="tensor-controls" aria-label="距离计算步骤"></div><div class="shape-chain" id="shape-chain"></div><div class="tensor-content" id="tensor-content" aria-live="polite"></div>
+<div class="grid2"><div><h3><code>:</code> 和 <code>None</code> 怎么读？</h3><p><code>:</code> 表示这一维全部保留；<code>None</code> 表示在这里增加一个长度为 1 的维度。</p><p><code>points[:, None, :]</code>：保留所有点，在中间加一维，保留 x、y 两列。</p><p><code>centers[None, :, :]</code>：在最前面加一维，保留所有中心和两列坐标。</p></div><div><h3>为什么可以直接相减？</h3><p>NumPy 从末尾对齐维度：<code>(n, 1, 2)</code> 与 <code>(1, k, 2)</code> 相减时，长度为 1 的维度可扩展到另一方的长度，结果是 <code>(n, k, 2)</code>。</p><p>这是“广播”。增加维度和广播不要求你手工复制 n×k 份原数据；但相减、平方和求和的结果需要实际存储。</p></div></div>
+<div class="callout"><strong>读 <code>axis</code> 的方法：</strong><code>(n, k, 2)</code> 的第 0 维是点，第 1 维是中心，第 2 维是 x、y 坐标差。因此 <code>axis=2</code> 是把每一对点与中心的两个坐标差平方相加。</div></section>
+
+<section class="section" id="iterations"><div class="sec-no">05 / 用原题示例真正跑一次</div><h2>第一轮不会立刻得到最终分组</h2><p><code>nums = [[1,1], [1.5,2], [5,8], [8,8]]</code>，<code>k = 2</code>。圆点是数据点，带十字的方块是中心；P0～P3 是数据点下标，C0、C1 是簇标签。</p><div class="controls"><button class="btn" id="prev-stage" type="button">上一步</button><button class="btn primary" id="next-stage" type="button">下一步</button><button class="btn" id="reset-stage" type="button">回到初始化</button><span class="phase-badge" id="stage-index"></span></div><div class="stage-copy" id="stage-copy" aria-live="polite"></div><div class="iteration-layout"><div><div class="plot-area"><svg id="cluster-plot" viewBox="0 0 520 400" role="img" aria-label="示例点和聚类中心的坐标图"></svg></div><div class="legend"><span><i class="dot c0"></i>簇 0 · 蓝色</span><span><i class="dot c1"></i>簇 1 · 橙色</span><span><i class="dot neutral"></i>尚未分组 · 灰色</span></div></div><div id="stage-table"></div></div><div class="state-result" id="stage-result"></div>
+<div class="callout note"><strong>停止条件为什么放在更新中心之前？</strong>上一轮已经根据旧标签求过均值。如果这一轮标签完全相同，再求均值仍会得到相同中心，所以可以直接停止。初始标签全是 -1，确保第一轮不会误判成“已经收敛”。</div>
+<p class="small muted">这里使用代码中的“标签不变”作为停止条件，没有额外添加中心位移阈值。达到 max_iter 时，返回最后一轮的分组及该分组更新出的中心；这不保证已经收敛。</p></section>
+
+<section class="section" id="loops"><div class="sec-no">06 / 把 NumPy 语法翻译成熟悉的循环</div><h2>短代码背后，仍然是这些操作</h2><p>下面是理解用的等价操作。手撕时可以先在脑中还原这些循环，再写 NumPy 版本。</p>
+<div class="grid2 comparison"><div><h3>计算所有距离平方</h3><pre><code># NumPy
+dists = np.sum(
+    (points[:, None, :] - centers[None, :, :]) ** 2,
+    axis=2
+)
+
+# 普通循环：i 是点，j 是中心
+dists = []
+for i in range(n):
+    row = []
+    for j in range(k):
+        dx = points[i][0] - centers[j][0]
+        dy = points[i][1] - centers[j][1]
+        row.append(dx * dx + dy * dy)
+    dists.append(row)</code></pre></div><div><h3>给每个点选择最近中心</h3><pre><code># NumPy
+new_labels = np.argmin(dists, axis=1)
+
+# 普通循环：返回下标，不是距离值
+new_labels = []
+for i in range(n):
+    best_j = 0
+    for j in range(1, k):
+        if dists[i][j] &lt; dists[i][best_j]:
+            best_j = j
+    new_labels.append(best_j)
+
+# 严格用 &lt;：同样远时保留先出现的中心
+# 对应 np.argmin 的首次最小值规则</code></pre></div></div>
+<div class="grid2 comparison"><div><h3>根据标签筛选点</h3><pre><code># NumPy
+cluster_points = points[labels == j]
+
+# 普通循环
+cluster_points = []
+for i in range(n):
+    if labels[i] == j:
+        cluster_points.append(points[i])</code></pre><p class="small"><code>labels == j</code> 对每一个标签做比较，生成布尔数组。<code>points[布尔数组]</code> 只保留 True 对应的行，称为“布尔索引”。</p></div><div><h3>分别求 x、y 平均值</h3><pre><code># NumPy
+centers[j] = np.mean(cluster_points, axis=0)
+
+# 普通循环（前提：簇中有点）
+sum_x = 0
+sum_y = 0
+for x, y in cluster_points:
+    sum_x += x
+    sum_y += y
+m = len(cluster_points)
+centers[j] = [sum_x / m, sum_y / m]</code></pre><p class="small"><code>axis=0</code> 沿着“点”这一维求均值，合并各行，留下两列结果；不是把 x、y 混在一起平均。</p></div></div>
+<h3>三个 axis，分别在处理哪一维？</h3><div class="table-wrap"><table><thead><tr><th>操作</th><th>输入形状</th><th>沿哪一维操作</th><th>输出形状</th></tr></thead><tbody><tr><td><code>sum(..., axis=2)</code></td><td><code>(n, k, 2)</code></td><td>把 x、y 的差平方相加</td><td><code>(n, k)</code></td></tr><tr><td><code>argmin(..., axis=1)</code></td><td><code>(n, k)</code></td><td>在 k 个中心中选最小值的位置</td><td><code>(n,)</code></td></tr><tr><td><code>mean(..., axis=0)</code></td><td><code>(m, 2)</code></td><td>对 m 个点的各列分别求平均</td><td><code>(2,)</code></td></tr></tbody></table></div>
+<details><summary>为什么距离没有开平方？</summary><p>欧氏距离是 √((x₁−x₂)²+(y₁−y₂)²)。所有距离平方都非负，平方根保持大小顺序，所以最小距离平方对应的中心，也就是最近中心。不做开平方，可以省掉一项计算。</p></details>
+<details><summary>为什么 centers 要 copy()，labels 却可以直接赋值？</summary><p><code>points[:k]</code> 通常是原数组的切片视图。直接拿它当 centers，后续 <code>centers[j] = ...</code> 可能改到原始点。<code>.copy()</code> 创建独立数组，隔离这类修改。</p><p><code>labels = new_labels</code> 是把变量绑定到本轮新数组。随后代码只读取标签，并没有修改这个数组的某个元素，因此这里不需要额外复制。</p></details>
+<details><summary>空簇、相同距离分别怎么办？</summary><p>空簇：<code>len(cluster_points) == 0</code> 时跳过更新，保持该簇的旧中心，避免对空数组求均值得到 NaN。</p><p>相同距离：<code>np.argmin</code> 返回第一个最小值的位置，因此选择下标较小的中心。重复初始中心时，这个规则可能导致第一轮出现空簇。</p></details>
+<details><summary>为什么最后 round() 和 tolist()？</summary><p>计算过程保留完整精度，结束后才四舍五入到四位小数。<code>float(x)</code> 将 NumPy 标量转成普通 Python 浮点数；<code>labels.tolist()</code> 将 NumPy 数组转成 Python 列表。</p><p><code>round(1.25, 4)</code> 的显示仍可能是 1.25；若打印文本必须有四位小数，用 <code>f"{x:.4f}"</code>。这个函数返回数值列表，不需要把中心转成字符串。</p></details>
+</section>
+
+<section class="section" id="practice"><div class="sec-no">07 / 从看懂到自己写出来</div><h2>按六个动作盲写，比逐字背整段更容易</h2><ol><li><strong>初始化：</strong>points 转浮点数组；前 k 个点复制成 centers；labels 全设为 -1。</li><li><strong>迭代：</strong>最多 max_iter 轮。</li><li><strong>算距离并分组：</strong>广播相减、平方、沿 axis=2 求和；沿 axis=1 找 argmin。</li><li><strong>判停止并更新标签：</strong>array_equal 相同则 break；不同则 labels = new_labels。</li><li><strong>更新中心：</strong>遍历簇 j，布尔筛点；非空就沿 axis=0 求 mean。</li><li><strong>返回：</strong>中心最后 round，标签 tolist。</li></ol>
+<div class="memory-grid"><div class="memory-card"><h3>复盘 1：这两个形状是什么？</h3><p><code>points[:, None, :]</code><br><code>centers[None, :, :]</code></p><details><summary>查看答案</summary><div class="answer-box"><code>(n, 1, 2)</code> 和 <code>(1, k, 2)</code>；相减得到 <code>(n, k, 2)</code>。</div></details></div><div class="memory-card"><h3>复盘 2：argmin 返回什么？</h3><p>某点距离平方是 <code>[65, 48.25]</code>，它的标签是多少？</p><details><summary>查看答案</summary><div class="answer-box">标签是 <code>1</code>，不是 48.25。argmin 返回最小值的下标。</div></details></div><div class="memory-card"><h3>复盘 3：布尔筛选后剩哪些点？</h3><p><code>labels = [0, 0, 1, 1]</code>，<code>j = 0</code>。</p><details><summary>查看答案</summary><div class="answer-box"><code>labels == 0</code> 得到 <code>[True, True, False, False]</code>。筛出 <code>[[1,1], [1.5,2]]</code>。</div></details></div><div class="memory-card"><h3>复盘 4：为什么初始标签是 -1？</h3><p>能不能初始化成全 0？</p><details><summary>查看答案</summary><div class="answer-box">全 0 可能和第一轮分组相同，导致中心还没更新就提前停止。比如 k=1、点为 [[0,0],[2,0]]，正确中心应是 [1,0]。-1 不是有效标签，确保第一轮会执行更新。</div></details></div></div>
+<div class="skeleton"><h3>盲写骨架：先口述空白处要做什么，再补代码</h3><pre><code>points = __________________________
+centers = _________________________
+labels = __________________________
+
+for _ in range(max_iter):
+    dists = _______________________
+    new_labels = __________________
+    if ___________________________:
+        break
+    labels = ______________________
+    for j in range(k):
+        cluster_points = __________
+        if _______________________:
+            centers[j] = __________
+
+centers_ret = _____________________
+return centers_ret, _______________</code></pre></div>
+<h3>复杂度也要能口述</h3><p>设实际执行了 T 轮。每一轮有 n 个点，每个点比较 k 个中心，二维坐标只带来常数开销，所以时间复杂度是 <strong>O(T × n × k)</strong>。逐簇筛选和求均值也在这个量级内。</p><p>最大的临时数组是 <code>(n, k, 2)</code> 的坐标差和 <code>(n, k)</code> 的距离表，所以额外空间是 <strong>O(n × k)</strong>。即使本次输入已经固定，复杂度仍然描述 n、k 变化时空间如何增长；单个变量 n 或 k 本身按通常模型算 O(1)。</p><div class="callout"><strong>面试口述：</strong>“我先取前 k 个点作为中心。每轮计算所有点到各中心的距离平方，把每个点分给最近的中心。如果分组和上一轮一致就停止，否则按簇分别求坐标均值更新中心。空簇保留原中心，最多迭代 max_iter 次，最后返回中心与标签。”</div></section>
+<div class="footer">K-Means 手撕学习页 · 根据已通过的 NumPy 实现拆解 · 数据与中间结果均来自原题示例</div>
+</main>
+<script>
+'use strict';
+const entries = [
+['import numpy as np','导入 NumPy，并给它起简称 np','NumPy 用于数组计算。后面的 np.array、np.sum、np.mean 等都是调用它提供的函数。','import 后面的 as np 表示：用 np 这个短名字访问 numpy。','准备数组计算工具。'],
+['from typing import List, Tuple','导入类型标注工具','List 和 Tuple 用来写函数输入、输出的类型说明。它们本身不会创建数据，也不会执行聚类。','List[List[float]]：外层列表中，每个元素又是一个浮点数列表。','帮助读代码的人理解接口。'],
+['class Solution:','定义提交平台要求的类','Solution 把方法装在类里。这是题目的核心代码提交形式，与聚类数学无关。','平台通常创建 Solution 的实例，再调用实例的 kMeans 方法。','满足平台接口。'],
+['    def kMeans(','开始定义 kMeans 方法','def 声明函数；后面的括号列出参数。这里把函数签名拆成多行，仍然是同一个方法。','Python 在括号尚未闭合时允许自然换行。','定义聚类入口。'],
+['        self,','self 是当前实例','类中的实例方法，第一个参数通常写 self。通过实例调用时，Python 会自动传入它；你不需要把 self 放在题目输入里。','Solution().kMeans(n, k, max_iter, nums)','连接方法与对象。'],
+['        n: int,','n：数据点数量','冒号后面的 int 是类型标注，说明预期传入整数。冒号在这里不是赋值。','示例 n = 4；应与 len(nums) 一致。','确定标签数组长度。'],
+['        k: int,','k：要分成几个簇','最终中心数组有 k 行；有效标签是 0 到 k-1。','示例 k = 2，簇标签是 0 和 1。','确定中心数量。'],
+['        max_iter: int,','max_iter：迭代次数上限','每轮包括分组、判断停止，以及必要时更新中心。它是上限，不是必须执行的次数。','示例 max_iter = 100，但第三轮检测到标签不变就退出。','限制运行轮数。'],
+['        nums: List[List[float]]','nums：二维坐标列表','List[List[float]] 描述嵌套列表。每一行形如 [x, y]；标注不会自动把整数转成浮点数。','[[1,1], [1.5,2], [5,8], [8,8]]','接收原始点。'],
+['    ) -> Tuple[List[List[float]], List[int]]:','说明返回值，再进入函数体','-> 后面是返回类型标注。Tuple 表示返回一对结果：二维中心列表、整数标签列表。结尾冒号开启函数体。','return centers_ret, labels.tolist()\n这会返回一个包含两项的元组。','明确两个返回结果的结构。'],
+['        points = np.array(nums, dtype=float)','把普通列表转换为浮点数组','np.array 创建 NumPy 数组；dtype=float 指定浮点类型。后面中心求均值会产生小数，浮点类型可保留它们。','points.shape == (4, 2)\npoints[0] == [1.0, 1.0]\npoints[0, 1] == 1.0','准备支持广播和布尔索引的数据。'],
+['        centers = points[:k].copy()','复制前 k 个点作为初始中心','[:k] 取下标 0 到 k-1 的行，不包含下标 k。切片通常与 points 共享数据，copy() 创建独立数组，避免更新中心时修改原始点。','k = 2\ncenters = [[1.0, 1.0], [1.5, 2.0]]\ncenters.shape == (2, 2)','初始化中心，隔离后续写入。'],
+['        labels = np.full(n, -1, dtype=int)','创建 n 个 -1 作为旧标签','np.full(长度, 填充值, dtype=类型) 创建并填充数组。-1 表示尚未分组，它不是有效簇标签。','labels = [-1, -1, -1, -1]\nlabels.shape == (4,)\n初始化为全 0 可能让第一轮误判成已收敛。','为每个点准备旧标签，确保首次更新。'],
+['        for _ in range(max_iter):','最多执行 max_iter 轮','range(max_iter) 依次产生 0 到 max_iter-1。这里不使用轮次变量，所以习惯写成 _；它仍然是普通变量，不是特殊语法。','max_iter = 100 → 最多执行 100 次循环体。\nbreak 可以提前结束。','控制迭代次数。'],
+['            dists = np.sum(','开始计算距离表','赋值右侧先算完，再把结果绑定到 dists。np.sum 是求和函数；完整表达式分布在接下来的三行。','最终 dists 的形状是 (n, k)。\ndists[i, j] 是点 i 到中心 j 的距离平方。','得到全体点与全体中心的距离表。'],
+['                (points[:, None, :] - centers[None, :, :]) ** 2,','每个点与每个中心相减，并逐元素平方',': 保留整维；None 增加长度为 1 的维度。广播后每一对点与中心都有两个坐标差。** 2 对每个元素分别平方。','(n,1,2) - (1,k,2) → (n,k,2)\n点 [5,8] 与中心 [1,1]：差 [4,7] → 平方 [16,49]','计算各坐标方向的距离贡献。'],
+['                axis=2','沿第三个维度，把两列贡献相加','axis 从 0 开始编号。当前形状 (n,k,2) 的 axis=2 对应 x、y 两项，求和后这一维消失。','[16,49] 求和得到 65。\n(n,k,2) → (n,k)','把坐标差平方转换为距离平方。'],
+['            )','结束 np.sum 调用','这行闭合前面的函数调用。多行表达式到这里结束，dists 现在才得到最终数组。','示例第一轮：\n[[0,1.25], [1.25,0], [65,48.25], [98,78.25]]','完成距离表赋值。'],
+['            new_labels = np.argmin(dists, axis=1)','每个点找最近中心的下标','dists 是 n 行 k 列。沿 axis=1，在每一行的 k 个距离中找最小值的位置。argmin 返回下标，不是最小值本身；并列时取首次出现的位置。','[65,48.25] → 下标 1\n第一轮 new_labels = [0,1,1,1]\n输出形状 (n,)','根据最近中心给点分组。'],
+['            if np.array_equal(labels, new_labels):','比较新旧分组是否完全相同','np.array_equal 比较整个数组的形状和对应元素，得到一个 True 或 False。普通 labels == new_labels 会得到一串布尔值，不能直接当整体判断。','旧 [-1,-1,-1,-1]，新 [0,1,1,1] → False\n旧 [0,0,1,1]，新 [0,0,1,1] → True','检测分组是否稳定。'],
+['                break','标签相同时退出迭代','break 退出最近的一层循环，这里是外层的迭代循环。它不会直接结束整个方法，后面的返回处理仍会执行。','第三轮 new_labels 与 labels 相同。\n上一轮中心已经按这些标签更新，再求均值也不变。','提前停止，避免重复计算。'],
+['            labels = new_labels','把本轮分组保存下来','只有标签不同时才运行到这里。labels 此后用于筛选本轮各簇的点，也会作为下一轮的旧标签。赋值本身不是复制数组。','第一轮：labels = [0,1,1,1]\n第二轮：labels = [0,0,1,1]','更新当前分组。'],
+['            for j in range(k):','依次更新每一个簇的中心','j 是簇编号，不是点编号。中心数组的第 j 行要由簇 j 的点来决定。','k = 2 → j 依次是 0、1。','遍历所有簇。'],
+['                cluster_points = points[labels == j]','筛选标签为 j 的所有点','labels == j 逐元素比较，生成布尔数组。用它索引 points，就保留 True 对应的行。注意变量拼写必须是 labels。','labels = [0,0,1,1]，j = 0\n布尔数组：[True,True,False,False]\n筛选结果：[[1,1],[1.5,2]]','取出当前簇的成员。'],
+['                if len(cluster_points) > 0:','检查当前簇有没有点','len(二维数组) 返回行数，也就是当前簇的点数。簇中没点就不进入分支，旧中心保持不变。','m = 0 时不求 mean；\n对空数组求平均可能产生 NaN，后续距离会失效。','保护空簇的处理。'],
+['                    centers[j] = np.mean(cluster_points, axis=0)','分别求 x、y 均值，并写入中心 j','cluster_points 的形状是 (m,2)。沿 axis=0 消去点这一维，每列分别求平均，得到长度为 2 的 [平均x,平均y]。','[[1,1],[1.5,2]]\nx 均值 = 1.25；y 均值 = 1.5\ncenters[0] = [1.25,1.5]','用当前成员的平均位置更新中心。'],
+['        centers_ret = [','开始创建最终返回的中心列表','这行已经退回到迭代循环外面。列表推导式会遍历各中心，逐个转换并四舍五入。','训练循环结束后才执行输出处理。\n不要每轮都 round，以免影响分组。','构造普通 Python 返回值。'],
+['            [round(float(x), 4), round(float(y), 4)]','转换标量类型，并保留四位小数','float(x) 把 NumPy 标量转成普通浮点数；round(值,4) 四舍五入到小数点后四位。方括号把 x、y 组合成一个点。','x = 4.833333333... → 4.8333\nround(1.25,4) 仍显示为 1.25，这不是精度错误。','规范最终坐标精度。'],
+['            for x, y in centers','遍历每个中心，并解包两个坐标','centers 的每行都是 [x,y]。for x,y 把这一行的两个元素分别赋给 x 和 y。每行对应推导式前面生成的一个二维点。','[[1.25,1.5],[6.5,8]]\n先 x=1.25,y=1.5；再 x=6.5,y=8。','保持中心顺序与簇编号一致。'],
+['        ]','结束中心列表推导式','把每个中心处理后的 [x,y] 收集进外层列表。结果仍然有 k 行，每行两个数。','centers_ret = [[1.25,1.5],[6.5,8.0]]','完成最终中心数组。'],
+['        return centers_ret, labels.tolist()','返回中心列表和标签列表','tolist() 将 NumPy 标签数组转换为普通 Python 列表。return 后用逗号分隔两个值，会返回两元素元组。这里是 return，不是 print。','返回：\n([[1.25,1.5],[6.5,8.0]], [0,0,1,1])','交回题目要求的两个结果。']
+];
+const esc = s => String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const $ = id => document.getElementById(id);
+let lineIndex = 0;
+function renderLine(index, scroll=false){
+  lineIndex=Math.max(0,Math.min(entries.length-1,index));
+  const e=entries[lineIndex];
+  document.querySelectorAll('.code-line').forEach((el,i)=>{el.classList.toggle('active',i===lineIndex);el.setAttribute('aria-pressed',String(i===lineIndex));});
+  $('line-detail').innerHTML=`<div class="detail-kicker">第 ${lineIndex+1} 行 / ${entries.length} 行</div><h3>${esc(e[1])}</h3><pre><code>${esc(e[0].trim())}</code></pre><p>${esc(e[2])}</p><div class="example">${esc(e[3])}</div><div class="purpose">这一行的作用：${esc(e[4])}</div>`;
+  $('line-status').textContent=`${lineIndex+1} / ${entries.length}`;
+  $('prev-line').disabled=lineIndex===0;$('next-line').disabled=lineIndex===entries.length-1;
+  if(scroll){const active=document.querySelector('.code-line.active');const box=$('code-lines');if(active.offsetTop<box.offsetTop+box.scrollTop||active.offsetTop+active.offsetHeight>box.offsetTop+box.scrollTop+box.clientHeight)box.scrollTop=active.offsetTop-box.offsetTop-box.clientHeight/2;}
+}
+entries.forEach((e,i)=>{const b=document.createElement('button');b.type='button';b.className='code-line';b.innerHTML=`<span class="line-no">${i+1}</span><span class="code-text">${esc(e[0])}</span>`;b.setAttribute('aria-label',`第${i+1}行：${e[1]}`);b.addEventListener('click',()=>renderLine(i));$('code-lines').appendChild(b);});
+$('prev-line').addEventListener('click',()=>renderLine(lineIndex-1,true));$('next-line').addEventListener('click',()=>renderLine(lineIndex+1,true));
+$('copy-code').addEventListener('click',async()=>{const text=entries.map(e=>e[0]).join('\n')+'\n';try{await navigator.clipboard.writeText(text);$('copy-code').textContent='已复制';}catch(e){const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();const ok=document.execCommand('copy');ta.remove();$('copy-code').textContent=ok?'已复制':'请选择代码手动复制';}setTimeout(()=>{$('copy-code').textContent='复制完整代码'},2500);});
+renderLine(0);
+
+function matrix(headers,rows){return `<div class="table-wrap"><table class="matrix"><thead><tr>${headers.map(x=>`<th>${esc(x)}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map(x=>`<td>${esc(x)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;}
+const tensors=[
+  {name:'原始数组',shape:'(n,2) 与 (k,2)',title:'points 有 4 行，centers 有 2 行',body:()=>`<div class="tensor-grid"><div><div class="tensor-caption">points · (4,2)</div>${matrix(['点','x','y'],[['P0',1,1],['P1',1.5,2],['P2',5,8],['P3',8,8]])}</div><div><div class="tensor-caption">centers · (2,2)</div>${matrix(['中心','x','y'],[['C0',1,1],['C1',1.5,2]])}<p>要算每个点到每个中心的距离，不能只把两张表按行直接相减。</p></div></div>`},
+  {name:'增加维度',shape:'(n,1,2) 与 (1,k,2)',title:'None 插入长度为 1 的维度，不改变坐标值',body:()=>`<div class="tensor-grid"><div><div class="tensor-caption">points[:, None, :] · (4,1,2)</div><pre><code>[
+  [[1, 1]],
+  [[1.5, 2]],
+  [[5, 8]],
+  [[8, 8]]
+]</code></pre></div><div><div class="tensor-caption">centers[None, :, :] · (1,2,2)</div><pre><code>[
+  [[1, 1], [1.5, 2]]
+]</code></pre><p>现在广播可以把 4 个点分别与 2 个中心配对。</p></div></div>`},
+  {name:'广播相减',shape:'(n,k,2)',title:'每个点得到两组坐标差',body:()=>matrix(['点','减 C0：[dx,dy]','减 C1：[dx,dy]'],[['P0','[0,0]','[-0.5,-1]'],['P1','[0.5,1]','[0,0]'],['P2','[4,7]','[3.5,6]'],['P3','[7,7]','[6.5,6]']])+`<p>这里是 (4,2,2)：4 个点 × 2 个中心 × 2 个坐标差。</p>`},
+  {name:'逐项平方',shape:'(n,k,2)',title:'** 2 对每个坐标差分别平方',body:()=>matrix(['点','到 C0：[dx²,dy²]','到 C1：[dx²,dy²]'],[['P0','[0,0]','[0.25,1]'],['P1','[0.25,1]','[0,0]'],['P2','[16,49]','[12.25,36]'],['P3','[49,49]','[42.25,36]']])+`<p>形状仍然是 (4,2,2)，只是每个元素的值变了。</p>`},
+  {name:'axis=2 求和',shape:'(n,k)',title:'两个坐标方向相加，得到距离平方',body:()=>matrix(['点','到 C0 的距离平方','到 C1 的距离平方'],[['P0',0,1.25],['P1',1.25,0],['P2',65,48.25],['P3',98,78.25]])+`<div class="equation">例如 P2 到 C0：16 + 49 = 65。输出形状是 (4,2)。</div>`},
+  {name:'axis=1 找下标',shape:'(n,)',title:'argmin 沿每一行选择距离最小的列',body:()=>matrix(['点','这一行的距离平方','最近中心下标'],[['P0','[0,1.25]',0],['P1','[1.25,0]',1],['P2','[65,48.25]',1],['P3','[98,78.25]',1]])+`<div class="equation">new_labels = [0,1,1,1]，形状是 (4,)。每一个标签对应一个原始点。</div>`}
+];
+let tensorIndex=0;
+function renderTensor(index){tensorIndex=index;document.querySelectorAll('#tensor-controls button').forEach((b,i)=>{b.classList.toggle('active',i===index);b.setAttribute('aria-pressed',String(i===index));});$('shape-chain').innerHTML=tensors.map((t,i)=>`<span class="shape ${i===index?'selected':''}">${esc(t.shape)}</span>${i<tensors.length-1?'<span aria-hidden="true">→</span>':''}`).join('');$('tensor-content').innerHTML=`<h3>${esc(tensors[index].title)}</h3>${tensors[index].body()}`;}
+tensors.forEach((t,i)=>{const b=document.createElement('button');b.type='button';b.className='btn';b.textContent=t.name;b.addEventListener('click',()=>renderTensor(i));$('tensor-controls').appendChild(b);});renderTensor(0);
+
+const points=[[1,1],[1.5,2],[5,8],[8,8]];
+const initial=[[1,1],[1.5,2]],after1=[[1,1],[29/6,6]],after2=[[1.25,1.5],[6.5,8]];
+const stages=[
+ {title:'初始化：前两个点就是初始中心',desc:'centers = points[:k].copy()；labels 全是 -1，尚未给数据点分组。',centers:initial,labels:[-1,-1,-1,-1],kind:'initial'},
+ {title:'第一轮 · 分组：P1、P2、P3 都选择中心 1',desc:'按初始中心计算距离。得到 new_labels = [0,1,1,1]，它与旧的 [-1,-1,-1,-1] 不同，继续更新。',centers:initial,labels:[0,1,1,1],kind:'assign',distCenters:initial},
+ {title:'第一轮 · 更新中心：簇 1 的三个点一起求均值',desc:'簇 0 只有 P0；簇 1 包含 P1、P2、P3。标签不变，中心 1 移到这三个点的平均位置。',centers:after1,labels:[0,1,1,1],kind:'update'},
+ {title:'第二轮 · 分组：P1 改为选择中心 0',desc:'使用第一轮更新后的中心重新计算距离。得到 [0,0,1,1]，与上一轮 [0,1,1,1] 不同，继续更新。',centers:after1,labels:[0,0,1,1],kind:'assign',distCenters:after1},
+ {title:'第二轮 · 更新中心：两个簇各自有两个点',desc:'簇 0 由 P0、P1 求均值；簇 1 由 P2、P3 求均值。得到题目示例的两个最终中心。',centers:after2,labels:[0,0,1,1],kind:'update'},
+ {title:'第三轮 · 检查：标签不变，执行 break',desc:'用第二轮的中心分组，仍得到 [0,0,1,1]。np.array_equal 返回 True，无需再次更新中心。',centers:after2,labels:[0,0,1,1],kind:'stop',distCenters:after2}
+];
+const fmt = x => Number(x).toFixed(4);
+let stageIndex=0;
+const distance=(p,c)=>(p[0]-c[0])**2+(p[1]-c[1])**2;
+function plot(stage){
+ const svg=$('cluster-plot');const sx=x=>54+x/9*422,sy=y=>346-y/9*292;const colors=['#235cce','#b65612'];let out='<title>四个示例点及当前聚类中心</title><desc>圆点代表数据，方块和十字代表中心；横轴 x，纵轴 y，范围均为零到九。</desc>';
+ for(let i=0;i<=8;i+=2){out+=`<line x1="${sx(i)}" y1="54" x2="${sx(i)}" y2="346" stroke="#e2e8f1"/><line x1="54" y1="${sy(i)}" x2="476" y2="${sy(i)}" stroke="#e2e8f1"/><text x="${sx(i)}" y="370" text-anchor="middle" fill="#52627a" font-size="13">${i}</text><text x="40" y="${sy(i)+4}" text-anchor="end" fill="#52627a" font-size="13">${i}</text>`;}
+ out+='<line x1="54" y1="346" x2="476" y2="346" stroke="#9daec5"/><line x1="54" y1="54" x2="54" y2="346" stroke="#9daec5"/><text x="480" y="371" fill="#52627a" font-size="14">x</text><text x="39" y="44" fill="#52627a" font-size="14">y</text>';
+ points.forEach((p,i)=>{const l=stage.labels[i];if(l>=0){const c=stage.centers[l];out+=`<line x1="${sx(p[0])}" y1="${sy(p[1])}" x2="${sx(c[0])}" y2="${sy(c[1])}" stroke="${colors[l]}" opacity=".25" stroke-dasharray="4 4"/>`;}});
+ points.forEach((p,i)=>{const l=stage.labels[i],x=sx(p[0]),y=sy(p[1]);out+=`<circle cx="${x}" cy="${y}" r="6" fill="${l>=0?colors[l]:'#77849a'}"/><text x="${x+10}" y="${y+17}" fill="#17233c" font-size="13">P${i}</text>`;});
+ stage.centers.forEach((c,j)=>{const x=sx(c[0]),y=sy(c[1]);out+=`<rect x="${x-8}" y="${y-8}" width="16" height="16" fill="white" stroke="${colors[j]}" stroke-width="2"/><path d="M${x-4},${y}H${x+4}M${x},${y-4}V${y+4}" stroke="${colors[j]}" stroke-width="2"/><text x="${x+12}" y="${y-10}" fill="${colors[j]}" font-size="13">C${j}</text>`;});
+ svg.innerHTML=out;
+}
+function renderStage(index){stageIndex=index;const s=stages[index];$('stage-index').textContent=`${index+1} / ${stages.length}`;$('prev-stage').disabled=index===0;$('next-stage').disabled=index===stages.length-1;$('stage-copy').innerHTML=`<h3>${esc(s.title)}</h3><p>${esc(s.desc)}</p>`;plot(s);
+ if(s.kind==='initial'){$('stage-table').innerHTML='<h3>初始状态</h3>'+matrix(['变量','内容'],[['centers[0]','[1.0000,1.0000]'],['centers[1]','[1.5000,2.0000]'],['labels','[-1,-1,-1,-1]']])+'<p class="small">蓝色 C0 与 P0 重合，橙色 C1 与 P1 重合；灰色点尚未分组。</p>';}
+ else if(s.distCenters){$('stage-table').innerHTML='<h3>本轮距离平方与标签</h3>'+matrix(['点','到 C0','到 C1','标签'],points.map((p,i)=>['P'+i,fmt(distance(p,s.distCenters[0])),fmt(distance(p,s.distCenters[1])),s.labels[i]]))+'<p class="small">每一行比较两列距离，取较小值对应的中心下标。</p>';}
+ else {$('stage-table').innerHTML='<h3>按成员重新计算中心</h3>'+matrix(['簇','成员','平均坐标'],[0,1].map(j=>['C'+j,s.labels.map((l,i)=>l===j?'P'+i:null).filter(x=>x!==null).join('、'),'['+s.centers[j].map(fmt).join(',')+']']));$('stage-table').innerHTML+=index===2?'<p class="formula">C1 的 x = (1.5 + 5 + 8) / 3 = 4.8333<br>C1 的 y = (2 + 8 + 8) / 3 = 6.0000</p>':'<p class="formula">C0 = [(1+1.5)/2, (1+2)/2]<br>C1 = [(5+8)/2, (8+8)/2]</p>';}
+ $('stage-result').innerHTML=`<strong>当前 centers</strong> <code>${esc('['+s.centers.map(c=>'['+c.map(fmt).join(',')+']').join(',')+']')}</code><br><strong>${s.kind==='assign'||s.kind==='stop'?'本轮 new_labels':'当前 labels'}</strong> <code>${esc('['+s.labels.join(',')+']')}</code>${s.kind==='stop'?'<br><strong>判断：</strong>新旧标签一致 → break → 返回两个列表。':''}`;
+}
+$('prev-stage').addEventListener('click',()=>renderStage(stageIndex-1));$('next-stage').addEventListener('click',()=>renderStage(stageIndex+1));$('reset-stage').addEventListener('click',()=>renderStage(0));renderStage(0);
+</script>
+  <script src="./math-render.js?v=20261003-13"></script>
+</body>
+</html>

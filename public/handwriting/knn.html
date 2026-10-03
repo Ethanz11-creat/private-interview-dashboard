@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>KNN 手撕代码 · 逐行拆解 · 完整题干</title>
+<style>
+:root{--bg:#f4f6fa;--paper:#fff;--ink:#17233c;--soft:#52627a;--line:#dce3ee;--blue:#235cce;--blue-soft:#edf3ff;--green:#087967;--orange:#b65612;--code:#142038;--code-ink:#e4edfa}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:80px}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.8 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}a{color:var(--blue);text-decoration:none}button{font:inherit;cursor:pointer}button:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid #6c9dff;outline-offset:3px}button:disabled{opacity:.4;cursor:default}code,pre,.mono{font-family:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace}code{font-size:.91em;background:#edf1f7;padding:2px 5px;border-radius:4px}pre{background:var(--code);color:var(--code-ink);padding:20px;border-radius:12px;overflow:auto;font-size:14px;line-height:1.75;tab-size:4}pre code{padding:0;background:none;color:inherit;font-size:inherit}.wrap{max-width:1240px;margin:auto;padding:0 30px}header{background:var(--paper);border-bottom:1px solid var(--line)}.hero{padding:46px 0 30px}.eyebrow{font-size:12px;font-weight:700;letter-spacing:.13em;color:var(--blue)}h1{font-size:36px;line-height:1.3;margin:10px 0 14px;letter-spacing:-1px}h2{font-size:25px;line-height:1.4;margin:0 0 16px}h3{font-size:19px;margin:22px 0 10px}p{margin:10px 0}.lead{max-width:850px;color:var(--soft)}.pills{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}.pill{font-size:13px;background:var(--blue-soft);padding:4px 11px;border-radius:6px;color:var(--blue)}nav{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.96);border-bottom:1px solid var(--line);backdrop-filter:blur(10px)}.nav-links{display:flex;gap:24px;overflow:auto;white-space:nowrap;padding:14px 0;font-size:14px}main{padding-bottom:45px}.section{margin-top:30px;padding:28px;background:var(--paper);border:1px solid var(--line);border-radius:16px}.sec-no{font-size:13px;color:var(--blue);margin-bottom:5px;font-weight:600}.muted{color:var(--soft)}.callout{border-left:3px solid var(--blue);background:var(--blue-soft);padding:13px 17px;margin:18px 0;border-radius:0 8px 8px 0}.note{border-left-color:var(--orange);background:#fff6ed}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;padding:11px 13px;border-bottom:1px solid var(--line);vertical-align:top}th{font-weight:600;color:var(--soft);background:#f7f9fc}td code{white-space:nowrap}.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:20px}.step{border:1px solid var(--line);border-radius:10px;padding:15px}.step b{display:block;color:var(--blue)}.step p{font-size:14px;line-height:1.65;margin:7px 0 0}.controls{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin:15px 0}.btn{border:1px solid var(--line);background:var(--paper);color:var(--ink);padding:7px 13px;border-radius:7px;font-size:14px;line-height:1.6}.btn:hover{background:#f1f5fb}.btn.active,.btn.primary{background:var(--blue);color:white;border-color:var(--blue)}.editor-grid{display:grid;grid-template-columns:minmax(0,1.14fr) minmax(0,1fr);gap:20px;align-items:start}.code-panel{background:var(--code);border-radius:12px;overflow:hidden}.code-toolbar{padding:12px 15px;border-bottom:1px solid #354159;color:#b9c9e6;display:flex;justify-content:space-between;align-items:center;font-size:12px}.code-scroll{overflow:auto;padding:10px 0}.code-line{display:flex;align-items:baseline;min-width:max-content;width:100%;border:0;border-left:3px solid transparent;background:none;color:var(--code-ink);text-align:left;padding:4px 18px 4px 0;font:13px/1.7 ui-monospace,SFMono-Regular,Consolas,monospace}.code-line:hover{background:#223453}.code-line.active{background:#263e66;border-left-color:#83adff}.line-no{display:inline-block;width:40px;flex:none;text-align:right;margin-right:16px;color:#8a9bb6;font-size:11px}.code-text{white-space:pre}.detail-panel{position:sticky;top:78px;border:1px solid var(--line);border-radius:12px;padding:22px;min-height:390px}.detail-kicker{font-size:12px;color:var(--blue);font-weight:600}.detail-panel h3{margin:9px 0 14px}.detail-panel pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px;padding:14px}.detail-panel p{font-size:15px}.example{background:#f5f8fd;border:1px solid var(--line);padding:13px 15px;border-radius:8px;font-size:14px;margin-top:15px;white-space:pre-wrap}.purpose{color:var(--green);font-size:14px;margin-top:15px}.index-status,.small{font-size:13px;color:var(--soft)}.shape-chain{display:flex;flex-wrap:wrap;gap:9px;align-items:center;margin:18px 0}.shape{padding:7px 13px;border:1px solid var(--line);border-radius:7px;font-size:14px}.shape.selected{background:var(--blue-soft);border-color:#b8cef7;color:var(--blue)}.matrix td{font-family:ui-monospace,Consolas,monospace;font-variant-numeric:tabular-nums}.distance-content{min-height:230px}.equation{background:#f5f8fd;padding:15px;border-radius:8px;font-size:15px}.demo-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}.plot-area{background:#fafcff;border:1px solid var(--line);border-radius:12px;overflow:hidden}.plot-area svg{display:block;width:100%;height:auto}.legend{display:flex;flex-wrap:wrap;gap:16px;font-size:13px;margin:10px 0}.legend span{display:flex;align-items:center;gap:6px}.mark{display:inline-block;width:10px;height:10px}.blue{background:var(--blue);border-radius:50%}.orange{background:var(--orange)}.dark{background:var(--ink);transform:rotate(45deg)}.vote-layout{margin-top:18px}.vote-row{display:grid;grid-template-columns:75px 1fr 55px;gap:10px;align-items:center;font-size:14px;margin:13px 0}.track{background:#edf1f7;height:16px;border-radius:4px;overflow:hidden}.bar{height:100%;transition:width .2s}.bar0{background:var(--blue)}.bar1{background:var(--orange)}.result{padding:15px 18px;border-radius:9px;background:var(--blue-soft);margin-top:16px;font-size:16px}.comparison h3{margin-top:0}.comparison pre{margin-top:8px}details{border:1px solid var(--line);padding:13px 17px;border-radius:9px;margin:12px 0}summary{cursor:pointer;font-weight:500}details p,details li{font-size:14px}.memory-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}.memory-card{border:1px solid var(--line);border-radius:10px;padding:16px}.memory-card h3{margin:0 0 8px}.answer{margin-top:10px;font-size:14px;color:var(--green)}ol,ul{padding-left:24px}.formula{font-size:17px;color:var(--green);padding:10px 0}.footer{margin-top:22px;font-size:13px;color:var(--soft);text-align:center}.mobile-hint{display:none}@media(max-width:900px){.editor-grid,.demo-grid{grid-template-columns:1fr}.detail-panel{position:static;min-height:0}.code-scroll{max-height:430px}h1{font-size:29px}.mobile-hint{display:block;font-size:13px;color:var(--soft)}}@media(max-width:620px){.wrap{padding:0 16px}.hero{padding:30px 0 24px}.section{padding:19px;margin-top:20px;border-radius:12px}.grid2,.memory-grid{grid-template-columns:1fr}.steps{grid-template-columns:1fr}h1{font-size:26px}h2{font-size:22px}.nav-links{gap:19px;font-size:13px}.code-line{font-size:12px}.detail-panel{padding:17px}.btn{font-size:13px}.vote-row{grid-template-columns:65px 1fr 45px}}@media print{nav,.controls,.code-toolbar button,.footer{display:none}body{background:white;font-size:12px}.wrap{padding:0;max-width:none}.section{break-inside:avoid;margin-top:16px;padding:14px;border-radius:0}.detail-panel{position:static}.code-panel,pre{background:#f4f4f4;color:black}.code-line{color:black;font-size:10px}.code-scroll{max-height:none}h1{font-size:24px}details{break-inside:avoid}}
+</style>
+  <link rel="stylesheet" href="./handwriting.css?v=20261003-2">
+</head>
+<body>
+<header><div class="wrap hero"><div class="eyebrow">P4499 / PYTHON / NUMPY / 手撕代码学习</div><h1>KNN：从距离到投票，逐行拆开</h1><p class="lead">这次不需要更新中心，也不需要迭代：只要找到与测试样本最近的 K 个训练样本，再看它们的标签。重点理解“距离 → 下标 → 标签 → 票数”这条数据路径。</p><div class="pills"><span class="pill">完整题干与示例</span><span class="pill">点击代码逐行讲解</span><span class="pill">拆解 norm 与 argsort</span><span class="pill">解释 max / set / key</span><span class="pill">附盲写骨架 · 离线可用</span></div></div></header>
+<nav aria-label="学习目录"><div class="wrap nav-links"><a href="#problem">① 完整题干</a><a href="#overview">② 先认变量</a><a href="#code">③ 逐行拆解</a><a href="#distance">④ 距离与广播</a><a href="#demo">⑤ 最近邻与投票</a><a href="#voting">⑥ 原版投票拆解</a><a href="#loops">⑦ 普通循环对照</a><a href="#practice">⑧ 盲写复盘</a></div></nav>
+<main class="wrap">
+<section class="section" id="problem">
+<div class="sec-no">01 / 完整题干 · 手撕前先看</div>
+<h2>P4499. K 最近邻算法（KNN）</h2>
+<p class="small">难度：5。以下题干根据你提供的题面整理，输入、返回值、示例和数据范围完整保留。</p>
+<h3>题目描述</h3>
+<p>给定一个测试样本 <code>x_test</code>，以及训练数据矩阵 <code>X</code> 和训练标签列表 <code>y</code>。请实现 KNN 分类：计算测试样本到每个训练样本的欧氏距离，选择最近的 <code>K</code> 个训练样本，根据它们的标签进行多数投票，返回最终预测标签。</p>
+<p><code>X</code> 有 N 个训练样本，每个样本有 d 个特征，即形状为 <code>N × d</code>；<code>y[i]</code> 是 <code>X[i]</code> 的类别标签，取值为 0 或 1；<code>x_test</code> 是长度为 d 的特征向量。</p>
+<h3>算法要求</h3>
+<ol>
+<li><strong>计算距离：</strong>对每个训练样本 X[i]，计算它与 x_test 的欧氏距离：<code>dᵢ = √(Σⱼ (x_test[j] − X[i][j])²)</code>。</li>
+<li><strong>寻找最近邻：</strong>按距离从小到大选出 K 个训练样本的下标。</li>
+<li><strong>多数投票：</strong>读取这 K 个样本的标签，返回出现次数最多的标签。</li>
+</ol>
+<h3>输入参数</h3>
+<div class="table-wrap"><table><thead><tr><th>参数</th><th>含义</th></tr></thead><tbody>
+<tr><td><code>X</code></td><td>形状为 N×d 的训练数据矩阵；X[i] 是第 i 个训练样本。</td></tr>
+<tr><td><code>y</code></td><td>长度为 N 的标签列表；y[i] 对应 X[i]，取值为 0 或 1。</td></tr>
+<tr><td><code>x_test</code></td><td>长度为 d 的测试样本特征向量。</td></tr>
+<tr><td><code>K</code></td><td>参与投票的最近邻数量。</td></tr>
+</tbody></table></div>
+<h3>返回值</h3>
+<p><code>y_pred</code>：最终预测标签，返回整数 <code>0</code> 或 <code>1</code>。</p>
+<h3>示例</h3>
+<pre><code>输入：
+K = 2
+X = [[1, 2], [2, 1], [3, 3]]
+y = [0, 1, 1]
+x_test = [2, 2]
+
+输出：
+y_pred = 1</code></pre>
+<h3>数据范围与提示</h3>
+<ul>
+<li><code>−1000 ≤ X[i][j], x_test[j] ≤ 1000</code>。</li>
+<li>每个训练标签 <code>y[i] ∈ {0, 1}</code>。</li>
+<li><code>1 ≤ K ≤ N</code>。</li>
+<li>欧氏距离总是非负，即 <code>dᵢ ≥ 0</code>。</li>
+</ul>
+<div class="callout note"><strong>题面与实现约定要区分：</strong>示例中最近的两个标签是 [0,1]，票数相同，但输出为 1。题面没有单独写出通用平票规则，本页根据示例采用“平票返回 1”。距离相同的样本则用稳定排序保持输入顺序；这是本页的确定性实现约定，题面未明确规定这种平局的取舍。</div>
+<p class="small">手撕提交的方法：<code>knn_classification(self, X, y, x_test, K)</code>。题目只要求预测一个测试样本，不需要训练中心或迭代更新。</p>
+</section>
+
+<section class="section" id="overview"><div class="sec-no">02 / 先看输入输出</div><h2>下标负责把训练样本和标签对起来</h2><p><code>X[i]</code> 是第 i 个训练样本，<code>y[i]</code> 是它的标签。两者必须保持对应关系。分类的是 <code>x_test</code>，它没有已知标签。</p><div class="table-wrap"><table><thead><tr><th>变量</th><th>形状 / 类型</th><th>原题示例中的内容</th></tr></thead><tbody><tr><td><code>X</code></td><td><code>(N,d)</code>，二维数据</td><td><code>[[1,2],[2,1],[3,3]]</code>：3 个样本，每个有 2 个特征。</td></tr><tr><td><code>y</code></td><td>长度 N 的标签列表</td><td><code>[0,1,1]</code>：X[0] 标签是 0，X[1]、X[2] 标签是 1。</td></tr><tr><td><code>x_test</code></td><td><code>(d,)</code>，一个样本</td><td><code>[2,2]</code>：我们要预测它的标签。</td></tr><tr><td><code>K</code></td><td>一个整数</td><td><code>2</code>：选择最近的两个训练样本。</td></tr><tr><td><code>distances</code></td><td><code>(N,)</code></td><td><code>[1,1,√2]</code>：按原训练数据顺序保存距离。</td></tr><tr><td><code>nearest_indices</code></td><td><code>(K,)</code></td><td><code>[0,1]</code>：最近样本的原下标。</td></tr><tr><td><code>nearest_labels</code></td><td>长度 K 的 Python 列表</td><td><code>[y[0],y[1]] → [0,1]</code>。</td></tr><tr><td><code>y_pred</code></td><td>整数 0 或 1</td><td><code>1</code>：本页按示例采用平票返回 1。</td></tr></tbody></table></div><div class="steps"><div class="step"><b>1. 计算距离</b><p>一个测试样本，分别与 N 个训练样本比较。</p></div><div class="step"><b>2. 取最近邻</b><p>距离排序，取前 K 个下标，再用下标查标签。</p></div><div class="step"><b>3. 多数投票</b><p>标签 0 和 1 各有几票？显式处理平票后返回。</p></div></div>
+<div class="callout note"><strong>先处理题面里的平票问题：</strong>示例 K=2，最近标签为 <code>[0,1]</code>，两个标签各一票，但示例要求返回 <code>1</code>。题面没有单独写出完整平票规则，本页据此采用“平票返回 1”；这是根据示例作出的约定。原来的 <code>max(set(...), key=...)</code> 没有明确保证这一点。</div>
+<p class="small">为了让手算和演示一致，本页用稳定排序：距离相同时按训练样本原下标顺序排列。这是确定性的实现约定，题面没有明确规定距离相同、跨越第 K 个位置时该选谁。</p></section>
+
+<section class="section" id="code"><div class="sec-no">03 / 推荐的手撕版本</div><h2>先看懂每行，再连起来写</h2><p class="muted">保留你的 NumPy 思路，把数组转换拆成两行，并把二分类投票改成明确计数。稳定排序只是在距离相同时保持输入顺序。</p><div class="controls"><button class="btn" id="prev-line" type="button">上一行</button><button class="btn primary" id="next-line" type="button">下一行</button><span class="index-status" id="line-status"></span></div><p class="mobile-hint">所选行的详细解释位于代码下方。</p><div class="editor-grid"><div class="code-panel"><div class="code-toolbar"><span>knn_classification.py · 点击任意行</span><button class="btn" id="copy-code" type="button">复制完整代码</button></div><div class="code-scroll" id="code-lines" aria-label="逐行代码"></div></div><article class="detail-panel" id="line-detail" aria-live="polite"></article></div>
+<div class="callout"><strong>原版一行与本页三行的对应：</strong><code>np.linalg.norm(np.array(X) - np.array(x_test), axis=1)</code> 就是先转换 X 和 x_test，再相减求范数。本页指定 <code>dtype=float</code>，把计算统一为浮点数。</div></section>
+
+<section class="section" id="distance"><div class="sec-no">04 / norm 究竟怎么算</div><h2>每一行：坐标差平方 → 求和 → 开平方</h2><p class="formula">距离 = √((第 1 个特征差)² + … + (第 d 个特征差)²)</p><p>你提供的说明里，公式只写了平方和，少了开平方；平方和叫“距离平方”。<code>np.linalg.norm(..., axis=1)</code> 默认计算这里的欧氏距离，包含开平方。</p><pre><code>X_arr = np.array(X, dtype=float)              # (N,d)
+test_arr = np.array(x_test, dtype=float)      # (d,)
+distances = np.linalg.norm(X_arr - test_arr, axis=1)</code></pre><div class="controls" id="distance-controls" aria-label="距离计算步骤"></div><div class="shape-chain" id="shape-chain"></div><div class="distance-content" id="distance-content" aria-live="polite"></div>
+<div class="grid2"><div><h3>为什么不需要写 None？</h3><p><code>X_arr</code> 是 <code>(N,d)</code>，<code>test_arr</code> 是 <code>(d,)</code>。从右侧对齐时，后者可按 <code>(1,d)</code> 广播，所以每一行都减去同一个测试样本。</p><p>这次只有一个测试样本，与 K-Means 里“n 个点与 k 个中心两两配对”不同，不需要手工增加中间维度。</p></div><div><h3>为什么用 axis=1？</h3><p>相减后的数组形状为 <code>(N,d)</code>。第 0 维对应样本，第 1 维对应特征。</p><p><code>axis=1</code> 把每行的 d 个特征差合成一个距离，输出 <code>(N,)</code>。<code>axis=0</code> 会沿不同样本计算，得不到所需的每个样本距离。</p></div></div>
+<div class="callout"><strong>等价写法：</strong><code>np.sqrt(np.sum((X_arr - test_arr) ** 2, axis=1))</code>。只为了比较远近时，也可以省掉 sqrt，直接按距离平方排序；平方根对非负数保持大小顺序。</div></section>
+
+<section class="section" id="demo"><div class="sec-no">05 / 下标 → 标签 → 票数</div><h2>用原题示例看 K 怎么改变结果</h2><p>蓝色圆点代表标签 0，橙色方点代表标签 1，深色菱形是测试样本。外圈表示入选最近邻。二维图只用于示例，代码也适用于 d 大于 2。</p><div class="controls" id="k-controls" aria-label="选择最近邻数量"><span class="small">K =</span><button class="btn" type="button" data-k="1">1</button><button class="btn active" type="button" data-k="2">2 · 原题示例</button><button class="btn" type="button" data-k="3">3</button></div><div class="demo-grid"><div><div class="plot-area"><svg id="knn-plot" viewBox="0 0 520 390" role="img" aria-label="训练样本、测试样本与入选的最近邻"></svg></div><div class="legend"><span><i class="mark blue"></i>标签 0</span><span><i class="mark orange"></i>标签 1</span><span><i class="mark dark"></i>x_test</span></div></div><div><div id="neighbor-table"></div><div class="vote-layout" id="votes"></div><div class="result" id="prediction" aria-live="polite"></div></div></div>
+<div class="state-result" id="index-path"></div><div class="callout"><strong>不要混淆距离值、下标和标签：</strong>距离值用来比较远近；<code>argsort</code> 返回原下标；<code>y[i]</code> 才是该样本的标签。</div>
+<h3>argsort 和 sort 的差别</h3><div class="table-wrap"><table><thead><tr><th>输入 / 操作</th><th>结果</th><th>用途</th></tr></thead><tbody><tr><td><code>a = [3.2, 0.5, 1.7]</code></td><td>原顺序：第 0、1、2 个</td><td>三个训练样本的距离。</td></tr><tr><td><code>np.sort(a)</code></td><td><code>[0.5, 1.7, 3.2]</code></td><td>返回排好序的值。</td></tr><tr><td><code>np.argsort(a)</code></td><td><code>[1, 2, 0]</code></td><td>返回对应的原下标，方便查标签。</td></tr><tr><td><code>np.argsort(a)[:2]</code></td><td><code>[1, 2]</code></td><td>取最近两个样本的下标。</td></tr></tbody></table></div>
+<p><code>[:K]</code> 表示从头取到下标 K 之前，不包含 K，因此正好得到 K 项。它不是“取所有下标小于 K 的训练样本”。</p></section>
+
+<section class="section" id="voting"><div class="sec-no">06 / 原代码最容易背错的一句</div><h2>max(set(nearest_labels), key=nearest_labels.count)</h2><pre><code>nearest_labels = [y[i] for i in nearest_indices]
+y_pred = max(set(nearest_labels), key=nearest_labels.count)</code></pre><p>这句先去重，再比较每种标签出现的次数，最后返回标签本身。它返回的不是票数。</p><div class="table-wrap"><table><thead><tr><th>拆开看</th><th>例如 nearest_labels = [1,0,1]</th><th>具体含义</th></tr></thead><tbody><tr><td><code>set(nearest_labels)</code></td><td><code>{0,1}</code></td><td>只保留有哪些不同标签；集合不保证遍历顺序。</td></tr><tr><td><code>nearest_labels.count(0)</code></td><td><code>1</code></td><td>标签 0 出现 1 次。</td></tr><tr><td><code>nearest_labels.count(1)</code></td><td><code>2</code></td><td>标签 1 出现 2 次。</td></tr><tr><td><code>key=nearest_labels.count</code></td><td>把 count 方法交给 max</td><td>max 会对候选标签调用 count，比较票数。</td></tr><tr><td><code>max(...)</code></td><td>返回 <code>1</code>，不是 <code>2</code></td><td>返回比较分数最大的候选标签。</td></tr></tbody></table></div>
+<div class="grid2 comparison"><div><h3>为什么 count 后面没有括号？</h3><pre><code>key=nearest_labels.count
+
+# 可以理解为：
+score_0 = nearest_labels.count(0)
+score_1 = nearest_labels.count(1)
+# max 比较 score，但返回 0 或 1</code></pre><p><code>key</code> 需要一个“可调用对象”。把方法交进去，让 max 为各个候选值调用它。这里不写 <code>count()</code>，因为此时没有传入要统计的标签。</p></div><div><h3>平票时，原版为什么不能保证 1？</h3><pre><code>nearest_labels = [0, 1]
+# count(0) == count(1) == 1
+
+# 明确统计 + 明确处理平票
+count_0 = nearest_labels.count(0)
+count_1 = nearest_labels.count(1)
+y_pred = 1 if count_1 >= count_0 else 0</code></pre><p>max 遇到相同的 key 值，会保留首先遇到的候选标签；集合不承诺你需要的顺序。本次验证中原版返回了 0，与示例的 1 不符。用 <code>&gt;=</code> 明确表达平票也返回 1。</p></div></div>
+<details><summary>能不能保留一行 max 写法，并处理平票？</summary><pre><code>y_pred = max(
+    set(nearest_labels),
+    key=lambda label: (nearest_labels.count(label), label)
+)</code></pre><p>比较二元组时先比较票数，票数相同再比较标签值，因此平票时 1 胜过 0。对于这道只包含 0、1 的题，直接统计两种票数更容易手撕。</p></details>
+<details><summary>两种“相同”需要分开处理</summary><p><strong>距离相同：</strong>影响哪 K 个样本被选中。本页用 <code>kind="stable"</code> 保持原输入顺序，在 K 的边界也按这个顺序选择。</p><p><strong>票数相同：</strong>影响预测标签。本页根据给定示例约定返回 1。</p><p>题面没有完整说明两类平局的规则；这里明确写出实现约定，便于复现。如果平台另有规则，应按其规则修改。</p></details>
+<details><summary>KNN 和 K-Means 为什么名字很像，代码却不同？</summary><p>KNN 是分类：训练样本已有标签，给新样本找 K 个邻居投票，K 表示邻居数。这里没有中心更新和迭代训练。</p><p>K-Means 是聚类：样本没有已知标签，反复分组、求均值更新中心，K 表示簇数。</p></details></section>
+
+<section class="section" id="loops"><div class="sec-no">07 / 还原成普通 Python</div><h2>不依赖 NumPy 时，底层操作就是这些</h2><p>这是完整的理解用版本：距离平方排序、按原下标查标签、计数投票。距离相同时按下标排序；平票返回 1，与上面的约定一致。</p><pre><code>def knn_classification(X, y, x_test, K):
+    N = len(X)
+    d = len(x_test)
+    distances_sq = []
+
+    for i in range(N):
+        total = 0
+        for j in range(d):
+            diff = X[i][j] - x_test[j]
+            total += diff * diff
+        distances_sq.append(total)
+
+    # 排序的是下标，而不是 X 或 y
+    indices = sorted(
+        range(N), key=lambda i: (distances_sq[i], i)
+    )
+    nearest_indices = indices[:K]
+    nearest_labels = [y[i] for i in nearest_indices]
+
+    count_0 = nearest_labels.count(0)
+    count_1 = nearest_labels.count(1)
+    return 1 if count_1 >= count_0 else 0</code></pre><p>普通循环中的 <code>j</code> 遍历特征，对应 NumPy 的 <code>axis=1</code>。<code>range(N)</code> 产生所有样本下标，<code>key</code> 指定每个下标按什么排序。</p><div class="grid2 comparison"><div><h3>列表推导式的普通写法</h3><pre><code># 简写
+nearest_labels = [y[i] for i in nearest_indices]
+
+# 展开
+nearest_labels = []
+for i in nearest_indices:
+    nearest_labels.append(y[i])</code></pre></div><div><h3>条件表达式的普通写法</h3><pre><code># 简写
+y_pred = 1 if count_1 >= count_0 else 0
+
+# 展开
+if count_1 >= count_0:
+    y_pred = 1
+else:
+    y_pred = 0</code></pre></div></div></section>
+
+<section class="section" id="practice"><div class="sec-no">08 / 从理解到盲写</div><h2>记数据路径，再记函数名</h2><ol><li><strong>转换输入：</strong>X 是二维浮点数组，x_test 是一维浮点数组。</li><li><strong>计算距离：</strong>广播相减，norm 沿 axis=1，得到 N 个距离。</li><li><strong>选择邻居：</strong>argsort 返回排序下标，[:K] 取前 K 个。</li><li><strong>查询标签：</strong>[y[i] for i in nearest_indices]。</li><li><strong>计票返回：</strong>分别 count(0)、count(1)，显式处理平票。</li></ol><div class="memory-grid"><div class="memory-card"><h3>复盘 1：这个输出形状是什么？</h3><p><code>X.shape = (5,3)</code>，<code>x_test.shape = (3,)</code>，相减再 norm(axis=1)。</p><details><summary>查看答案</summary><div class="answer">差值数组是 (5,3)；距离数组是 (5,)，每个训练样本对应一个距离。</div></details></div><div class="memory-card"><h3>复盘 2：argsort 返回哪三个数？</h3><p><code>distances = [8,2,5]</code>，<code>K = 2</code>。</p><details><summary>查看答案</summary><div class="answer">argsort 得到 [1,2,0]；截取后 nearest_indices 是 [1,2]。返回的是下标，不是 [2,5]。</div></details></div><div class="memory-card"><h3>复盘 3：为什么还要查一次 y？</h3><p><code>nearest_indices = [2,0]</code>，<code>y = [0,1,1]</code>。</p><details><summary>查看答案</summary><div class="answer">下标不是标签。取 [y[2],y[0]]，得到 [1,0]。</div></details></div><div class="memory-card"><h3>复盘 4：&gt; 和 &gt;= 会差在哪？</h3><p><code>count_0 = 1</code>，<code>count_1 = 1</code>。</p><details><summary>查看答案</summary><div class="answer">条件 count_1 &gt; count_0 为 False，会返回 0；条件 count_1 &gt;= count_0 为 True，返回 1，符合本题示例。</div></details></div></div>
+<h3>盲写骨架：用手写出空白部分</h3><pre><code>X_arr = ___________________________
+test_arr = ________________________
+distances = _______________________
+nearest_indices = _________________
+nearest_labels = __________________
+count_0 = _________________________
+count_1 = _________________________
+y_pred = __________________________
+return y_pred</code></pre><h3>这版的复杂度怎么说？</h3><div class="table-wrap"><table><thead><tr><th>步骤</th><th>时间</th><th>原因</th></tr></thead><tbody><tr><td>转换输入与计算距离</td><td>O(Nd)</td><td>N 个训练样本，每个比较 d 个特征。</td></tr><tr><td>对所有距离 argsort</td><td>O(N log N)</td><td>对 N 个距离完整排序，不只是对 K 项排序。</td></tr><tr><td>查 K 个标签并计票</td><td>O(K)</td><td>只包含两类，两个 count 各扫描 K 项。</td></tr><tr><td>总时间</td><td><strong>O(Nd + N log N)</strong></td><td>K≤N；不需要迭代次数这一项。</td></tr></tbody></table></div><p><strong>NumPy 版本额外空间是 O(Nd + N)，通常简记 O(Nd)。</strong>输入列表转成数组，以及广播相减结果，都可能有 N×d 个元素；距离和排序下标有 N 项，邻居列表有 K 项。d≥1、K≤N，所以整体由 Nd 主导。</p><p class="small">如果只分析“已经有训练数组之后”的纯 Python 逐点版本，额外空间可以是 O(N)。这不等于上面的 NumPy 写法也是 O(N)：相减会产生整个 (N,d) 数组。</p><div class="callout"><strong>面试口述：</strong>“我先计算测试样本到每个训练样本的欧氏距离，按距离排序得到原下标，取前 K 个，再用这些下标取标签，统计 0 和 1 的票数。根据给定示例，票数相同时返回 1。距离计算是 O(Nd)，完整排序是 O(N log N)。”</div></section>
+<div class="footer">P4499 KNN 手撕学习页 · 示例数值已核对 · 距离平局与票数平局分别明确处理</div>
+</main>
+<script>
+'use strict';
+const entries=[
+['import numpy as np','导入数组计算工具','把 NumPy 简称为 np，后面用它创建数组、计算范数和排序下标。','np.array / np.linalg.norm / np.argsort','准备 NumPy 函数。'],
+['from typing import List','导入类型标注 List','List 只帮助描述输入、输出结构，本身不负责转换数据，也不执行分类。','List[List[float]]：外层是列表，每个元素又是浮点列表。','说明函数接口。'],
+['class Solution:','定义平台要求的类','Solution 是题目核心代码的包装；它不是 KNN 算法的一步。类体内的代码要缩进。','通过 Solution 的实例调用 knn_classification。','满足提交接口。'],
+['    def knn_classification(','开始定义分类方法','def 声明一个方法。括号中的参数写成多行，仍然是一次函数定义。','knn_classification 是平台指定的方法名，提交时保持一致。','定义调用入口。'],
+['        self,','self 是当前实例','实例方法的第一个参数通常是 self。通过对象调用时自动传入，不属于题目数据。','Solution().knn_classification(X, y, x_test, K)','连接方法和对象。'],
+['        X: List[List[float]],','X 是二维训练数据','X[i] 是一个长度为 d 的特征向量；有 N 行。类型标注不自动转换数值，真正的转换在 np.array。','X = [[1,2],[2,1],[3,3]]\nN = 3，d = 2','接收训练样本。'],
+['        y: List[int],','y 是每个训练样本的标签','y[i] 必须与 X[i] 对应，标签是整数 0 或 1。','y = [0,1,1]\nX[0] 的标签是 y[0] = 0','把样本与类别联系起来。'],
+['        x_test: List[float],','x_test 是待预测样本','它只有一组 d 个特征，还没有标签。注意参数名是 x_test，不是 xtest。','x_test = [2,2]，长度为 2','接收分类目标。'],
+['        K: int','K 是要选择的邻居数量','1≤K≤N。这里 K 是邻居数，不是中心数或迭代次数。','K = 2：最近的两个训练样本参与投票。','确定投票人数。'],
+['    ) -> int:','方法返回一个整数标签','-> int 是返回类型说明。实际返回值由后面的 return 决定，冒号开始方法体。','最终返回 0 或 1。','说明输出结构。'],
+['        X_arr = np.array(X, dtype=float)','将训练列表转换为二维浮点数组','np.array 创建 NumPy 数组，dtype=float 统一使用浮点运算。原始 X 的行顺序保持不变。','X_arr.shape == (3,2)\n[[1.0,2.0],[2.0,1.0],[3.0,3.0]]','准备逐元素与广播运算。'],
+['        test_arr = np.array(x_test, dtype=float)','将测试列表转换为一维浮点数组','x_test 是一个样本，因此不是 (N,d)；它的形状是 (d,)。','test_arr.shape == (2,)\n[2.0,2.0]','准备测试特征。'],
+['        distances = np.linalg.norm(X_arr - test_arr, axis=1)','对每行求欧氏距离','X_arr - test_arr 把测试特征广播到每个训练样本。norm 沿 axis=1 把各特征差平方求和再开平方，得到每行的距离。','差值：[[-1,0],[0,-1],[1,1]]\n距离：[1,1,√2]\n输出形状：(3,)','衡量每个训练样本离测试样本多远。'],
+['        nearest_indices = np.argsort(distances, kind="stable")[:K]','取距离最小的 K 个样本下标','argsort 返回排序后的原下标，不是距离值。[:K] 取前 K 项；kind="stable" 保证相同距离保持原出现顺序。','示例距离 [1,1,√2]\n排序下标 [0,1,2]\nK=2 → nearest_indices=[0,1]','定位最近的训练样本。'],
+['        nearest_labels = [y[i] for i in nearest_indices]','用下标查询最近邻标签','列表推导式遍历每个入选下标 i，取出 y[i]，把这些标签收集成新列表。i 不是标签本身。','nearest_indices=[0,1]\ny=[0,1,1]\n[y[0],y[1]] → [0,1]','把距离选择结果转换成投票标签。'],
+['        count_0 = nearest_labels.count(0)','统计标签 0 有几票','列表的 count(值) 方法返回这个值出现的次数；不是邻居的下标。','[0,1].count(0) == 1\n[1,0,1].count(0) == 1','统计第一类的票数。'],
+['        count_1 = nearest_labels.count(1)','统计标签 1 有几票','同样扫描最近标签列表，统计 1 的数量。因为题目标签只有 0 和 1，count_0 + count_1 应等于 K。','[0,1].count(1) == 1\n[1,0,1].count(1) == 2','统计第二类的票数。'],
+['        y_pred = 1 if count_1 >= count_0 else 0','比较票数，平票也返回 1','这是条件表达式：条件成立返回左侧的 1，否则返回右侧的 0。>= 包含票数相同的情况；这是本页根据示例采用的平票规则。','count_1=1、count_0=1\n1 >= 1 为 True → y_pred=1','明确多数投票及平票处理。'],
+['        return y_pred','返回预测结果','return 将标签交给调用者；与 print 不同，print 只负责显示文本。分类到此结束，不需要更新训练数据或循环迭代。','原题示例返回整数 1。','完成一次测试样本分类。']
+];
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const $=id=>document.getElementById(id);
+let lineIndex=0;
+function renderLine(index,scroll=false){lineIndex=Math.max(0,Math.min(entries.length-1,index));const e=entries[lineIndex];document.querySelectorAll('.code-line').forEach((el,i)=>{el.classList.toggle('active',i===lineIndex);el.setAttribute('aria-pressed',String(i===lineIndex));});$('line-detail').innerHTML=`<div class="detail-kicker">第 ${lineIndex+1} 行 / ${entries.length} 行</div><h3>${esc(e[1])}</h3><pre><code>${esc(e[0].trim())}</code></pre><p>${esc(e[2])}</p><div class="example">${esc(e[3])}</div><div class="purpose">这一行的作用：${esc(e[4])}</div>`;$('line-status').textContent=`${lineIndex+1} / ${entries.length}`;$('prev-line').disabled=lineIndex===0;$('next-line').disabled=lineIndex===entries.length-1;if(scroll){const active=document.querySelector('.code-line.active'),box=$('code-lines');if(active.offsetTop<box.offsetTop+box.scrollTop||active.offsetTop+active.offsetHeight>box.offsetTop+box.scrollTop+box.clientHeight)box.scrollTop=active.offsetTop-box.offsetTop-box.clientHeight/2;}}
+entries.forEach((e,i)=>{const b=document.createElement('button');b.type='button';b.className='code-line';b.innerHTML=`<span class="line-no">${i+1}</span><span class="code-text">${esc(e[0])}</span>`;b.setAttribute('aria-label',`第${i+1}行：${e[1]}`);b.addEventListener('click',()=>renderLine(i));$('code-lines').appendChild(b);});
+$('prev-line').addEventListener('click',()=>renderLine(lineIndex-1,true));$('next-line').addEventListener('click',()=>renderLine(lineIndex+1,true));
+$('copy-code').addEventListener('click',async()=>{const text=entries.map(e=>e[0]).join('\n')+'\n';try{await navigator.clipboard.writeText(text);$('copy-code').textContent='已复制';}catch(e){const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();const ok=document.execCommand('copy');ta.remove();$('copy-code').textContent=ok?'已复制':'请选择代码手动复制';}setTimeout(()=>{$('copy-code').textContent='复制完整代码'},2500);});renderLine(0);
+function matrix(headers,rows){return `<div class="table-wrap"><table class="matrix"><thead><tr>${headers.map(x=>`<th>${esc(x)}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map(x=>`<td>${esc(x)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;}
+const distanceSteps=[
+{name:'输入数组',shape:'(N,d) 与 (d,)',title:'训练样本 3 行，测试样本 1 组特征',body:()=>`<div class="grid2"><div>${matrix(['样本','特征1','特征2'],[['X[0]',1,2],['X[1]',2,1],['X[2]',3,3]])}</div><div><pre><code>test_arr = [2,2]\nshape = (2,)</code></pre><p>测试向量与训练矩阵的特征维数一致。</p></div></div>`},
+{name:'广播相减',shape:'(N,d)',title:'每个训练样本，都减去 [2,2]',body:()=>matrix(['样本','差值1','差值2'],[['X[0]',-1,0],['X[1]',0,-1],['X[2]',1,1]])+'<p>相减方向是 X − x_test。距离中差值要平方，所以反过来相减也得到相同距离。</p>'},
+{name:'逐项平方',shape:'(N,d)',title:'把负的差值也转为非负贡献',body:()=>matrix(['样本','差值1²','差值2²'],[['X[0]',1,0],['X[1]',0,1],['X[2]',1,1]])+'<p>例如 X[0]：(-1)² + 0²。</p>'},
+{name:'按行求和',shape:'(N,)',title:'沿 axis=1 合并每行的特征贡献',body:()=>matrix(['样本','平方和','含义'],[['X[0]',1,'1+0'],['X[1]',1,'0+1'],['X[2]',2,'1+1']])+'<p>输出 [1,1,2]，这是距离平方，尚未开平方。</p>'},
+{name:'开平方',shape:'(N,)',title:'norm 返回真正的欧氏距离',body:()=>matrix(['样本','距离','数值'],[['X[0]','√1','1.0000'],['X[1]','√1','1.0000'],['X[2]','√2','1.4142']])+'<div class="equation">distances = [1,1,√2]。展示保留四位小数，实际排序使用完整精度。</div>'}
+];
+let distanceIndex=0;
+function renderDistance(index){distanceIndex=index;document.querySelectorAll('#distance-controls button').forEach((b,i)=>{b.classList.toggle('active',i===index);b.setAttribute('aria-pressed',String(i===index));});$('shape-chain').innerHTML=distanceSteps.map((s,i)=>`<span class="shape ${i===index?'selected':''}">${esc(s.shape)}</span>${i<distanceSteps.length-1?'<span aria-hidden="true">→</span>':''}`).join('');$('distance-content').innerHTML=`<h3>${esc(distanceSteps[index].title)}</h3>${distanceSteps[index].body()}`;}
+distanceSteps.forEach((s,i)=>{const b=document.createElement('button');b.type='button';b.className='btn';b.textContent=s.name;b.addEventListener('click',()=>renderDistance(i));$('distance-controls').appendChild(b);});renderDistance(0);
+const samples=[[1,2],[2,1],[3,3]],labels=[0,1,1],test=[2,2];
+const distances=samples.map(p=>Math.hypot(p[0]-test[0],p[1]-test[1]));
+const sortedIndices=samples.map((p,i)=>i).sort((a,b)=>distances[a]-distances[b]||a-b);
+let currentK=2;
+function plot(neighbors){const sx=x=>55+x/4*410,sy=y=>326-y/4*275;let out='<title>KNN 示例与最近邻</title><desc>训练样本 [1,2] 标签0，[2,1] 标签1，[3,3] 标签1；测试样本 [2,2]。外圈代表被选为最近邻。</desc>';for(let i=0;i<=4;i++){out+=`<line x1="${sx(i)}" y1="51" x2="${sx(i)}" y2="326" stroke="#e2e8f1"/><line x1="55" y1="${sy(i)}" x2="465" y2="${sy(i)}" stroke="#e2e8f1"/><text x="${sx(i)}" y="350" text-anchor="middle" fill="#52627a" font-size="13">${i}</text><text x="42" y="${sy(i)+4}" text-anchor="end" fill="#52627a" font-size="13">${i}</text>`;}out+='<text x="465" y="374" text-anchor="end" fill="#52627a" font-size="14">特征1</text><text x="20" y="35" fill="#52627a" font-size="14">特征2</text>';neighbors.forEach(i=>{const p=samples[i];out+=`<line x1="${sx(p[0])}" y1="${sy(p[1])}" x2="${sx(test[0])}" y2="${sy(test[1])}" stroke="#7e90ac" stroke-dasharray="4 4"/>`;});samples.forEach((p,i)=>{const x=sx(p[0]),y=sy(p[1]),c=labels[i]===0?'#235cce':'#b65612';if(neighbors.includes(i))out+=`<circle cx="${x}" cy="${y}" r="15" fill="none" stroke="${c}" stroke-width="2"/>`;out+=labels[i]===0?`<circle cx="${x}" cy="${y}" r="6" fill="${c}"/>`:`<rect x="${x-6}" y="${y-6}" width="12" height="12" fill="${c}"/>`;out+=`<text x="${x+21}" y="${y-10}" fill="#17233c" font-size="13">X[${i}] · y=${labels[i]}</text>`;});const tx=sx(test[0]),ty=sy(test[1]);out+=`<path d="M${tx},${ty-9}L${tx+9},${ty}L${tx},${ty+9}L${tx-9},${ty}Z" fill="#17233c"/><text x="${tx+13}" y="${ty+24}" fill="#17233c" font-size="13">x_test [2,2]</text>`;$('knn-plot').innerHTML=out;}
+function renderK(K){currentK=K;document.querySelectorAll('#k-controls button').forEach(b=>{const selected=Number(b.getAttribute('data-k'))===K;b.classList.toggle('active',selected);b.setAttribute('aria-pressed',String(selected));});const neighbors=sortedIndices.slice(0,K),nearLabels=neighbors.map(i=>labels[i]);const count0=nearLabels.filter(v=>v===0).length,count1=K-count0,pred=count1>=count0?1:0;plot(neighbors);$('neighbor-table').innerHTML='<h3>按距离排序，再取前 K 项</h3>'+matrix(['顺序','原下标','距离','标签','入选'],sortedIndices.map((i,pos)=>[pos+1,i,distances[i].toFixed(4),labels[i],pos<K?'是':'否']));$('votes').innerHTML=`<div class="vote-row"><span>标签 0</span><div class="track"><div class="bar bar0" style="width:${count0/K*100}%"></div></div><span>${count0} 票</span></div><div class="vote-row"><span>标签 1</span><div class="track"><div class="bar bar1" style="width:${count1/K*100}%"></div></div><span>${count1} 票</span></div>`;$('prediction').innerHTML=`预测标签：<strong>${pred}</strong><br><span class="small">${count0===count1?'票数相同，按给定示例采用平票返回 1。':`标签 ${pred} 的票数更多。`}</span>`;$('index-path').innerHTML=`<div class="equation"><code>nearest_indices = [${neighbors.join(',')}]</code><br><code>nearest_labels = [${nearLabels.join(',')}]</code><br>票数：0 → ${count0}，1 → ${count1}；<code>${count1} &gt;= ${count0}</code> → ${count1>=count0?'True':'False'}</div>`;}
+document.querySelectorAll('#k-controls button').forEach(b=>b.addEventListener('click',()=>renderK(Number(b.getAttribute('data-k')))));renderK(2);
+</script>
+  <script src="./math-render.js?v=20261003-13"></script>
+</body>
+</html>
