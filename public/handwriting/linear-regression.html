@@ -150,6 +150,6 @@ datasets.forEach((d,i)=>{const b=document.createElement('button');b.type='button
 function updateFit(){if($('input-w').value.trim()===''||$('input-b').value.trim()==='')return;const w=Number($('input-w').value),b=Number($('input-b').value);if(!Number.isFinite(w)||!Number.isFinite(b)||Math.abs(w)>1e6||Math.abs(b)>1e6)return;fitW=w;fitB=b;renderFit();}
 $('input-w').addEventListener('input',updateFit);$('input-b').addEventListener('input',updateFit);$('reset-fit').addEventListener('click',resetFit);$('try-fit').addEventListener('click',()=>{fitW=1;fitB=0;$('input-w').value='1';$('input-b').value='0';renderFit();});selectDataset(0);
 </script>
-  <script src="./math-render.js?v=20261003-13"></script>
+  <script src="./math-render.js?v=20261003-14"></script>
 </body>
 </html>

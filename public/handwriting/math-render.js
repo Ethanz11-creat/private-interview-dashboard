@@ -95,8 +95,13 @@
   script.async = true;
   let prepared = false;
   let typeset = false;
+  let mathjaxUnavailable = false;
+  let renderAttempts = 0;
+  const maxRenderAttempts = 60;
   const renderFormulas = () => {
+    if (mathjaxUnavailable || renderAttempts >= maxRenderAttempts) return;
     if (!window.MathJax?.typesetPromise) {
+      renderAttempts += 1;
       window.setTimeout(renderFormulas, 80);
       return;
     }
@@ -112,6 +117,9 @@
     window.MathJax.typesetPromise().catch(() => {});
   };
   script.onload = renderFormulas;
+  // Keep the original formula markup as the offline/error fallback. Do not
+  // keep scheduling retries after a local asset has definitively failed.
+  script.onerror = () => { mathjaxUnavailable = true; };
   document.head.append(script);
   // Cover cached scripts whose load event fires before the handler is observed.
   window.setTimeout(renderFormulas, 0);

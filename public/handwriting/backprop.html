@@ -122,5 +122,5 @@ walkNames.forEach((name,i)=>{const b=document.createElement('button');b.type='bu
 document.querySelectorAll('#label-controls button').forEach(b=>b.addEventListener('click',()=>{label=Number(b.getAttribute('data-y'));document.querySelectorAll('#label-controls button').forEach(v=>{const selected=Number(v.getAttribute('data-y'))===label;v.classList.toggle('active',selected);v.setAttribute('aria-pressed',String(selected));});renderWalk(walkIndex);}));
 $('input-lr').addEventListener('input',()=>{const raw=$('input-lr').value.trim(),value=Number(raw);if(raw===''||!Number.isFinite(value)||value<=0||value>1){$('lr-error').textContent='学习率需要满足 0 < lr ≤ 1。';return;}$('lr-error').textContent='';lr=value;renderWalk(walkIndex);});renderWalk(0);
 </script>
-  <script src="./math-render.js?v=20261003-13"></script>
+  <script src="./math-render.js?v=20261003-14"></script>
 </body></html>

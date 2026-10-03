@@ -195,5 +195,5 @@ function renderStage(index){stageIndex=Math.max(0,Math.min(stageNames.length-1,i
 function chooseDataset(index){dataIndex=index;current=calculate(datasets[index]);queryIndex=0;$('query-row').innerHTML=Array.from({length:current.n},(_,i)=>`<option value="${i}">位置 ${i}</option>`).join('');$('query-row').value='0';renderStage(stageIndex);}
 $('dataset').addEventListener('change',()=>chooseDataset(Number($('dataset').value)));$('query-row').addEventListener('change',()=>{queryIndex=Number($('query-row').value);renderWeights();});$('trace-prev').addEventListener('click',()=>renderStage(stageIndex-1));$('trace-next').addEventListener('click',()=>renderStage(stageIndex+1));
 setMode('numpy');chooseDataset(0);
-</script>  <script src="./math-render.js?v=20261003-13"></script>
+</script>  <script src="./math-render.js?v=20261003-14"></script>
 </body></html>
