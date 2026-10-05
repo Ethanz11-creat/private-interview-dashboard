@@ -74,7 +74,7 @@
       if (element.matches('.handwriting-index-head h3')) return 1;
       if (element.matches('.handwriting-card > h4')) return 2;
     } else if (round === 'architecture') {
-      if (element.matches('.architecture-page:not(.architecture-sources-page) > h2')) return 1;
+      if (element.matches('.architecture-page:not(.architecture-sources-page) > .architecture-hero h2')) return 1;
       if (element.matches('.architecture-section > h3')) return 2;
       if (element.matches('.architecture-subsection > h4,.architecture-algorithm-card > h4,.architecture-model-card > h4,.architecture-explain-grid article > h4')) return 3;
       if (element.matches('.architecture-jev-card > h5')) return 4;

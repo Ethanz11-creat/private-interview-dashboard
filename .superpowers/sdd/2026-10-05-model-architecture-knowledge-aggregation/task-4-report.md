@@ -22,3 +22,12 @@
 
 - The architecture source is rendered from the existing template fragment; future chapter changes should continue to preserve the five stable IDs from Task 2.
 - No browser automation dependency is configured in this package, so DOM behavior was validated through static route/template checks rather than a headless browser run.
+
+## Review Fixes
+
+- Corrected the architecture topic selector to use the actual `.architecture-hero h2` title, so the five chapter headings are nested beneath the page title in the right rail.
+- Added a scoped five-column desktop grid for `.architecture-map`, with a three-column fallback below 1100px; existing narrow-screen and diagram overflow rules remain unchanged.
+
+## Review Verification
+
+- Re-ran `npm run build`, `npm run check`, `git diff --check`, and targeted static assertions for the hero selector and five-column map rule.

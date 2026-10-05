@@ -74,6 +74,11 @@ body[data-round="architecture"] .hero::before { content: '03 / MODEL ARCHITECTUR
 .map-node { border: 0; background: transparent; padding: 14px 12px; text-align: left; margin: 0; }
 .map-node + .map-node { border-left: 1px solid var(--line); }
 .map-node strong { color: #2a586a; font-size: 13px; }
+.architecture-map { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+
+@media (max-width: 1100px) {
+  .architecture-map { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
 .map-node span { font-size: 11px; color: #637783; }
 .stage-panel { padding: 22px; border: 1px solid var(--line); border-radius: 8px; background: #fff; }
 .stage-panel > h3 { margin: 0 0 18px; font-size: 19px; color: #244d60; }
