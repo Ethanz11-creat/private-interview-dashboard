@@ -65,6 +65,7 @@ body > .site-header { padding: 14px max(24px, calc((100vw - 1800px) / 2 + 22px))
 body[data-round="fundamentals"] .hero::before { content: '02 / KNOWLEDGE BASE'; }
 body[data-round="supervisor"] .hero::before { content: '03 / LEADERSHIP INTERVIEW'; }
 body[data-round="hr"] .hero::before { content: '04 / PEOPLE & OPPORTUNITIES'; }
+body[data-round="architecture"] .hero::before { content: '03 / MODEL ARCHITECTURE'; }
 .hero h2 { margin: 0 0 12px; font: 650 34px/1.3 var(--heading-font); letter-spacing: 1px; }
 .hero p { font-size: 13px; line-height: 1.85; max-width: 66ch; color: #5e727c; }
 .hero .badge { position: absolute; top: 26px; right: 0; margin: 0; padding: 4px 9px; border-color: #d3e2e3; background: #f5faf8; border-radius: 4px; color: #426d65; font-size: 10px; }
