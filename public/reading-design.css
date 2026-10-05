@@ -453,6 +453,9 @@ body > .site-header {
   text-transform: uppercase;
 }
 .side-nav { gap: 7px; }
+.side-nav .nav-group { display: grid; gap: 7px; }
+.side-nav .nav-group + .nav-group { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--desk-line); }
+.side-nav .nav-group .side-title { margin-bottom: 3px; }
 .side-nav .nav {
   position: relative;
   gap: 11px;
@@ -805,6 +808,11 @@ body > .site-header {
   .source-body h2 { margin-top: 39px; font-size: 23px; }
   .source-body h3 { font-size: 18px; }
   .topic-nav-link, #topic-collapse, #topic-search { min-height: 44px; }
+  .side-nav { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 7px; }
+  .side-nav .nav-group { display: contents; }
+  .side-nav .nav-group .side-title { grid-column: 1 / -1; margin: 3px 4px 0; min-height: 24px; }
+  .side-nav .nav-group + .nav-group { margin-top: 5px; padding-top: 5px; border-top: 1px solid var(--desk-line); }
+  .side-nav .nav { min-height: 44px; }
 }
 @media (max-width: 480px) {
   .site-brand h1 { font-size: 18px; }
@@ -879,7 +887,7 @@ body.ipad-reading .topic-nav { font-size: 13px; }
     box-shadow: 0 4px 14px rgba(24, 64, 70, .05);
   }
   body.ipad-reading .round-sidebar .side-nav {
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 8px;
   }
   body.ipad-reading .round-sidebar .side-nav .nav {
@@ -892,8 +900,11 @@ body.ipad-reading .topic-nav { font-size: 13px; }
   body.ipad-reading .round-sidebar .side-nav small,
   body.ipad-reading .round-sidebar .rule,
   body.ipad-reading .round-sidebar .hint,
-  body.ipad-reading .sidebar-note,
-  body.ipad-reading .round-sidebar .side-title:not(:first-child) { display: none; }
+  body.ipad-reading .sidebar-note { display: none; }
+  body.ipad-reading .round-sidebar .side-nav { display: grid; }
+  body.ipad-reading .round-sidebar .side-nav .nav-group { display: contents; }
+  body.ipad-reading .round-sidebar .side-nav .side-title { display: block; grid-column: 1 / -1; min-height: 24px; margin: 0 4px; }
+  body.ipad-reading .round-sidebar .side-nav .nav-group + .nav-group { margin-top: 4px; padding-top: 7px; border-top: 1px solid var(--desk-line); }
   body.ipad-reading .layout > #app {
     max-width: 780px;
     margin: 0 auto;
