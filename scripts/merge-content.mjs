@@ -27,6 +27,7 @@ if (!html.includes('<!-- PROJECT_SOURCE_START -->') || !html.includes('<!-- PROJ
   throw new Error('Cannot find canonical PROJECT_SOURCE in index.html');
 }
 const schoolSource = fs.readFileSync(path.join(root, 'content', 'school-project.html'), 'utf8').trim();
+const architectureSource = fs.readFileSync(path.join(root, 'content', 'model-architecture.html'), 'utf8').trim();
 const projectStart = html.indexOf('<!-- PROJECT_SOURCE_START -->');
 const projectEnd = html.indexOf('<!-- PROJECT_SOURCE_END -->', projectStart);
 const schoolStart = html.indexOf('<section id="school"', projectStart);
@@ -39,5 +40,9 @@ if (!schoolSource.startsWith('<section id="school"') || !schoolSource.endsWith('
 }
 html = html.slice(0, schoolStart) + schoolSource + '\n' + html.slice(schoolEnd);
 html = replaceBlock(html, 'SUPERVISOR_SOURCE', readBody('联想主管面思维导图.html'));
+if (!architectureSource.startsWith('<section id="architecture"') || !architectureSource.endsWith('</section>')) {
+  throw new Error('Invalid model architecture fragment');
+}
+html = replaceBlock(html, 'ARCHITECTURE_SOURCE', architectureSource);
 fs.writeFileSync(indexPath, html);
-console.log('Preserved other projects; embedded the complete school chapter and supervisor content.');
+console.log('Preserved other projects; embedded the complete school, supervisor and architecture content.');
