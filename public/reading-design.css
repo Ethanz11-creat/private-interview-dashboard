@@ -287,7 +287,7 @@ body[data-round="architecture"] .hero::before { content: '03 / MODEL ARCHITECTUR
   .round-sidebar .side-title { margin: 0 4px 10px; font-size: 10px; }
   .round-sidebar .side-nav { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 5px; }
   .side-nav .nav { padding: 12px 5px; justify-content: center; font-size: 13px; min-height: 44px; }
-  .side-nav .nav-index, .side-nav .nav small, .side-nav .nav.active::after, .round-sidebar .rule, .round-sidebar .hint, .sidebar-note, .round-sidebar .side-title:not(:first-child) { display: none; }
+  .side-nav .nav-index, .side-nav .nav small, .side-nav .nav.active::after, .round-sidebar .rule, .round-sidebar .hint, .sidebar-note { display: none; }
   .layout > #app { padding: 26px 16px 80px; }
   .hero h2 { font-size: 30px; }
   .hero p { padding-right: 0; font-size: 13px; }

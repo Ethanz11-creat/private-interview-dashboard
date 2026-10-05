@@ -28,3 +28,12 @@ Only Task 5 files were changed and committed. Existing architecture prose and ro
 ## Concerns
 
 The diagram containment selector uses `:has(.architecture-svg)`; current Safari, Chromium, and Firefox versions support it. Older embedded browsers may fall back to the base figure overflow behavior.
+
+## Review Fixes
+
+- Applied local horizontal overflow to every architecture figure so all SVG diagrams retain their readable minimum width without widening the page.
+- Limited the iPad one-column card layout to portrait widths; landscape keeps its two-column grids.
+- Kept both sidebar group labels visible in compact non-iPad layouts.
+- Added `.architecture-component-grid` as an alias for the component card grid primitive.
+
+Review fix verification: `npm run check`, `npm run build`, and `git diff --check` passed.

@@ -53,6 +53,8 @@
   min-width: 0;
   margin: 22px 0;
   padding: 14px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
   border: 1px solid var(--architecture-line);
   border-radius: 6px;
   background: #fff;
@@ -104,14 +106,16 @@
 #architecture .architecture-explain-grid,
 #architecture .architecture-model-grid,
 #architecture .architecture-jev-grid,
-#architecture .architecture-algorithm-grid {
+#architecture .architecture-algorithm-grid,
+#architecture .architecture-component-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px;
   min-width: 0;
 }
 #architecture .architecture-model-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-#architecture .architecture-algorithm-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+#architecture .architecture-algorithm-grid,
+#architecture .architecture-component-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 #architecture .architecture-explain-grid > article,
 #architecture .architecture-model-card,
 #architecture .architecture-algorithm-card,
@@ -165,7 +169,8 @@
   #architecture .architecture-explain-grid,
   #architecture .architecture-model-grid,
   #architecture .architecture-jev-grid,
-  #architecture .architecture-algorithm-grid { grid-template-columns: 1fr; }
+  #architecture .architecture-algorithm-grid,
+  #architecture .architecture-component-grid { grid-template-columns: 1fr; }
   #architecture .architecture-image-grid,
   #architecture .architecture-image-grid-wide { grid-template-columns: 1fr; }
   #architecture .architecture-image-grid img { height: auto; max-height: 360px; }
@@ -173,12 +178,15 @@
 }
 
 /* iPad reading mode keeps wide diagrams inside their own scroller. */
-body.ipad-reading #architecture .architecture-explain-grid,
-body.ipad-reading #architecture .architecture-model-grid,
-body.ipad-reading #architecture .architecture-jev-grid,
-body.ipad-reading #architecture .architecture-algorithm-grid { grid-template-columns: 1fr; }
-body.ipad-reading #architecture .architecture-figure:has(.architecture-svg),
-body.ipad-reading #architecture .architecture-overview { overflow-x: auto; overscroll-behavior-x: contain; }
+body.ipad-reading #architecture .architecture-figure:has(.architecture-svg) { overflow-x: auto; }
 body.ipad-reading #architecture .architecture-figure:has(.architecture-svg) .architecture-svg { width: 920px; max-width: none; }
 body.ipad-reading #architecture .architecture-overview .architecture-svg { width: 1120px; max-width: none; }
 body.ipad-reading #architecture .architecture-index a { min-height: 44px; }
+
+@media (max-width: 820px) {
+  body.ipad-reading #architecture .architecture-explain-grid,
+  body.ipad-reading #architecture .architecture-model-grid,
+  body.ipad-reading #architecture .architecture-jev-grid,
+  body.ipad-reading #architecture .architecture-algorithm-grid,
+  body.ipad-reading #architecture .architecture-component-grid { grid-template-columns: 1fr; }
+}
