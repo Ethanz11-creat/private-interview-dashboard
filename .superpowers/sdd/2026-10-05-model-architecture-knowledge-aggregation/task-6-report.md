@@ -23,3 +23,7 @@ Accepted labels are `官方资料`, `用户画板`, `第三方说明`, and `待�
 ## Concerns
 
 The validator intentionally uses the repository's current semantic class names and lightweight HTML matching; it does not attempt to fully parse arbitrary HTML or validate remote URLs.
+
+## Fix Follow-up
+
+Source labels are now required in the structural `.architecture-source-note` and `.architecture-source-label` elements within each card. JEV and source-ledger checks are scoped to their expected subsection/footer structures. An internal regression check removes the first model card's label and verifies that validation would fail.

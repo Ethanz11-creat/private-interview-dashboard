@@ -31,6 +31,16 @@ function articleBlocks(className) {
   return [...html.matchAll(pattern)].map((match) => match[0]);
 }
 
+function hasScopedSourceLabel(block) {
+  const sourceNotes = [...block.matchAll(/<div\b[^>]*class=["'][^"']*\barchitecture-source-note\b[^"']*["'][^>]*>[\s\S]*?<\/div>/gi)]
+    .map((match) => match[0]);
+  return sourceNotes.some((note) => {
+    const labels = [...note.matchAll(/<span\b[^>]*class=["'][^"']*\barchitecture-source-label\b[^"']*["'][^>]*>([^<]*)<\/span>/gi)]
+      .map((match) => match[1].trim());
+    return labels.some((label) => allowedLabels.includes(label));
+  });
+}
+
 for (const id of requiredSections) {
   const section = html.match(new RegExp(`<section\\b[^>]*\\bid=["']${id}["'][^>]*>[\\s\\S]*?<\\/section>`, 'i'));
   if (!section) {
@@ -40,8 +50,10 @@ for (const id of requiredSections) {
   if (!/<figure\b/i.test(section[0])) fail(`Section #${id} must contain at least one <figure>`);
 }
 
-if (!/id=["']architecture-jev["']/i.test(html)) fail('Missing JEV section #architecture-jev');
-if (!/content\/model-architecture-sources\.html/i.test(html)) {
+if (!/<div\b[^>]*class=["'][^"']*\barchitecture-subsection\b[^"']*["'][^>]*id=["']architecture-jev["'][^>]*>/i.test(html)) {
+  fail('Missing JEV subsection with the expected architecture-subsection structure');
+}
+if (!/<footer\b[^>]*class=["'][^"']*\barchitecture-footer\b[^"']*["'][^>]*>[\s\S]*?<code>content\/model-architecture-sources\.html<\/code>[\s\S]*?<\/footer>/i.test(html)) {
   fail('Missing source marker: expected a reference to content/model-architecture-sources.html');
 }
 
@@ -63,7 +75,7 @@ const modelCards = articleBlocks('architecture-model-card');
 if (modelCards.length === 0) fail('No model cards found (.architecture-model-card)');
 for (const [index, card] of modelCards.entries()) {
   const title = headingFor(card, `model card ${index + 1}`);
-  if (!allowedLabels.some((label) => card.includes(label))) {
+  if (!hasScopedSourceLabel(card)) {
     fail(`Model card "${title}" is missing a source label (${allowedLabels.join(' / ')})`);
   }
 }
@@ -72,8 +84,18 @@ const algorithmCards = articleBlocks('architecture-algorithm-card');
 if (algorithmCards.length === 0) fail('No external algorithm source blocks found (.architecture-algorithm-card)');
 for (const [index, card] of algorithmCards.entries()) {
   const title = headingFor(card, `algorithm source block ${index + 1}`);
-  if (!allowedLabels.some((label) => card.includes(label))) {
+  if (!hasScopedSourceLabel(card)) {
     fail(`External algorithm source block "${title}" is missing a source label (${allowedLabels.join(' / ')})`);
+  }
+}
+
+if (modelCards.length > 0) {
+  const labelRemoved = modelCards[0].replace(
+    /(<span\b[^>]*class=["'][^"']*\barchitecture-source-label\b[^"']*["'][^>]*>)[^<]*(<\/span>)/i,
+    '$1$2'
+  );
+  if (hasScopedSourceLabel(labelRemoved)) {
+    fail('Regression check failed: removing a model card source label must fail validation');
   }
 }
 
