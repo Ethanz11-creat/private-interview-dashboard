@@ -1,0 +1,232 @@
+[
+  {
+    "sourceFile": "/Users/yiheng/Downloads/新架构解读讲解.excalidraw",
+    "fileId": "60f419112cb10556301c2cbe7e4c7a47877b44e2",
+    "sourceLabel": "new-architecture",
+    "x": -209.87213369574482,
+    "y": 4760.97987633697,
+    "width": 509.04615384615386,
+    "height": 517,
+    "output": "public/assets/model-architecture/source-new-architecture-01.png"
+  },
+  {
+    "sourceFile": "/Users/yiheng/Downloads/新架构解读讲解.excalidraw",
+    "fileId": "40e18ab0fd163c5a2461c3aadf92c2b8815dea62",
+    "sourceLabel": "new-architecture",
+    "x": -233.10056886746622,
+    "y": 5308.001638899284,
+    "width": 508.52750308750433,
+    "height": 513.3648634022487,
+    "output": "public/assets/model-architecture/source-new-architecture-02.png"
+  },
+  {
+    "sourceFile": "/Users/yiheng/Downloads/新架构解读讲解.excalidraw",
+    "fileId": "b5c5abb77523260588a03367f5314e559ee11b22",
+    "sourceLabel": "new-architecture",
+    "x": -262.6595136834094,
+    "y": 5838.798609778695,
+    "width": 520.5778546712803,
+    "height": 517,
+    "output": "public/assets/model-architecture/source-new-architecture-03.png"
+  },
+  {
+    "sourceFile": "/Users/yiheng/Downloads/新架构解读讲解.excalidraw",
+    "fileId": "6352ef967e42f850e1d2ccf0f0ee19c7e2323724",
+    "sourceLabel": "new-architecture",
+    "x": -223.4034791382973,
+    "y": 6397.749126961644,
+    "width": 428.5012887769643,
+    "height": 513.3648634022487,
+    "output": "public/assets/model-architecture/source-new-architecture-04.png"
+  },
+  {
+    "sourceFile": "/Users/yiheng/Downloads/新架构解读讲解.excalidraw",
+    "fileId": "57cbcc1a5b5d066a9141a05d723f9a3944f85ec2",
+    "sourceLabel": "new-architecture",
+    "x": -281.3098931589096,
+    "y": 6943.686416810958,
+    "width": 546.3711003144484,
+    "height": 513.3648634022487,
+    "output": "public/assets/model-architecture/source-new-architecture-05.png"
+  },
+  {
+    "sourceFile": "/Users/yiheng/Downloads/新架构解读讲解.excalidraw",
+    "fileId": "0528abf16ae4083466a998c9aa81003dd33c9430",
+    "sourceLabel": "new-architecture",
+    "x": -279.5954230610704,
+    "y": 7507.389756215433,
+    "width": 501.1589855311463,
+    "height": 513.3648634022487,
+    "output": "public/assets/model-architecture/source-new-architecture-06.png"
+  },
+  {
+    "sourceFile": "/Users/yiheng/Downloads/新架构解读讲解.excalidraw",
+    "fileId": "0041a24946679069debb7be57880224b57bdea66",
+    "sourceLabel": "new-architecture",
+    "x": -303.71804962144006,
+    "y": 8085.063980453471,
+    "width": 513.9617992899257,
+    "height": 513.3648634022487,
+    "output": "public/assets/model-architecture/source-new-architecture-07.png"
+  },
+  {
+    "sourceFile": "/Users/yiheng/Downloads/新架构解读讲解.excalidraw",
+    "fileId": "9967cdaa04f0f596ce92cdf30fc4399cb4f60c7e",
+    "sourceLabel": "new-architecture",
+    "x": -262.1938413991762,
+    "y": 8654.57619345558,
+    "width": 454.62466449090675,
+    "height": 513.3648634022487,
+    "output": "public/assets/model-architecture/source-new-architecture-08.png"
+  },
+  {
+    "sourceFile": "/Users/yiheng/Downloads/新架构解读讲解.excalidraw",
+    "fileId": "ca65fec5fada914d47fc10ab40227ba231d87a62",
+    "sourceLabel": "new-architecture",
+    "x": -348.82639036036494,
+    "y": 9219.305777954012,
+    "width": 526.4064650129294,
+    "height": 513.3648634022487,
+    "output": "public/assets/model-architecture/source-new-architecture-09.png"
+  },
+  {
+    "sourceFile": "/Users/yiheng/Downloads/视频画板.excalidraw",
+    "fileId": "7b8a6b2b3c990dd38e87dd49dc0bb7f70374e78c",
+    "sourceLabel": "video-board",
+    "x": -2112.881457565231,
+    "y": -4288.184336042803,
+    "width": 3292.181449666659,
+    "height": 2055.3271689238377,
+    "output": "public/assets/model-architecture/source-video-board-01.png"
+  },
+  {
+    "sourceFile": "/Users/yiheng/Downloads/视频画板.excalidraw",
+    "fileId": "6b3dd09f2a2e3ffac8d7eefdf67fe70dada1db94",
+    "sourceLabel": "video-board",
+    "x": 1984.8764145866135,
+    "y": 393.1982175536183,
+    "width": 643.4778145684137,
+    "height": 229.35842895507815,
+    "output": "public/assets/model-architecture/source-video-board-02.png"
+  },
+  {
+    "sourceFile": "/Users/yiheng/Downloads/视频画板.excalidraw",
+    "fileId": "f99d5f355ef640e9b13c5f4bc91f6e9c1eb2429b",
+    "sourceLabel": "video-board",
+    "x": 6865.474927236153,
+    "y": 461.97295588937834,
+    "width": 491.84915161132847,
+    "height": 182.62272644042963,
+    "output": "public/assets/model-architecture/source-video-board-03.png"
+  },
+  {
+    "sourceFile": "/Users/yiheng/Downloads/视频画板.excalidraw",
+    "fileId": "9ffb2f9845f058525438963073c4b754732810d5",
+    "sourceLabel": "video-board",
+    "x": 6668.003939280422,
+    "y": 701.2088567682845,
+    "width": 861.8870035807297,
+    "height": 628.6793009440105,
+    "output": "public/assets/model-architecture/source-video-board-04.png"
+  },
+  {
+    "sourceFile": "/Users/yiheng/Downloads/视频画板.excalidraw",
+    "fileId": "1885c994a444a2e734aba575badff35aadcce920",
+    "sourceLabel": "video-board",
+    "x": -3704.003547698745,
+    "y": 1702.4090102150815,
+    "width": 976.4334242480285,
+    "height": 307.8680013020836,
+    "output": "public/assets/model-architecture/source-video-board-05.png"
+  },
+  {
+    "sourceFile": "/Users/yiheng/Downloads/视频画板.excalidraw",
+    "fileId": "5d4c7811020d7e8e3f18529698fdbb6338d99de3",
+    "sourceLabel": "video-board",
+    "x": -1612.227146814741,
+    "y": 4583.321403964959,
+    "width": 3227.529411764706,
+    "height": 1760,
+    "output": "public/assets/model-architecture/source-video-board-06.png"
+  },
+  {
+    "sourceFile": "/Users/yiheng/Downloads/视频画板.excalidraw",
+    "fileId": "0b06e6f7491f6cde62645c5f5a7013229cb03dc7",
+    "sourceLabel": "video-board",
+    "x": 705.2529966263392,
+    "y": 7082.116813251218,
+    "width": 2055.21986970684,
+    "height": 2068.6967213114754,
+    "output": "public/assets/model-architecture/source-video-board-07.png"
+  },
+  {
+    "sourceFile": "/Users/yiheng/Downloads/视频画板.excalidraw",
+    "fileId": "8907a55fb8fc38396ed8cfac358c77cd85d74507",
+    "sourceLabel": "video-board",
+    "x": 2629.252996626339,
+    "y": 7108.385255874169,
+    "width": 2058.908794788274,
+    "height": 2072.409836065574,
+    "output": "public/assets/model-architecture/source-video-board-08.png"
+  },
+  {
+    "sourceFile": "/Users/yiheng/Downloads/视频画板.excalidraw",
+    "fileId": "f93d97c3a52ba90da6fc60c50721772fd1a609ed",
+    "sourceLabel": "video-board",
+    "x": -2349.3104801480713,
+    "y": 7728.571403964958,
+    "width": 902.0145985401452,
+    "height": 541.9999999999995,
+    "output": "public/assets/model-architecture/source-video-board-09.png"
+  },
+  {
+    "sourceFile": "/Users/yiheng/Downloads/视频画板.excalidraw",
+    "fileId": "2d67be264abd9324e088fece3a080d407386c386",
+    "sourceLabel": "video-board",
+    "x": 1574.6279966263392,
+    "y": 9304.21516049591,
+    "width": 2208.5227272727293,
+    "height": 971.7500000000007,
+    "output": "public/assets/model-architecture/source-video-board-10.png"
+  },
+  {
+    "sourceFile": "/Users/yiheng/Downloads/视频画板.excalidraw",
+    "fileId": "20e8295cdc8f4b60a6a0c69dcdb03a7943dd7bbf",
+    "sourceLabel": "video-board",
+    "x": 5576.11340047374,
+    "y": 12330.89700647115,
+    "width": 1411.0000000000002,
+    "height": 1292.8374384236458,
+    "output": "public/assets/model-architecture/source-video-board-11.png"
+  },
+  {
+    "sourceFile": "/Users/yiheng/Downloads/视频画板.excalidraw",
+    "fileId": "f78660e8f972f1300aa4880ba0017e3c55e53df3",
+    "sourceLabel": "video-board",
+    "x": -3076.3865995262604,
+    "y": 15665.39700647115,
+    "width": 2759.3542128603112,
+    "height": 1422.2500000000005,
+    "output": "public/assets/model-architecture/source-video-board-12.png"
+  },
+  {
+    "sourceFile": "/Users/yiheng/Downloads/视频画板.excalidraw",
+    "fileId": "07d3133732765f9084c8441aa9e22558bcbd87d4",
+    "sourceLabel": "video-board",
+    "x": 3799.0062576166147,
+    "y": 16304.682774401055,
+    "width": 1911.9999999999993,
+    "height": 1439.2656058751525,
+    "output": "public/assets/model-architecture/source-video-board-13.png"
+  },
+  {
+    "sourceFile": "/Users/yiheng/Downloads/视频画板.excalidraw",
+    "fileId": "17460fddfefbd3cdfd634eddddde6737255243a9",
+    "sourceLabel": "video-board",
+    "x": 99.81953963022329,
+    "y": 17915.429005675578,
+    "width": 3329.2187692302555,
+    "height": 496.99993896484386,
+    "output": "public/assets/model-architecture/source-video-board-14.png"
+  }
+]
