@@ -196,4 +196,5 @@ function chooseDataset(index){dataIndex=index;current=calculate(datasets[index])
 $('dataset').addEventListener('change',()=>chooseDataset(Number($('dataset').value)));$('query-row').addEventListener('change',()=>{queryIndex=Number($('query-row').value);renderWeights();});$('trace-prev').addEventListener('click',()=>renderStage(stageIndex-1));$('trace-next').addEventListener('click',()=>renderStage(stageIndex+1));
 setMode('numpy');chooseDataset(0);
 </script>  <script src="./math-render.js?v=20261003-14"></script>
+<script src="./axis-visualizer.js?v=20261005-1"></script>
 </body></html>
