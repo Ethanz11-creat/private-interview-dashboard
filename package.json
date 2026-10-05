@@ -1,1 +1,1 @@
-{"name":"private-interview-dashboard","private":true,"scripts":{"build":"node scripts/merge-content.mjs","check":"node --check worker.js && node --check scripts/merge-content.mjs && node --check public/topic-navigation.js"}}
+{"name":"private-interview-dashboard","private":true,"scripts":{"build":"node scripts/merge-content.mjs","check":"node --check worker.js && node --check scripts/merge-content.mjs && node --check public/topic-navigation.js","check:architecture":"node scripts/validate-model-architecture.mjs"}}
