@@ -22,3 +22,7 @@
 ## Concern
 
 The existing supervisor merge behavior refreshes a stale source-link line from the current source HTML during `npm run build`. This is pre-existing merge behavior and was left unchanged as required; it appears in the generated `public/index.html` diff alongside the requested architecture injection.
+
+## Follow-up Fix
+
+The supervisor source HTML contained two invalid relative links. The merge pipeline now canonicalizes them to the existing `二面/联想主管面思维导图.html` and `二面/业务信息查询Agent-项目追问导图.html` paths and asserts both links before writing `public/index.html`. This prevents architecture builds from reintroducing broken supervisor links without modifying the source HTML.

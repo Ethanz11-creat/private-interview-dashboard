@@ -12,6 +12,18 @@ function readBody(fileName) {
   return match[1];
 }
 
+function readSupervisorBody() {
+  return readBody('联想主管面思维导图.html')
+    .replace(
+      '<a href="联想主管面准备.md">联想主管面准备.md</a>',
+      '<a href="二面/联想主管面思维导图.html">联想主管面思维导图.html</a>'
+    )
+    .replace(
+      "link.href='业务信息查询Agent-项目追问导图.html'",
+      "link.href='二面/业务信息查询Agent-项目追问导图.html'"
+    );
+}
+
 function replaceBlock(html, name, content) {
   const start = `<!-- ${name}_START -->`;
   const end = `<!-- ${name}_END -->`;
@@ -39,7 +51,15 @@ if (!schoolSource.startsWith('<section id="school"') || !schoolSource.endsWith('
   throw new Error('Invalid school project fragment');
 }
 html = html.slice(0, schoolStart) + schoolSource + '\n' + html.slice(schoolEnd);
-html = replaceBlock(html, 'SUPERVISOR_SOURCE', readBody('联想主管面思维导图.html'));
+const supervisorSource = readSupervisorBody();
+const requiredSupervisorLinks = [
+  'href="二面/联想主管面思维导图.html"',
+  "link.href='二面/业务信息查询Agent-项目追问导图.html'"
+];
+if (!requiredSupervisorLinks.every((link) => supervisorSource.includes(link))) {
+  throw new Error('Supervisor source links must retain valid 二面 paths');
+}
+html = replaceBlock(html, 'SUPERVISOR_SOURCE', supervisorSource);
 if (!architectureSource.startsWith('<section id="architecture"') || !architectureSource.endsWith('</section>')) {
   throw new Error('Invalid model architecture fragment');
 }
