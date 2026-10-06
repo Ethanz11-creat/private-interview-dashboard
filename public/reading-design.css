@@ -285,7 +285,7 @@ body[data-round="architecture"] .hero::before { content: '03 / MODEL ARCHITECTUR
   .layout { display: block; }
   .round-sidebar { padding: 13px 12px; border-right: 0; }
   .round-sidebar .side-title { margin: 0 4px 10px; font-size: 10px; }
-  .round-sidebar .side-nav { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 5px; }
+  .round-sidebar .side-nav { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 5px; }
   .side-nav .nav { padding: 12px 5px; justify-content: center; font-size: 13px; min-height: 44px; }
   .side-nav .nav-index, .side-nav .nav small, .side-nav .nav.active::after, .round-sidebar .rule, .round-sidebar .hint, .sidebar-note { display: none; }
   .layout > #app { padding: 26px 16px 80px; }
@@ -574,6 +574,7 @@ body > .site-header {
   font-size: 9px;
   vertical-align: -1px;
 }
+.architecture-map .map-node strong::before { content: none; }
 
 /* Shared content rhythm: fewer boxes, stronger chapter markers. */
 .source-wrap { margin-top: 32px; }
@@ -808,7 +809,7 @@ body > .site-header {
   .source-body h2 { margin-top: 39px; font-size: 23px; }
   .source-body h3 { font-size: 18px; }
   .topic-nav-link, #topic-collapse, #topic-search { min-height: 44px; }
-  .side-nav { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 7px; }
+  .round-sidebar .side-nav { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 7px; }
   .side-nav .nav-group { display: contents; }
   .side-nav .nav-group .side-title { grid-column: 1 / -1; margin: 3px 4px 0; min-height: 24px; }
   .side-nav .nav-group + .nav-group { margin-top: 5px; padding-top: 5px; border-top: 1px solid var(--desk-line); }
