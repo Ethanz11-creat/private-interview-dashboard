@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const contentPath = path.join(root, 'content', 'model-architecture.html');
 const publicRoot = path.join(root, 'public');
+const architectureCssPath = path.join(publicRoot, 'model-architecture.css');
 const allowedLabels = ['官方资料', '用户画板', '第三方说明', '待核实'];
 const requiredSections = [
   'architecture-transformer',
@@ -16,6 +17,7 @@ const requiredSections = [
 
 const errors = [];
 const html = fs.readFileSync(contentPath, 'utf8');
+const architectureCss = fs.readFileSync(architectureCssPath, 'utf8');
 
 function fail(message) {
   errors.push(message);
@@ -55,6 +57,23 @@ if (!/<div\b[^>]*class=["'][^"']*\barchitecture-subsection\b[^"']*["'][^>]*id=["
 }
 if (!/<footer\b[^>]*class=["'][^"']*\barchitecture-footer\b[^"']*["'][^>]*>[\s\S]*?<code>content\/model-architecture-sources\.html<\/code>[\s\S]*?<\/footer>/i.test(html)) {
   fail('Missing source marker: expected a reference to content/model-architecture-sources.html');
+}
+
+for (const selector of [
+  '#architecture .arch-map-node',
+  '#architecture .arch-flow-node',
+  '#architecture .arch-flow-lane',
+  '#architecture .arch-map-edge',
+  '#architecture .arch-flow-edge',
+  '#architecture .arch-flow-skip',
+  '#architecture .arch-timeline-line'
+]) {
+  if (!architectureCss.includes(selector)) {
+    fail(`Missing SVG redraw style selector: ${selector}`);
+  }
+}
+if (!architectureCss.includes('fill: none;') || !architectureCss.includes('stroke: var(--architecture-accent);')) {
+  fail('SVG redraw styles must define an unfilled connector with a visible accent stroke');
 }
 
 for (const match of html.matchAll(/<img\b[^>]*\bsrc=["']([^"']+)["'][^>]*>/gi)) {

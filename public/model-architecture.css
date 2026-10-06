@@ -95,6 +95,43 @@
   min-width: 760px;
   background: #fbfdfc;
 }
+/* SVG uses fill/stroke rather than HTML color/background. Style every redraw
+   explicitly so shapes never fall back to black and connectors stay open. */
+#architecture .architecture-svg text {
+  fill: var(--architecture-ink);
+  font-family: var(--body-font);
+  font-size: 14px;
+}
+#architecture .arch-map-node,
+#architecture .arch-flow-node {
+  fill: #fff;
+  stroke: #8bb3ba;
+  stroke-width: 1.5;
+}
+#architecture .arch-map-main,
+#architecture .arch-flow-accent { fill: #e5f3f2; stroke: var(--architecture-accent); }
+#architecture .arch-map-end,
+#architecture .arch-flow-end { fill: #fff4dd; stroke: #9a6a29; }
+#architecture .arch-flow-lane { fill: var(--architecture-soft); stroke: var(--architecture-line); stroke-width: 1.5; }
+#architecture .arch-flow-note { fill: #fffaf0; stroke: #d6bc8e; stroke-width: 1.5; }
+#architecture .arch-map-edge,
+#architecture .arch-flow-edge,
+#architecture .arch-flow-skip,
+#architecture .arch-timeline-line {
+  fill: none;
+  stroke: var(--architecture-accent);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+#architecture .arch-flow-skip { stroke: #9a6a29; stroke-dasharray: 6 5; }
+#architecture .architecture-svg .arch-map-title,
+#architecture .architecture-svg .arch-flow-title { font-size: 16px; font-weight: 650; }
+#architecture .architecture-svg .arch-flow-label,
+#architecture .architecture-svg .arch-timeline-caption { fill: var(--architecture-muted); font-size: 12px; }
+#architecture .architecture-svg .arch-map-link { fill: var(--architecture-accent); text-decoration: underline; }
+#architecture .arch-timeline-node circle { fill: var(--architecture-accent); stroke: #fff; stroke-width: 2; }
 #architecture .architecture-image-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
