@@ -19,9 +19,9 @@ for(const m of models){
  box(120,627,258,85,m.attentionLines,'accent');
  box(134,486,230,56,['RMSNorm']);box(134,394,230,52,['MoE / Dense FFN'],'accent');
  box(134,245,230,52,['Final RMSNorm']);box(134,180,230,46,['词表投影 → logits']);
- for(const [y1,y2] of [[950,925],[873,828],[748,712],[627,593],[563,542],[486,446],[394,367],[337,297],[245,226]])line(`M249 ${y1}V${y2}`);
+ for(const [y1,y2] of [[950,925],[873,802],[748,712],[627,593],[563,542],[486,446],[394,367],[337,297],[245,226]])line(`M249 ${y1}V${y2}`);
  for(const cy of [578,352]){parts.push(`<circle cx="249" cy="${cy}" r="15" fill="white" stroke="#345866" stroke-width="2"/>`);text(249,cy+7,'+','heading');}
- line('M249 815H393V578H265','skip');line('M249 568H386V352H265','skip');
+ line('M249 815H393V578H265','skip');line('M249 555H386V352H265','skip');
  text(112,843,`重复 ${m.layers} 层`,'note','start');text(80,1054,`隐藏维度 d = ${m.hidden}`,'note','start');text(80,1084,m.dense,'small','start');text(80,1114,'虚线支路：旧表示 + 子层更新','small','start');
  parts.push('<rect x="492" y="123" width="511" height="399" rx="18" class="frame"/>');text(748,158,'① 注意力模块展开','heading');
  const a=m.kind;

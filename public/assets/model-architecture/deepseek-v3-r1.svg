@@ -22,7 +22,7 @@
 <rect x="134" y="180" width="230" height="46" rx="9" class="node"/>
 <text x="249" y="210" class="label" text-anchor="middle">词表投影 → logits</text>
 <path d="M249 950V925" class="edge" marker-end="url(#arrow)"/>
-<path d="M249 873V828" class="edge" marker-end="url(#arrow)"/>
+<path d="M249 873V802" class="edge" marker-end="url(#arrow)"/>
 <path d="M249 748V712" class="edge" marker-end="url(#arrow)"/>
 <path d="M249 627V593" class="edge" marker-end="url(#arrow)"/>
 <path d="M249 563V542" class="edge" marker-end="url(#arrow)"/>
@@ -35,7 +35,7 @@
 <circle cx="249" cy="352" r="15" fill="white" stroke="#345866" stroke-width="2"/>
 <text x="249" y="359" class="heading" text-anchor="middle">+</text>
 <path d="M249 815H393V578H265" class="skip" marker-end="url(#arrow)"/>
-<path d="M249 568H386V352H265" class="skip" marker-end="url(#arrow)"/>
+<path d="M249 555H386V352H265" class="skip" marker-end="url(#arrow)"/>
 <text x="112" y="843" class="note" text-anchor="start">重复 61 层</text>
 <text x="80" y="1054" class="note" text-anchor="start">隐藏维度 d = 7168</text>
 <text x="80" y="1084" class="small" text-anchor="start">前 3 层使用 Dense FFN</text>
