@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="1180" viewBox="0 0 1040 1180" role="img" aria-labelledby="title desc"><title id="title">Qwen3 235B-A22B 架构展开图</title><desc id="desc">左侧从下向上展示 embedding、归一化、GQA、残差和 MoE；右侧展开注意力计算与 128 个路由专家中的 Top-8 选择。图中细粒度配置已对照发布 checkpoint，正文标明版本差异。</desc><defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#345866"/></marker></defs><style>text{font-family:'Avenir Next','PingFang SC','Microsoft YaHei',sans-serif;fill:#244451}.label{font-size:20px}.title{font-size:34px;font-weight:700;fill:#227f91}.subtitle{font-size:18px;fill:#627982}.heading{font-size:23px;font-weight:650}.small{font-size:17px}.note{font-size:19px;fill:#227f91;font-weight:600}.node{fill:white;stroke:#688d99;stroke-width:1.5}.accent{fill:#227f9112;stroke:#227f91;stroke-width:2}.edge{fill:none;stroke:#345866;stroke-width:2}.skip{fill:none;stroke:#a97430;stroke-width:2;stroke-dasharray:6 4}.callout{fill:none;stroke:#227f91;stroke-width:2;stroke-dasharray:4 5}.frame{fill:#f5f9f8;stroke:#d0e0e2;stroke-width:1.5}</style><rect width="1040" height="1180" fill="#fff"/>
+<text x="38" y="53" class="title" text-anchor="start">Qwen3 235B-A22B</text>
+<text x="38" y="85" class="subtitle" text-anchor="start">235B 总参数 · 22B 每 token 激活参数</text>
+<rect x="55" y="123" width="390" height="900" rx="24" class="frame"/>
+<text x="250" y="158" class="heading" text-anchor="middle">生成主干 · 从下向上读</text>
+<rect x="94" y="338" width="309" height="490" rx="20" class="accent"/>
+<rect x="134" y="950" width="230" height="48" rx="9" class="node"/>
+<text x="249" y="981" class="label" text-anchor="middle">Token IDs</text>
+<rect x="134" y="873" width="230" height="52" rx="9" class="node"/>
+<text x="249" y="906" class="label" text-anchor="middle">Embedding</text>
+<rect x="134" y="748" width="230" height="54" rx="9" class="node"/>
+<text x="249" y="782" class="label" text-anchor="middle">RMSNorm</text>
+<rect x="120" y="627" width="258" height="85" rx="9" class="accent"/>
+<text x="249" y="664" class="label" text-anchor="middle">GQA + RoPE</text>
+<text x="249" y="689" class="label" text-anchor="middle">分组共享 K / V</text>
+<rect x="134" y="486" width="230" height="56" rx="9" class="node"/>
+<text x="249" y="521" class="label" text-anchor="middle">RMSNorm</text>
+<rect x="134" y="394" width="230" height="52" rx="9" class="accent"/>
+<text x="249" y="427" class="label" text-anchor="middle">MoE / Dense FFN</text>
+<rect x="134" y="245" width="230" height="52" rx="9" class="node"/>
+<text x="249" y="278" class="label" text-anchor="middle">Final RMSNorm</text>
+<rect x="134" y="180" width="230" height="46" rx="9" class="node"/>
+<text x="249" y="210" class="label" text-anchor="middle">词表投影 → logits</text>
+<path d="M249 950V925" class="edge" marker-end="url(#arrow)"/>
+<path d="M249 873V828" class="edge" marker-end="url(#arrow)"/>
+<path d="M249 748V712" class="edge" marker-end="url(#arrow)"/>
+<path d="M249 627V593" class="edge" marker-end="url(#arrow)"/>
+<path d="M249 563V542" class="edge" marker-end="url(#arrow)"/>
+<path d="M249 486V446" class="edge" marker-end="url(#arrow)"/>
+<path d="M249 394V367" class="edge" marker-end="url(#arrow)"/>
+<path d="M249 337V297" class="edge" marker-end="url(#arrow)"/>
+<path d="M249 245V226" class="edge" marker-end="url(#arrow)"/>
+<circle cx="249" cy="578" r="15" fill="white" stroke="#345866" stroke-width="2"/>
+<text x="249" y="585" class="heading" text-anchor="middle">+</text>
+<circle cx="249" cy="352" r="15" fill="white" stroke="#345866" stroke-width="2"/>
+<text x="249" y="359" class="heading" text-anchor="middle">+</text>
+<path d="M249 815H393V578H265" class="skip" marker-end="url(#arrow)"/>
+<path d="M249 568H386V352H265" class="skip" marker-end="url(#arrow)"/>
+<text x="112" y="843" class="note" text-anchor="start">重复 94 层</text>
+<text x="80" y="1054" class="note" text-anchor="start">隐藏维度 d = 4096</text>
+<text x="80" y="1084" class="small" text-anchor="start">每层前馈采用稀疏专家</text>
+<text x="80" y="1114" class="small" text-anchor="start">虚线支路：旧表示 + 子层更新</text>
+<rect x="492" y="123" width="511" height="399" rx="18" class="frame"/>
+<text x="748" y="158" class="heading" text-anchor="middle">① 注意力模块展开</text>
+<rect x="518" y="426" width="458" height="54" rx="9" class="node"/>
+<text x="747" y="460" class="label" text-anchor="middle">当前 token 表示 x</text>
+<rect x="518" y="322" width="204" height="69" rx="9" class="node"/>
+<text x="620" y="351" class="label" text-anchor="middle">多组 Q heads</text>
+<text x="620" y="376" class="label" text-anchor="middle">RoPE / QK Norm</text>
+<rect x="754" y="322" width="222" height="69" rx="9" class="node"/>
+<text x="865" y="351" class="label" text-anchor="middle">少量 K / V heads</text>
+<text x="865" y="376" class="label" text-anchor="middle">组内共享 KV</text>
+<path d="M620 426V391" class="edge" marker-end="url(#arrow)"/>
+<path d="M865 426V391" class="edge" marker-end="url(#arrow)"/>
+<rect x="518" y="221" width="458" height="66" rx="9" class="accent"/>
+<text x="747" y="261" class="label" text-anchor="middle">分组查询 → softmax(QKᵀ / √d) V</text>
+<path d="M620 322V287" class="edge" marker-end="url(#arrow)"/>
+<path d="M865 322V287" class="edge" marker-end="url(#arrow)"/>
+<text x="747" y="197" class="note" text-anchor="middle">Q head 数量可以大于 KV head 数量</text>
+<path d="M378 668H469V487H492" class="callout"/>
+<rect x="492" y="554" width="511" height="559" rx="18" class="frame"/>
+<text x="748" y="591" class="heading" text-anchor="middle">② MoE 替换前馈模块</text>
+<rect x="629" y="994" width="242" height="54" rx="9" class="node"/>
+<text x="750" y="1028" class="label" text-anchor="middle">归一化后的 token</text>
+<rect x="629" y="898" width="242" height="57" rx="9" class="accent"/>
+<text x="750" y="933.5" class="label" text-anchor="middle">Router → Top-8</text>
+<path d="M750 994V955" class="edge" marker-end="url(#arrow)"/>
+<rect x="510" y="772" width="140" height="83" rx="9" class="node"/>
+<text x="580" y="808" class="label" text-anchor="middle">Expert 1</text>
+<text x="580" y="833" class="label" text-anchor="middle">SwiGLU</text>
+<rect x="690" y="772" width="140" height="83" rx="9" class="node"/>
+<text x="760" y="808" class="label" text-anchor="middle">…</text>
+<text x="760" y="833" class="label" text-anchor="middle">SwiGLU</text>
+<rect x="861" y="772" width="124" height="83" rx="9" class="node"/>
+<text x="923" y="808" class="label" text-anchor="middle">E 128</text>
+<text x="923" y="833" class="label" text-anchor="middle">SwiGLU</text>
+<path d="M750 898V877H580V855" class="edge" marker-end="url(#arrow)"/>
+<path d="M750 877V855" class="edge" marker-end="url(#arrow)"/>
+<path d="M750 877H923V855" class="edge" marker-end="url(#arrow)"/>
+<rect x="578" y="654" width="363" height="65" rx="9" class="accent"/>
+<text x="759.5" y="693.5" class="label" text-anchor="middle">所选专家输出加权合并</text>
+<path d="M580 772V741H750V719" class="edge" marker-end="url(#arrow)"/>
+<path d="M760 772V719" class="edge" marker-end="url(#arrow)"/>
+<path d="M923 772V741H760V719" class="edge" marker-end="url(#arrow)"/>
+<text x="748" y="627" class="note" text-anchor="middle">128 个可选专家 · 每次选 8 个</text>
+<text x="748" y="1078" class="small" text-anchor="middle">本图没有共享专家支路</text>
+<path d="M364 420H471V590H492" class="callout"/>
+<text x="38" y="1153" class="subtitle" text-anchor="start">主干为语言部分简化图；数值已对照发布配置；完整版本与差异见图下说明。</text>
+</svg>

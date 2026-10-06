@@ -55,25 +55,18 @@ for (const id of requiredSections) {
 if (!/<div\b[^>]*class=["'][^"']*\barchitecture-subsection\b[^"']*["'][^>]*id=["']architecture-jev["'][^>]*>/i.test(html)) {
   fail('Missing JEV subsection with the expected architecture-subsection structure');
 }
-if (!/<footer\b[^>]*class=["'][^"']*\barchitecture-footer\b[^"']*["'][^>]*>[\s\S]*?<code>content\/model-architecture-sources\.html<\/code>[\s\S]*?<\/footer>/i.test(html)) {
-  fail('Missing source marker: expected a reference to content/model-architecture-sources.html');
+if (!/<footer\b[^>]*class=["'][^"']*\barchitecture-footer\b/.test(html)) {
+  fail('Missing chapter footer');
+}
+if (!fs.existsSync(path.join(root, 'content/model-architecture-sources.html'))) {
+  fail('Missing source ledger');
 }
 
-for (const selector of [
-  '#architecture .arch-map-node',
-  '#architecture .arch-flow-node',
-  '#architecture .arch-flow-lane',
-  '#architecture .arch-map-edge',
-  '#architecture .arch-flow-edge',
-  '#architecture .arch-flow-skip',
-  '#architecture .arch-timeline-line'
-]) {
-  if (!architectureCss.includes(selector)) {
-    fail(`Missing SVG redraw style selector: ${selector}`);
-  }
+for (const selector of ['.architecture-model-study', '.architecture-viewer', '.architecture-figure-button']) {
+  if (!architectureCss.includes(selector)) fail(`Missing reading style: ${selector}`);
 }
-if (!architectureCss.includes('fill: none;') || !architectureCss.includes('stroke: var(--architecture-accent);')) {
-  fail('SVG redraw styles must define an unfilled connector with a visible accent stroke');
+for (const obsolete of ['architecture-model-card', 'architecture-timeline-svg', '架构演进时间线']) {
+  if (html.includes(obsolete)) fail(`Obsolete card/timeline remains: ${obsolete}`);
 }
 
 for (const match of html.matchAll(/<img\b[^>]*\bsrc=["']([^"']+)["'][^>]*>/gi)) {
@@ -90,31 +83,49 @@ for (const match of html.matchAll(/<img\b[^>]*\bsrc=["']([^"']+)["'][^>]*>/gi)) 
   }
 }
 
-const modelCards = articleBlocks('architecture-model-card');
-if (modelCards.length === 0) fail('No model cards found (.architecture-model-card)');
+const modelCards = articleBlocks('architecture-model-study');
+if (modelCards.length !== 9) fail('Expected nine full model studies');
 for (const [index, card] of modelCards.entries()) {
-  const title = headingFor(card, `model card ${index + 1}`);
+  const title = headingFor(card, `model study ${index + 1}`);
   if (!hasScopedSourceLabel(card)) {
-    fail(`Model card "${title}" is missing a source label (${allowedLabels.join(' / ')})`);
+    fail(`Model study "${title}" is missing a source label (${allowedLabels.join(' / ')})`);
   }
 }
 
-const algorithmCards = articleBlocks('architecture-algorithm-card');
-if (algorithmCards.length === 0) fail('No external algorithm source blocks found (.architecture-algorithm-card)');
-for (const [index, card] of algorithmCards.entries()) {
-  const title = headingFor(card, `algorithm source block ${index + 1}`);
-  if (!hasScopedSourceLabel(card)) {
-    fail(`External algorithm source block "${title}" is missing a source label (${allowedLabels.join(' / ')})`);
+const models = JSON.parse(fs.readFileSync(path.join(root, 'content/architecture/models.json'), 'utf8'));
+const checkpoints = ['v3', 'v32', 'kimi', 'qwen3', 'coder', 'qwen35', 'step', 'minimax', 'glm'];
+for (const [index, model] of models.entries()) {
+  const config = JSON.parse(fs.readFileSync(path.join(root, `content/architecture/${checkpoints[index]}-config.json`), 'utf8'));
+  const textConfig = config.text_config || config;
+  const fields = {
+    layers: textConfig.num_hidden_layers,
+    hidden: textConfig.hidden_size,
+    experts: textConfig.n_routed_experts ?? textConfig.num_experts ?? textConfig.num_local_experts ?? textConfig.moe_num_experts,
+    top: textConfig.num_experts_per_tok ?? textConfig.moe_top_k
+  };
+  for (const [field, value] of Object.entries(fields)) {
+    if (model[field] !== value) fail(`${model.name}: ${field} differs from checkpoint (${model[field]} / ${value})`);
   }
+  const shared = textConfig.n_shared_experts ?? ((textConfig.shared_expert_intermediate_size ?? textConfig.share_expert_dim ?? textConfig.shared_intermediate_size ?? 0) > 0 ? 1 : 0);
+  if (model.shared !== shared) fail(`${model.name}: shared experts differ from checkpoint`);
+  const block = modelCards[index] || '';
+  if (!block.includes(`assets/model-architecture/${model.id}.svg`)) fail(`${model.name}: missing full architecture diagram`);
+  if (!block.includes(`source-new-architecture-0${index + 1}.png`)) fail(`${model.name}: original board mapping changed`);
+}
+for (const match of html.matchAll(/<img\b[^>]*\bsrc=["']([^"']+\.svg)["'][^>]*>/gi)) {
+  const file = path.join(publicRoot, match[1]);
+  if (!fs.existsSync(file)) continue;
+  const svg = fs.readFileSync(file, 'utf8');
+  if (!svg.includes('<title') || !svg.includes('viewBox=') || !svg.includes('fill:none')) fail(`Diagram lacks accessibility/scalable drawing styles: ${match[1]}`);
 }
 
 if (modelCards.length > 0) {
   const labelRemoved = modelCards[0].replace(
-    /(<span\b[^>]*class=["'][^"']*\barchitecture-source-label\b[^"']*["'][^>]*>)[^<]*(<\/span>)/i,
+    /(<span\b[^>]*class=["'][^"']*\barchitecture-source-label\b[^"']*["'][^>]*>)(?:官方资料|用户画板|第三方说明|待核实)(<\/span>)/i,
     '$1$2'
   );
   if (hasScopedSourceLabel(labelRemoved)) {
-    fail('Regression check failed: removing a model card source label must fail validation');
+    fail('Regression check failed: removing a model study source label must fail validation');
   }
 }
 

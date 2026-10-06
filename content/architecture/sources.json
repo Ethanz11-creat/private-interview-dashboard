@@ -1,0 +1,62 @@
+[
+  {
+    "model": "deepseek-ai/DeepSeek-V3",
+    "config": "v3-config.json",
+    "retrieved": "2026-10-06",
+    "source": "https://modelscope.cn/models/deepseek-ai/DeepSeek-V3/resolve/master/config.json"
+  },
+  {
+    "model": "deepseek-ai/DeepSeek-R1",
+    "config": "r1-config.json",
+    "retrieved": "2026-10-06",
+    "source": "https://modelscope.cn/models/deepseek-ai/DeepSeek-R1/resolve/master/config.json"
+  },
+  {
+    "model": "deepseek-ai/DeepSeek-V3.2",
+    "config": "v32-config.json",
+    "retrieved": "2026-10-06",
+    "source": "https://modelscope.cn/models/deepseek-ai/DeepSeek-V3.2/resolve/master/config.json"
+  },
+  {
+    "model": "moonshotai/Kimi-K2-Instruct",
+    "config": "kimi-config.json",
+    "retrieved": "2026-10-06",
+    "source": "https://modelscope.cn/models/moonshotai/Kimi-K2-Instruct/resolve/master/config.json"
+  },
+  {
+    "model": "Qwen/Qwen3-235B-A22B",
+    "config": "qwen3-config.json",
+    "retrieved": "2026-10-06",
+    "source": "https://modelscope.cn/models/Qwen/Qwen3-235B-A22B/resolve/master/config.json"
+  },
+  {
+    "model": "Qwen/Qwen3-Coder-Next",
+    "config": "coder-config.json",
+    "retrieved": "2026-10-06",
+    "source": "https://modelscope.cn/models/Qwen/Qwen3-Coder-Next/resolve/master/config.json"
+  },
+  {
+    "model": "Qwen/Qwen3.5-397B-A17B",
+    "config": "qwen35-config.json",
+    "retrieved": "2026-10-06",
+    "source": "https://modelscope.cn/models/Qwen/Qwen3.5-397B-A17B/resolve/master/config.json"
+  },
+  {
+    "model": "stepfun-ai/Step-3.5-Flash",
+    "config": "step-config.json",
+    "retrieved": "2026-10-06",
+    "source": "https://modelscope.cn/models/stepfun-ai/Step-3.5-Flash/resolve/master/config.json"
+  },
+  {
+    "model": "MiniMax/MiniMax-M2.5",
+    "config": "minimax-config.json",
+    "retrieved": "2026-10-06",
+    "source": "https://modelscope.cn/models/MiniMax/MiniMax-M2.5/resolve/master/config.json"
+  },
+  {
+    "model": "ZhipuAI/GLM-5",
+    "config": "glm-config.json",
+    "retrieved": "2026-10-06",
+    "source": "https://modelscope.cn/models/ZhipuAI/GLM-5/resolve/master/config.json"
+  }
+]

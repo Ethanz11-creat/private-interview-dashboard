@@ -1,0 +1,173 @@
+[
+  {
+    "id": "deepseek-v3-r1",
+    "name": "DeepSeek V3 / R1",
+    "total": "671B",
+    "active": "37B",
+    "layers": 61,
+    "hidden": 7168,
+    "experts": 256,
+    "top": 8,
+    "shared": 1,
+    "kind": "mla",
+    "attention": "MLA",
+    "attentionLines": [
+      "MLA + RoPE",
+      "压缩 KV 潜表示"
+    ],
+    "dense": "前 3 层使用 Dense FFN",
+    "color": "#b65e47"
+  },
+  {
+    "id": "deepseek-v32",
+    "name": "DeepSeek V3.2",
+    "total": "671B",
+    "active": "37B",
+    "layers": 61,
+    "hidden": 7168,
+    "experts": 256,
+    "top": 8,
+    "shared": 1,
+    "kind": "dsa",
+    "attention": "MLA + DSA",
+    "attentionLines": [
+      "MLA + DSA",
+      "压缩 KV + 稀疏位置选择"
+    ],
+    "dense": "前 3 层使用 Dense FFN",
+    "color": "#3474a1"
+  },
+  {
+    "id": "kimi-k2",
+    "name": "Kimi K2",
+    "total": "1T",
+    "active": "32B",
+    "layers": 61,
+    "hidden": 7168,
+    "experts": 384,
+    "top": 8,
+    "shared": 1,
+    "kind": "mla",
+    "attention": "MLA",
+    "attentionLines": [
+      "MLA + RoPE",
+      "64 个注意力 heads"
+    ],
+    "dense": "第 1 层使用 Dense FFN",
+    "color": "#316ea9"
+  },
+  {
+    "id": "qwen3",
+    "name": "Qwen3 235B-A22B",
+    "total": "235B",
+    "active": "22B",
+    "layers": 94,
+    "hidden": 4096,
+    "experts": 128,
+    "top": 8,
+    "shared": 0,
+    "kind": "gqa",
+    "attention": "GQA",
+    "attentionLines": [
+      "GQA + RoPE",
+      "分组共享 K / V"
+    ],
+    "dense": "每层前馈采用稀疏专家",
+    "color": "#227f91"
+  },
+  {
+    "id": "qwen-coder-next",
+    "name": "Qwen3-Coder-Next",
+    "total": "80B",
+    "active": "3B",
+    "layers": 48,
+    "hidden": 2048,
+    "experts": 512,
+    "top": 10,
+    "shared": 1,
+    "kind": "hybrid",
+    "attention": "Gated DeltaNet / Gated Attention",
+    "attentionLines": [
+      "Gated DeltaNet",
+      "或 Gated Attention"
+    ],
+    "dense": "混合 token mixer + 高稀疏 MoE",
+    "color": "#248093"
+  },
+  {
+    "id": "qwen35",
+    "name": "Qwen3.5 397B-A17B",
+    "total": "397B",
+    "active": "17B",
+    "layers": 60,
+    "hidden": 4096,
+    "experts": 512,
+    "top": 10,
+    "shared": 1,
+    "kind": "hybrid",
+    "attention": "Gated DeltaNet / Gated Attention",
+    "attentionLines": [
+      "Gated DeltaNet",
+      "或 Gated Attention"
+    ],
+    "dense": "语言主干；视觉入口见正文",
+    "color": "#386f96"
+  },
+  {
+    "id": "step35",
+    "name": "Step 3.5 Flash",
+    "total": "196B",
+    "active": "约 11B",
+    "layers": 45,
+    "hidden": 4096,
+    "experts": 288,
+    "top": 8,
+    "shared": 1,
+    "kind": "swa",
+    "attention": "GQA / SWA",
+    "attentionLines": [
+      "GQA + RoPE",
+      "SWA : 全注意力 = 3 : 1"
+    ],
+    "dense": "前 3 层使用 Dense FFN",
+    "color": "#41768f"
+  },
+  {
+    "id": "minimax25",
+    "name": "MiniMax-M2.5",
+    "total": "230B",
+    "active": "10B",
+    "layers": 62,
+    "hidden": 3072,
+    "experts": 256,
+    "top": 8,
+    "shared": 0,
+    "kind": "gqa",
+    "attention": "GQA + QK Norm",
+    "attentionLines": [
+      "GQA + QK Norm",
+      "RoPE"
+    ],
+    "dense": "GQA + QK Norm；无共享专家",
+    "color": "#b75770"
+  },
+  {
+    "id": "glm5",
+    "name": "GLM-5",
+    "total": "744B",
+    "active": "40B",
+    "layers": 78,
+    "hidden": 6144,
+    "experts": 256,
+    "top": 8,
+    "shared": 1,
+    "kind": "dsa",
+    "attention": "MLA + DSA",
+    "attentionLines": [
+      "MLA + DSA",
+      "压缩 KV + 稀疏选择"
+    ],
+    "dense": "前 3 层使用 Dense FFN",
+    "color": "#356f9d"
+  }
+]

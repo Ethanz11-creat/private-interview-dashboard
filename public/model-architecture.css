@@ -1,229 +1,72 @@
-/* Model architecture knowledge map: image-led, evidence-first reading surfaces. */
+/* A continuous reading chapter with full-size computation drawings. */
 #architecture {
   --architecture-ink: #244451;
-  --architecture-muted: #657b84;
+  --architecture-muted: #526d79;
   --architecture-line: #d6e2e4;
   --architecture-soft: #f5f9f8;
   --architecture-accent: #2f7280;
   min-width: 0;
+  font-size: var(--body-size, 16px);
+  line-height: 1.95;
 }
+#architecture .architecture-hero { padding-bottom: 24px; border-bottom: 1px solid var(--architecture-line); }
+#architecture .architecture-eyebrow { color: var(--architecture-accent); font: 600 11px/1.6 var(--mono-font); letter-spacing: .1em; }
+#architecture .architecture-hero h2 { margin: 0 0 16px; color: var(--architecture-ink); font-size: clamp(26px, 3vw, 36px); line-height: 1.4; }
+#architecture .architecture-lead, #architecture .architecture-section-lead { font-size: 1.08em; color: var(--architecture-muted); }
+#architecture .architecture-index, #architecture .architecture-model-index { display: flex; flex-wrap: wrap; gap: 8px 22px; margin: 24px 0; }
+#architecture .architecture-index a, #architecture .architecture-model-index a { display: inline-flex; align-items: center; min-height: 44px; color: var(--architecture-accent); text-decoration: underline; text-underline-offset: 6px; }
+#architecture .architecture-model-index { padding: 15px 0; border-block: 1px solid var(--architecture-line); }
+#architecture .architecture-reading-note { border-left: 3px solid #b79254; padding: 10px 18px; background: #fcfaf4; color: #685939; }
+#architecture .architecture-section { margin: 66px 0; min-width: 0; }
+#architecture .architecture-section > h3 { padding: 14px 0; margin-bottom: 24px; border-block: 1px solid var(--architecture-line); color: var(--architecture-ink); font-size: clamp(22px, 2vw, 28px); line-height: 1.5; }
+#architecture .architecture-subsection { margin: 36px 0; }
+#architecture .architecture-subsection > h4, #architecture .architecture-model-study > h4 { margin: 0 0 18px; color: var(--architecture-ink); font-size: 20px; line-height: 1.6; }
+#architecture p { margin: 16px 0; }
+#architecture .architecture-subsection > p, #architecture .architecture-model-study > p { max-width: 78ch; color: var(--architecture-ink); }
+#architecture code { padding: .1em .3em; background: #edf4f4; color: #285b6b; overflow-wrap: anywhere; font-size: .92em; }
+#architecture .architecture-equation { margin: 24px 0; padding: 20px 24px; border-left: 3px solid var(--architecture-accent); background: var(--architecture-soft); overflow-x: auto; }
+#architecture .architecture-equation code { display: block; padding: 3px 0; white-space: nowrap; background: none; font-size: 15px; }
+#architecture .architecture-equation span { display: block; margin-top: 12px; font-size: 14px; color: var(--architecture-muted); }
+#architecture .architecture-model-study { min-width: 0; margin: 48px 0; padding-top: 30px; border-top: 1px solid var(--architecture-line); }
+#architecture .architecture-model-study > h4 { font-size: 24px; }
+#architecture .architecture-figure { min-width: 0; margin: 28px 0; padding: 16px; border: 1px solid var(--architecture-line); background: white; }
+#architecture .architecture-image-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 16px; font-weight: 600; font-size: 14px; color: var(--architecture-ink); }
+#architecture .architecture-figure img { display: block; width: 100%; height: auto; max-height: none; cursor: zoom-in; background: #fff; }
+#architecture .architecture-figure figcaption { margin-top: 14px; color: var(--architecture-muted); font-size: 13px; line-height: 1.8; }
+#architecture .architecture-figure-button { min-height: 44px; padding: 7px 14px; border: 1px solid #8cacb5; border-radius: 3px; background: #f5faf9; color: #24596c; font: inherit; font-size: 13px; cursor: zoom-in; }
+#architecture .architecture-figure-button:hover { background: #e3f0ef; }
+#architecture .architecture-original { margin: 22px 0; border-block: 1px solid var(--architecture-line); background: transparent; }
+#architecture .architecture-original > summary { padding: 14px 4px; color: var(--architecture-accent); font-size: 14px; cursor: pointer; }
+#architecture .architecture-original .architecture-figure { margin: 0 0 16px; }
+#architecture .architecture-source-note { margin: 22px 0; padding: 12px 0; border-top: 1px dashed var(--architecture-line); font-size: 13px; line-height: 1.8; color: var(--architecture-muted); }
+#architecture .architecture-source-note a { color: var(--architecture-accent); }
+#architecture .architecture-source-label { font-size: 11px; color: #86682f; letter-spacing: .03em; }
+#architecture .architecture-footer { padding-top: 18px; border-top: 1px solid var(--architecture-line); font-size: 13px; color: var(--architecture-muted); }
 
-#architecture .architecture-hero {
-  max-width: 78ch;
-  padding-bottom: 22px;
-  border-bottom: 1px solid var(--architecture-line);
-}
-#architecture .architecture-eyebrow {
-  margin: 0 0 10px;
-  color: var(--architecture-accent);
-  font: 600 10px/1.6 var(--mono-font);
-  letter-spacing: .16em;
-}
-#architecture .architecture-hero h2 { margin: 0 0 12px; color: var(--architecture-ink); font-size: clamp(25px, 3vw, 36px); line-height: 1.35; }
-#architecture .architecture-lead,
-#architecture .architecture-section-lead { color: var(--architecture-muted); line-height: 1.9; }
-#architecture .architecture-index {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin: 18px 0 24px;
-}
-#architecture .architecture-index a {
-  min-height: 44px;
-  display: inline-flex;
-  align-items: center;
-  padding: 8px 12px;
-  border: 1px solid var(--architecture-line);
-  border-radius: 5px;
-  color: var(--architecture-accent);
-  background: var(--architecture-soft);
-  text-decoration: none;
-}
-#architecture .architecture-index a:hover { border-color: #8bb3ba; background: #eaf4f3; }
-
-#architecture .architecture-section { margin: 38px 0; min-width: 0; }
-#architecture .architecture-section > h3 {
-  margin: 0 0 18px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid var(--architecture-line);
-  color: var(--architecture-ink);
-  font-size: 22px;
-}
-#architecture .architecture-figure {
-  min-width: 0;
-  margin: 22px 0;
-  padding: 14px;
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
-  border: 1px solid var(--architecture-line);
-  border-radius: 6px;
-  background: #fff;
-}
-#architecture .architecture-overview {
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
-  background: var(--architecture-soft);
-}
-#architecture .architecture-figure .architecture-image-header {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  align-items: baseline;
-  margin-bottom: 12px;
-  color: var(--architecture-ink);
-  font-size: 13px;
-  font-weight: 650;
-}
-#architecture .architecture-figure img {
-  display: block;
-  width: 100%;
-  height: auto;
-  max-height: 620px;
-  object-fit: contain;
-  background: #f8fbfa;
-}
-#architecture .architecture-figure figcaption {
-  margin-top: 11px;
-  color: var(--architecture-muted);
-  font-size: 12px;
-  line-height: 1.8;
-}
-#architecture .architecture-svg {
-  display: block;
-  width: 100%;
-  height: auto;
-  min-width: 760px;
-  background: #fbfdfc;
-}
-/* SVG uses fill/stroke rather than HTML color/background. Style every redraw
-   explicitly so shapes never fall back to black and connectors stay open. */
-#architecture .architecture-svg text {
-  fill: var(--architecture-ink);
-  font-family: var(--body-font);
-  font-size: 14px;
-}
-#architecture .arch-map-node,
-#architecture .arch-flow-node {
-  fill: #fff;
-  stroke: #8bb3ba;
-  stroke-width: 1.5;
-}
-#architecture .arch-map-main,
-#architecture .arch-flow-accent { fill: #e5f3f2; stroke: var(--architecture-accent); }
-#architecture .arch-map-end,
-#architecture .arch-flow-end { fill: #fff4dd; stroke: #9a6a29; }
-#architecture .arch-flow-lane { fill: var(--architecture-soft); stroke: var(--architecture-line); stroke-width: 1.5; }
-#architecture .arch-flow-note { fill: #fffaf0; stroke: #d6bc8e; stroke-width: 1.5; }
-#architecture .arch-map-edge,
-#architecture .arch-flow-edge,
-#architecture .arch-flow-skip,
-#architecture .arch-timeline-line {
-  fill: none;
-  stroke: var(--architecture-accent);
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  vector-effect: non-scaling-stroke;
-}
-#architecture .arch-flow-skip { stroke: #9a6a29; stroke-dasharray: 6 5; }
-#architecture .architecture-svg .arch-map-title,
-#architecture .architecture-svg .arch-flow-title { font-size: 16px; font-weight: 650; }
-#architecture .architecture-svg .arch-flow-label,
-#architecture .architecture-svg .arch-timeline-caption { fill: var(--architecture-muted); font-size: 12px; }
-#architecture .architecture-svg .arch-map-link { fill: var(--architecture-accent); text-decoration: underline; }
-#architecture .arch-timeline-node circle { fill: var(--architecture-accent); stroke: #fff; stroke-width: 2; }
-#architecture .architecture-image-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-}
-#architecture .architecture-image-grid-wide { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-#architecture .architecture-image-grid img { width: 100%; height: 180px; object-fit: contain; }
-
-#architecture .architecture-explain-grid,
-#architecture .architecture-model-grid,
-#architecture .architecture-jev-grid,
-#architecture .architecture-algorithm-grid,
-#architecture .architecture-component-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
-  min-width: 0;
-}
-#architecture .architecture-model-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-#architecture .architecture-algorithm-grid,
-#architecture .architecture-component-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-#architecture .architecture-explain-grid > article,
-#architecture .architecture-model-card,
-#architecture .architecture-algorithm-card,
-#architecture .architecture-jev-card {
-  min-width: 0;
-  padding: 16px;
-  border: 1px solid var(--architecture-line);
-  border-top: 3px solid #78a7ae;
-  border-radius: 5px;
-  background: #fff;
-}
-#architecture .architecture-explain-grid h4,
-#architecture .architecture-model-card h4,
-#architecture .architecture-algorithm-card h4,
-#architecture .architecture-jev-card h5 { margin: 0 0 10px; color: var(--architecture-ink); line-height: 1.45; }
-#architecture .architecture-model-card dl { margin: 12px 0 0; font-size: 13px; line-height: 1.75; }
-#architecture .architecture-model-card dt { margin-top: 8px; color: var(--architecture-accent); font-weight: 650; }
-#architecture .architecture-model-card dd { margin: 0; color: var(--architecture-muted); }
-#architecture .architecture-clean-list { padding-left: 21px; color: var(--architecture-muted); line-height: 1.85; }
-#architecture .architecture-source-note {
-  margin-top: 13px;
-  padding: 9px 11px;
-  border-left: 3px solid #c79b52;
-  background: #fffaf0;
-  color: #6e5c3d;
-  font-size: 12px;
-  line-height: 1.7;
-}
-#architecture .architecture-source-note a { color: #286c78; }
-#architecture .architecture-source-label {
-  color: #7a5b25;
-  font: 600 10px/1.5 var(--mono-font);
-  letter-spacing: .04em;
-}
-#architecture .architecture-compare-table {
-  min-width: 0;
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
-  border: 1px solid var(--architecture-line);
-}
-#architecture .architecture-compare-table table { width: 100%; min-width: 700px; margin: 0; border-collapse: collapse; }
-#architecture .architecture-compare-table th,
-#architecture .architecture-compare-table td { padding: 10px 12px; border: 1px solid var(--architecture-line); vertical-align: top; text-align: left; }
-#architecture .architecture-compare-table th { background: var(--architecture-soft); color: var(--architecture-accent); }
-
-@media (max-width: 900px) {
-  #architecture .architecture-model-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  #architecture .architecture-image-grid-wide { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
+/* The viewer lives outside the replaceable reading chapter. Native dialog
+   manages keyboard focus, Escape, and the background interaction boundary. */
+.architecture-viewer { width: calc(100vw - 32px); height: calc(100dvh - 32px); max-width: none; max-height: none; margin: auto; padding: 0; border: 1px solid #7a9ca7; background: #f1f5f4; color: #244451; }
+.architecture-viewer::backdrop { background: #162d3ddb; }
+.architecture-viewer[open] { display: flex; flex-direction: column; }
+.architecture-viewer-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; padding: 10px 16px; border-bottom: 1px solid #cedcde; background: #fff; }
+.architecture-viewer-title { flex: 1 1 220px; font-size: 16px; font-weight: 600; }
+.architecture-viewer-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.architecture-viewer button, .architecture-viewer a { display: inline-flex; justify-content: center; align-items: center; min-width: 44px; min-height: 44px; padding: 7px 12px; border: 1px solid #a5bdc4; border-radius: 3px; background: #fff; color: #24596c; font: inherit; font-size: 14px; text-decoration: none; cursor: pointer; }
+.architecture-viewer button:hover, .architecture-viewer a:hover { background: #e6f1f0; }
+.architecture-viewer output { min-width: 52px; text-align: center; font-size: 13px; }
+.architecture-viewer-stage { flex: 1; min-height: 0; overflow: auto; overscroll-behavior: contain; padding: 20px; touch-action: pan-x pan-y pinch-zoom; }
+.architecture-viewer-stage img { display: block; height: auto; max-width: none; margin-inline: auto; background: #fff; }
+.architecture-viewer-hint { margin: 0; padding: 7px 16px; font-size: 12px; border-top: 1px solid #cedcde; background: white; }
+body:has(.architecture-viewer[open]) { overflow: hidden; }
 @media (max-width: 620px) {
-  #architecture .architecture-explain-grid,
-  #architecture .architecture-model-grid,
-  #architecture .architecture-jev-grid,
-  #architecture .architecture-algorithm-grid,
-  #architecture .architecture-component-grid { grid-template-columns: 1fr; }
-  #architecture .architecture-image-grid,
-  #architecture .architecture-image-grid-wide { grid-template-columns: 1fr; }
-  #architecture .architecture-image-grid img { height: auto; max-height: 360px; }
-  #architecture .architecture-figure { padding: 10px; }
+  #architecture .architecture-section { margin: 42px 0; }
+  #architecture .architecture-model-study > h4 { font-size: 21px; }
+  #architecture .architecture-figure { padding: 8px; }
+  #architecture .architecture-equation { padding: 16px; }
+  .architecture-viewer { width: 100vw; height: 100dvh; border: 0; }
+  .architecture-viewer-head { padding: 8px; gap: 6px; }
+  .architecture-viewer-stage { padding: 8px; }
+  .architecture-viewer-actions { gap: 4px; }
+  .architecture-viewer button, .architecture-viewer a { padding: 5px 9px; font-size: 12px; }
 }
-
-/* iPad reading mode keeps wide diagrams inside their own scroller. */
-body.ipad-reading #architecture .architecture-figure:has(.architecture-svg) { overflow-x: auto; }
-body.ipad-reading #architecture .architecture-figure:has(.architecture-svg) .architecture-svg { width: 920px; max-width: none; }
-body.ipad-reading #architecture .architecture-overview .architecture-svg { width: 1120px; max-width: none; }
-body.ipad-reading #architecture .architecture-index a { min-height: 44px; }
-
-@media (max-width: 820px) {
-  body.ipad-reading #architecture .architecture-explain-grid,
-  body.ipad-reading #architecture .architecture-model-grid,
-  body.ipad-reading #architecture .architecture-jev-grid,
-  body.ipad-reading #architecture .architecture-algorithm-grid,
-  body.ipad-reading #architecture .architecture-component-grid { grid-template-columns: 1fr; }
-}
+@media print { .architecture-viewer, #architecture .architecture-figure-button { display: none; } }
