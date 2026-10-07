@@ -4,6 +4,7 @@
   "scripts": {
     "build": "node scripts/draw-architecture-models.mjs && node scripts/draw-architecture-concepts.mjs && node scripts/merge-content.mjs",
     "check": "node --check worker.js && node --check scripts/merge-content.mjs && node --check public/topic-navigation.js && node --check public/model-architecture.js && node --check scripts/draw-architecture-models.mjs && node --check scripts/draw-architecture-concepts.mjs",
-    "check:architecture": "node scripts/validate-model-architecture.mjs && node --test scripts/extract-architecture-assets.test.mjs"
+    "check:architecture": "node scripts/validate-model-architecture.mjs && node --test scripts/extract-architecture-assets.test.mjs",
+    "check:handwriting": "node --check public/handwriting/gqa-guide.js && node --check public/handwriting/gqa-core.mjs && node --check public/handwriting/gqa-code.mjs && node --test scripts/gqa-core.test.mjs"
   }
 }

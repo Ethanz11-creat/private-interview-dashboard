@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>P4497 分组查询注意力 GQA · 完整题干与手撕代码</title>
+  <link rel="stylesheet" href="./gqa-guide.css?v=20261007-1">
+  <link rel="stylesheet" href="./handwriting.css?v=20261003-2">
+  <script src="./gqa-guide.js?v=20261007-1" type="module"></script>
+</head>
+<body>
+<header><div class="wrap hero">
+  <div class="eyebrow">TRANSFORMER / GROUPED QUERY ATTENTION</div>
+  <h1>P4497. 分组查询注意力</h1>
+  <p class="lead">Query 仍有多个头，Key / Value 的头数更少。先看一组 Query 怎样共享整份 K/V，再沿着原题的矩阵走完投影、注意力、拼头与输出。</p>
+  <div class="pills"><span class="pill">完整题干与数值验算</span><span class="pill">NumPy / PyTorch 切换</span><span class="pill">共享 K/V 可视化</span><span class="pill">逐行解析</span></div>
+</div></header>
+<nav aria-label="本页章节"><div class="wrap nav-links">
+  <a href="#problem">01 题干</a><a href="#grouping">02 共享 K/V</a><a href="#steps">03 六步公式</a><a href="#code">04 逐行代码</a><a href="#trace">05 矩阵演示</a><a href="#axes">06 维度与语法</a><a href="#complexity">07 复杂度与缓存</a><a href="#practice">08 盲写</a>
+</div></nav>
+<main class="wrap">
+<section class="section" id="problem">
+  <div class="sec-no">01 / 原题整理</div><h2>题干、输入与输出</h2>
+  <p><strong>难度：5。</strong>给定序列 \(X\in\mathbb{R}^{T\times d_{\mathrm{model}}}\)、线性投影权重与偏置、Query head 数 \(h_q\)、Key / Value head 数 \(h_k\) 和输出投影，请实现 <strong>Grouped Query Attention（GQA）</strong>，返回二维浮点列表 \(O\)。</p>
+  <p>要求 <code>1 ≤ h_k &lt; h_q</code>、<code>d_model % h_q == 0</code>、<code>h_q % h_k == 0</code>。每头维度由 <strong>Query 头数</strong>决定：<code>d_k = d_model // h_q</code>。K 与 V 只有 <code>h_k * d_k</code> 列，而不是 <code>d_model</code> 列。</p>
+  <div class="table-wrap"><table><caption>参数形状</caption><thead><tr><th>参数</th><th>形状</th><th>本题样例</th></tr></thead><tbody>
+    <tr><td>X</td><td>(T, d_model)</td><td>(2, 4)</td></tr>
+    <tr><td>W_Q；b_Q</td><td>(d_model, d_model)；(d_model,)</td><td>(4, 4)；(4,)</td></tr>
+    <tr><td>W_K、W_V；b_K、b_V</td><td>(d_model, h_k × d_k)；(h_k × d_k,)</td><td>(4, 2)；(2,)</td></tr>
+    <tr><td>h_q；h_k；d_k</td><td>Query 头数；K/V 头数；每头维度</td><td>2；1；2</td></tr>
+    <tr><td>W_O；b_O</td><td>(d_model, d_model)；(d_model,)</td><td>(4, 4)；(4,)</td></tr>
+    <tr><td>O（返回）</td><td>(T, d_model)</td><td>(2, 4)</td></tr>
+  </tbody></table></div>
+  <h3>输入样例（完整保留）</h3>
+  <pre><code>X = [[1, 0, 1, 2],
+     [0, 1, 1, 0]]
+
+W_Q = [[1, 0, 0, 1],
+       [0, 1, 1, 0],
+       [1, 0, 1, 0],
+       [0, 1, 0, 1]]
+b_Q = [0, 0, 0, 0]
+
+W_K = [[1, 1],
+       [0, 1],
+       [1, 0],
+       [0, 1]]
+b_K = [0, 0]
+
+W_V = [[1, 0],
+       [1, 1],
+       [0, 1],
+       [0, 0]]
+b_V = [0, 0]
+
+h_q = 2
+h_k = 1
+
+W_O = [[1, 0, 1, 0],
+       [0, 1, 0, 1],
+       [1, 0, 0, 1],
+       [0, 1, 1, 0]]
+b_O = [0, 0, 0, 0]</code></pre>
+  <h3>题目输出（两位小数）</h3><pre><code>O = [[2.00, 2.02, 2.01, 2.01],
+     [2.00, 2.30, 2.20, 2.11]]</code></pre>
+  <p>重新计算的结果约为 <code>[[2, 2.021201, 2.007035, 2.014166], [2, 2.302612, 2.195570, 2.107042]]</code>，与题目四舍五入后的结果一致。实现返回完整精度的列表，不在中间过程或返回前强行保留两位小数。</p>
+  <h3>约束与计算范围</h3><ul><li>输入元素：−1000 ≤ X[i,j] ≤ 1000。</li><li>所有权重元素：−10 ≤ W_Q、W_K、W_V、W_O ≤ 10。</li><li>所有偏置元素：−5 ≤ b_Q、b_K、b_V、b_O ≤ 5。</li><li>Softmax 沿 Key 位置归一化；每个 head、每个 Query 的一行权重和为 1。</li></ul>
+  <p class="small">原资料未给出 T、d_model 的上限或判题误差阈值。本题没有 batch、因果 mask、RoPE、dropout、残差或层归一化，按提供的六步前向计算即可。</p>
+</section>
+
+<section class="section" id="grouping">
+  <div class="sec-no">02 / 先理解分组</div><h2>多个 Query head，共享一个 K/V head</h2>
+  <p>接着<a href="./multi-head-attention.html#axes">多头注意力的拆头过程</a>看：每个 Query head 仍然包含全部 T 个 token，每个 head 的特征维度仍是 d_k。变化发生在 K/V 投影上——用更窄的 W_K、W_V，直接生成较少的 K/V 特征组。</p>
+  <div class="callout"><strong>本题 h_q=2、h_k=1：</strong>Q_0 和 Q_1 都读取 K_0、V_0 的全部 token。Q_0 与 Q_1 的向量不同，所以会分别计算不同的 scores、Softmax 和 H。共享 K/V 不等于共享注意力权重，也不会把两个 Query head 合成一个。</div>
+  <div class="table-wrap"><table><thead><tr><th>形式</th><th>Query 头数</th><th>K/V 头数</th><th>对应关系</th></tr></thead><tbody>
+    <tr><td>MHA</td><td>h_q</td><td>h_q</td><td>每个 Q_i 使用自己的 K_i、V_i</td></tr><tr><td>GQA</td><td>h_q</td><td>通常 1 &lt; h_k &lt; h_q</td><td>每组 s=h_q/h_k 个 Query 共享一组 K/V</td></tr><tr><td>MQA</td><td>h_q</td><td>1</td><td>全部 Query 共享唯一的一组 K/V</td></tr>
+  </tbody></table></div>
+  <p>本题允许 h_k=1，因此原题样例是 GQA 通式的 <strong>MQA 特例</strong>。h_k=h_q 可退化为 MHA，虽然不属于本题严格的 h_k&lt;h_q 范围，也有助于理解三者的关系。</p>
+  <div class="controls"><label for="mapping-kv">结构示意：固定 h_q=8，K/V 头数</label><select id="mapping-kv"><option value="1">1 · MQA</option><option value="2" selected>2 · GQA</option><option value="4">4 · GQA</option><option value="8">8 · MHA</option></select></div>
+  <div id="group-map" class="group-map" aria-live="polite"></div>
+  <p id="mapping-summary" class="trace-summary"></p>
+  <p class="small">这个选择器只改变共享结构示意。下方的数值演示固定使用原题 h_q=2、h_k=1 和对应权重，避免换头数后仍错误复用原来的投影矩阵。</p>
+  <h3>索引规则：为什么是整除？</h3>
+  <div class="formula"><div class="formula-row">s = <span class="fraction"><span class="top">h<sub>q</sub></span><span class="bottom">h<sub>k</sub></span></span></div><div class="formula-row">g(i) = \left\lfloor <span class="fraction"><span class="top">i</span><span class="bottom">s</span></span> \right\rfloor</div></div>
+  <p>从 0 开始编号。若 h_q=8、h_k=2，每组有 4 个 Query：i=0、1、2、3 的 <code>i//4</code> 均为 0；i=4、5、6、7 的结果为 1。<code>i % h_k</code> 会生成 0、1、0、1… 的交错映射，不是题目要求的连续分组。</p>
+</section>
+
+<section class="section" id="steps">
+  <div class="sec-no">03 / 公式对应代码</div><h2>六步完整计算</h2>
+  <h3>1. 线性投影：K/V 的输出维度更窄</h3>
+  <div class="formula"><div class="formula-row">Q = XW<sub>Q</sub> + b<sub>Q</sub></div><div class="formula-row">K = XW<sub>K</sub> + b<sub>K</sub></div><div class="formula-row">V = XW<sub>V</sub> + b<sub>V</sub></div></div>
+  <p>Q 的形状是 (T,d_model)，K、V 的形状是 (T,h_k×d_k)。各投影仍读取每个 token 的全部原始 d_model 维输入；不是先把 X 切小，也不是先生成完整的 K/V 再删掉某些头。</p>
+  <h3>2. 拆 Query：h_q 个头</h3><pre><code>Q.reshape(T, h_q, d_k).transpose(1, 0, 2)
+# (T, d_model) → (T, h_q, d_k) → (h_q, T, d_k)</code></pre>
+  <h3>3. 拆 K/V：只有 h_k 个头</h3><pre><code>K.reshape(T, h_k, d_k).transpose(1, 0, 2)
+V.reshape(T, h_k, d_k).transpose(1, 0, 2)
+# (T, h_k*d_k) → (T, h_k, d_k) → (h_k, T, d_k)</code></pre>
+  <p>每组里的 Query 都拿到同一个完整的 K/V head。<strong>不要把 K_g 再切成 s 个子块：</strong>单个 K/V head 已经是 (T,d_k)，要与每个 Q_i 的 d_k 对齐。</p>
+  <h3>4. 每个 Query head 单独算注意力</h3>
+  <div class="formula"><div class="formula-row">S<sub>i</sub> = <span class="fraction"><span class="top">Q<sub>i</sub>K<sub>g(i)</sub><sup>T</sup></span><span class="bottom">√d_k</span></span></div><div class="formula-row">A<sub>i</sub> = \operatorname{softmax}(S<sub>i</sub>)</div><div class="formula-row">H<sub>i</sub> = A<sub>i</sub>V<sub>g(i)</sub></div></div>
+  <p>Q_i、K_g、V_g 均为 (T,d_k)。Q_i @ K_g.T 得到 (T,T)，行表示 Query token，列表示 Key token。对每行做 Softmax 后，A_i @ V_g 得到 (T,d_k)。缩放使用 √d_k，不是 √d_model，也不是 √h_k。</p>
+  <h3>5. 拼接全部 Query head 的输出</h3>
+  <div class="formula"><div class="formula-row">H = \operatorname{concat}(H<sub>0</sub>,\dots,H<sub>h_q-1</sub>)</div><div class="formula-row">h<sub>q</sub>d<sub>k</sub> = d<sub>model</sub></div></div>
+  <p>总共有 h_q 个输出头，所以同一个 token 的所有头沿特征维拼成 d_model 个数。只有 h_k 个 K/V 头，不会把输出宽度变成 h_k×d_k。</p>
+  <h3>6. 输出投影</h3><div class="formula"><div class="formula-row">O = HW<sub>O</sub> + b<sub>O</sub></div></div><p>W_O 混合拼接后的各头特征，输出仍是 (T,d_model)。它不是 Softmax，因此最终输出不必在 0～1 内。</p>
+</section>
+
+<section class="section" id="code">
+  <div class="sec-no">04 / 两个库对照</div><h2>NumPy / PyTorch 逐行解析</h2>
+  <p class="muted">以你提供的两套实现为基础：NumPy 按 Query head 循环；PyTorch 用 repeat_interleave 展开 K/V，再做批量矩阵乘法。去掉未使用的 hkdk 变量，计算步骤保持一致；以下代码假设输入满足题目约束。</p>
+  <div class="controls" role="group" aria-label="实现版本"><button type="button" class="btn active" id="tab-numpy" aria-pressed="true">NumPy 版</button><button type="button" class="btn" id="tab-torch" aria-pressed="false">PyTorch 版</button><span id="line-status" class="small"></span></div>
+  <div class="editor-grid">
+    <div class="code-panel"><div class="code-toolbar"><span id="code-label">grouped_query_attention.py</span><button type="button" id="copy-code" class="btn">复制完整代码</button></div><div id="code-lines" class="code-scroll" aria-label="点击代码行查看说明"></div></div>
+    <aside class="detail-panel"><div class="detail-kicker" id="detail-kicker"></div><h3 id="detail-title"></h3><pre><code id="detail-code"></code></pre><p id="detail-body"></p><div id="detail-shape" class="example"></div><div class="controls"><button type="button" id="prev-line" class="btn">上一行</button><button type="button" id="next-line" class="btn primary">下一行</button></div><p class="small">代码行可点击，也可以用键盘 Tab 定位，Enter / 空格选择。</p></aside>
+  </div>
+  <details><summary>展开完整 NumPy 实现</summary><pre><code id="full-numpy"></code></pre></details>
+  <details><summary>展开完整 PyTorch 实现</summary><pre><code id="full-torch"></code></pre></details>
+  <div id="copy-status" class="small" role="status"></div>
+  <noscript><p>逐行说明与演示需要启用 JavaScript；题干、公式、计算步骤和下方维度解释可直接阅读。</p></noscript>
+</section>
+
+<section class="section" id="trace">
+  <div class="sec-no">05 / 跟着原题验算</div><h2>同一份 K/V，两个不同的注意力输出</h2>
+  <p>固定 T=2、d_model=4、h_q=2、h_k=1、d_k=2。蓝色代表 Query head 0，橙色代表 Query head 1，绿色代表共享 K/V。每个小矩阵都标出行列含义。</p>
+  <div id="stage-buttons" class="controls" role="group" aria-label="计算阶段"></div>
+  <div class="trace-head"><h3 id="trace-title"></h3><span id="trace-shape" class="shape-badge"></span></div><p id="trace-text"></p>
+  <div id="trace-matrices" class="matrix-grid"></div><p id="trace-summary" class="trace-summary"></p>
+  <div class="controls"><button type="button" id="trace-prev" class="btn">上一步</button><span id="trace-progress" class="small"></span><button type="button" id="trace-next" class="btn primary">下一步</button></div>
+  <h3>把一个 Query token 的权重展开</h3>
+  <div class="controls"><label for="weight-head">Query head</label><select id="weight-head"><option value="0">Q_0</option><option value="1">Q_1</option></select><label for="weight-token">Query token</label><select id="weight-token"><option value="0">token 0</option><option value="1">token 1</option></select></div>
+  <div id="weights"></div><div id="weighted-output" class="result" aria-live="polite"></div>
+  <p class="small">显示六位小数，计算保留完整浮点精度。这里的条形图始终表示最终 Softmax 权重，独立于上方阶段选择器。</p>
+</section>
+
+<section class="section" id="axes">
+  <div class="sec-no">06 / 不只记形状</div><h2>拆头、共享、拼头与常见语法</h2>
+  <h3>1. reshape 与 transpose：数据没有变，只换分组和轴</h3>
+  <div class="tensor-flow"><div class="tensor-card"><strong>Q · (token, feature)</strong><pre><code>[[2,2,1,3],
+ [1,1,2,0]]
+形状 (2,4)</code></pre></div><div class="tensor-card"><strong>reshape · (token, head, feature)</strong><pre><code>[
+ [[2,2],[1,3]],  # token 0
+ [[1,1],[2,0]]   # token 1
+]
+形状 (2,2,2)</code></pre></div><div class="tensor-card"><strong>transpose · (head, token, feature)</strong><pre><code>[
+ [[2,2],[1,1]],  # head 0
+ [[1,3],[2,0]]   # head 1
+]
+形状 (2,2,2)</code></pre></div></div>
+  <p>本例 token 数和 head 数都等于 2，因此换轴前后形状恰好都是 (2,2,2)，但<strong>每个下标的语义与元素排列已经改变</strong>。换轴后，一个 head 的完整 token 序列才放在一起。</p>
+  <div class="table-wrap"><table><thead><tr><th>目的</th><th>NumPy</th><th>PyTorch</th></tr></thead><tbody><tr><td>token 轴、head 轴交换</td><td><code>transpose(1,0,2)</code>：指定完整新轴顺序</td><td><code>transpose(0,1)</code>：交换两个指定轴</td></tr><tr><td>每头 K 的矩阵转置</td><td>循环里的 Ki 是二维，<code>Ki.T</code> 合适</td><td>Kh 是三维，<code>transpose(-2,-1)</code> 只交换最后两轴</td></tr></tbody></table></div>
+  <h3>2. repeat_interleave：同一组挨着重复，不能用错 repeat</h3>
+  <pre><code># 只用 head 标签示意：h_q=8, h_k=2, group_size=4
+原始 K/V heads：          [KV0, KV1]
+repeat_interleave(4, 0)： [KV0, KV0, KV0, KV0, KV1, KV1, KV1, KV1]
+对应 Query heads：        [ Q0,  Q1,  Q2,  Q3,  Q4,  Q5,  Q6,  Q7]
+
+# repeat(4,1,1) 是另一种排列，会错配连续分组：
+# [KV0, KV1, KV0, KV1, KV0, KV1, KV0, KV1]</code></pre>
+  <p><code>repeat_interleave(group_size,dim=0)</code> 对 head 轴的<strong>每一个元素分别连续重复</strong>。这个教学实现会物化展开后的 K/V 张量，方便与 Qh 批量相乘；NumPy 循环版则用 Kh[g]、Vh[g] 读取，不复制成 h_q 份。</p>
+  <h3>3. axis=1、keepdims=True 与行广播</h3>
+  <p>NumPy 循环中 scores 是二维 (T,T)，<code>axis=1</code> 表示沿每行的 Key 位置求最大值 / 求和。PyTorch 批量 scores 是 (h_q,T,T)，<code>dim=-1</code> 是最后一维，也就是 Key 位置。这里不归一化 Query 轴或 head 轴。</p>
+  <div class="tensor-flow"><div class="tensor-card"><strong>head 0 的 scores · (2,2)</strong><pre><code>[[7.071068,2.828427],
+ [3.535534,1.414214]]</code></pre></div><div class="tensor-card"><strong>max(axis=1,keepdims=True) · (2,1)</strong><pre><code>[[7.071068],
+ [3.535534]]</code></pre></div><div class="tensor-card"><strong>每行减去自己的最大值 · (2,2)</strong><pre><code>[[0,-4.242641],
+ [0,-2.121320]]</code></pre></div></div>
+  <p><code>scores.max(...)</code> 是数组方法，等价于 <code>np.max(scores,...)</code>；<code>attn.sum(...)</code> 等价于 <code>np.sum(attn,...)</code>。<code>keepdims=True</code> 保留被归约的轴为长度 1，所以 (2,1) 可以逐行广播到 (2,2)。删除它得到 (2,)，这在方阵中可能恰好不报错，却沿列对齐，悄悄减错行。</p>
+  <pre><code>scores = scores - scores.max(axis=1, keepdims=True)
+attn = np.exp(scores)                    # 每项分别取指数
+denominator = attn.sum(axis=1, keepdims=True)  # 每行自己的分母
+attn = attn / denominator                # 逐行归一化</code></pre>
+  <p>减最大值不改变 Softmax 的结果，同时避免很大正数的指数溢出。对于有限、无 mask 的得分，每行至少有一项 exp(0)=1，分母不会为 0。正确拼写是 <code>keepdims=True</code>；PyTorch 对应参数叫 <code>keepdim=True</code>，此处 torch.softmax 已完成内部归一化。</p>
+  <h3>4. np.empty：分配空间，还没有算出答案</h3><p><code>np.empty((h_q,T,d_k))</code> 只分配未初始化的数组。for 循环必须写入每一个 <code>Hh[i]</code> 后才能使用。它不等价于全零数组，也不是将空值参与注意力运算。</p>
+  <h3>5. 拼头：先把 token 放回第一轴</h3>
+  <pre><code># Hh 的顺序是 (head, token, feature)
+Hh = [
+  [[1,1.014166], [1,1.107042]],  # head 0
+  [[1,1.007035], [1,1.195570]]   # head 1
+]
+
+# transpose → (token, head, feature)，再 reshape 合并最后两轴
+H = [[1,1.014166,1,1.007035],  # token 0：head 0 + head 1
+     [1,1.107042,1,1.195570]] # token 1：head 0 + head 1</code></pre>
+  <p>直接 <code>Hh.reshape(T,d_model)</code> 会把 head 0 的 token 0、token 1 拼到同一行，形状虽然正确，语义却错了。NumPy 的 <code>np.concatenate([H_0,H_1],axis=1)</code> 可得到相同的正确拼接；PyTorch 换轴后用 reshape，会在需要时创建连续拷贝，无须强行改用 view。</p>
+</section>
+
+<section class="section" id="complexity">
+  <div class="sec-no">07 / GQA 节省什么</div><h2>主要节省 K/V 投影与 KV Cache</h2>
+  <p>令 M=d_model，d_k=M/h_q。Q 投影与输出投影仍是 (T,M)@(M,M)；K/V 投影变成 (T,M)@(M,h_k d_k)。K/V 投影的参数量与乘法量，相比同样 h_q 的 MHA 按 h_k/h_q 缩小。Query head 数没有减少。</p>
+  <div class="table-wrap"><table><thead><tr><th>部分</th><th>工作量 / 元素数</th><th>是否随 K/V 头数减少</th></tr></thead><tbody>
+    <tr><td>Q、输出投影</td><td>O(TM²)</td><td>不减少</td></tr><tr><td>K/V 投影</td><td>O(TM · h_k d_k)</td><td>比 MHA 缩小 h_k/h_q</td></tr><tr><td>全部 Query heads 的得分与加权 V</td><td>O(h_q T²d_k)=O(T²M)</td><td>本实现仍计算 h_q 份</td></tr><tr><td>显式注意力权重</td><td>O(h_q T²)</td><td>不是 h_k T²</td></tr><tr><td>推理时每层 K+V 缓存</td><td>2 × batch × L × h_k × d_k 个数</td><td>相比 MHA 的 2 × batch × L × h_q × d_k 缩小 h_k/h_q</td></tr>
+  </tbody></table></div>
+  <p>两份代码的总时间阶仍为 <code>O(TM² + T²M)</code>。计入列表转换产生的权重副本与中间输出：<strong>NumPy 循环版额外空间为 O(M² + TM + T²)</strong>，因为它每次只保留一头的得分与权重；<strong>PyTorch 批量版为 O(M² + TM + h_q T²)</strong>，同时计算并保留全部 Query heads 的注意力矩阵。这里的浏览器演示为了展示中间结果，也显式保留了所有头。</p>
+  <div class="callout note"><strong>缓存压缩 ≠ repeat 后的临时张量压缩。</strong>原始缓存可只存 h_k 组 K/V；但本页 PyTorch 教学代码先用 repeat_interleave 展开成 h_q 组，确实会产生较大的临时张量。生产实现可用支持 GQA 的内核按组读取，避免显式复制。GQA 不保证精度毫无损失，也不能据此宣称整个注意力计算量按同一比例缩小。</div>
+  <p class="small">L 为缓存序列长度、batch 为批大小；换成字节需再乘 dtype 字节数与层数。本题只写完整序列前向，不实现 KV Cache 的增量更新。</p>
+</section>
+
+<section class="section" id="practice">
+  <div class="sec-no">08 / 复现检查</div><h2>投影 → 拆头 → 映射 → 注意力 → 拼头 → 输出</h2>
+  <pre><code>d_k = d_model // ______
+group_size = h_q // ______
+Qh = Q.reshape(T, h_q, d_k).transpose(______, ______, ______)
+Kh = K.reshape(T, ______, d_k).transpose(1, 0, 2)
+Vh = V.reshape(T, ______, d_k).transpose(1, 0, 2)
+for i in range(h_q):
+    g = i // ______
+    scores = (Qh[i] @ Kh[______].T) / np.sqrt(______)
+    scores -= scores.max(axis=______, keepdims=______)
+    attn = np.exp(scores)
+    attn /= attn.sum(axis=______, keepdims=______)
+    Hh[i] = attn @ Vh[______]
+H = Hh.transpose(______, ______, ______).reshape(T, d_model)
+O = H @ W_O + b_O</code></pre>
+  <details><summary>展开关键答案与自检点</summary><ul><li>d_k 用 h_q；group_size 用 h_k。</li><li>NumPy 换轴顺序是 1,0,2；K/V reshape 使用 h_k。</li><li>g = i // group_size；Kh[g]、Vh[g]；缩放用 √d_k。</li><li>二维逐行 Softmax 使用 axis=1、keepdims=True。</li><li>拼头前 transpose(1,0,2)，输出列数始终是 d_model。</li><li>只有一个 token 时，各头注意力权重都是 [1]，但不同 KV 组可有不同的 V。</li><li>验证非零偏置、多个 KV 组、极大得分和不合法整除条件，避免只靠 h_k=1 的样例判断映射正确。</li></ul></details>
+</section>
+<footer class="footer"><p>学习路径：<a href="./self-attention.html">Self-Attention</a> → <a href="./multi-head-attention.html">Multi-Head Attention</a> → GQA</p></footer>
+</main>
+<script src="./math-render.js?v=20261003-14"></script>
+</body></html>
