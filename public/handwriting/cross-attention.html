@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>P4498 交叉注意力 Cross-Attention · 完整题干与手撕代码</title>
+  <link rel="stylesheet" href="./gqa-guide.css?v=20261007-1">
+  <link rel="stylesheet" href="./handwriting.css?v=20261003-2">
+  <link rel="stylesheet" href="./cross-guide.css?v=20261007-1">
+  <script src="./cross-guide.js?v=20261007-1" type="module"></script>
+</head>
+<body>
+<header><div class="wrap hero">
+  <div class="eyebrow">TRANSFORMER / CROSS ATTENTION</div>
+  <h1>P4498. 交叉注意力</h1>
+  <p class="lead">一条序列提出查询，另一条序列提供可读取的内容。沿着两条输入的路径，看清 Q、K、V 的来源、矩形注意力矩阵，以及每个 Query 如何取回一个输出向量。</p>
+  <div class="pills"><span class="pill">两条序列的来源图</span><span class="pill">NumPy / PyTorch 切换</span><span class="pill">矩阵计算演示</span><span class="pill">轴与广播解析</span></div>
+</div></header>
+<nav aria-label="本页章节"><div class="wrap nav-links">
+  <a href="#problem">01 题干</a><a href="#sources">02 两条输入</a><a href="#steps">03 五步公式</a><a href="#code">04 逐行代码</a><a href="#trace">05 矩阵演示</a><a href="#axes">06 轴与语法</a><a href="#practice">07 盲写与边界</a>
+</div></nav>
+<main class="wrap">
+<section class="section" id="problem">
+  <div class="sec-no">01 / 原题整理</div><h2>题干、完整输入与输出</h2>
+  <p><strong>难度：5。</strong>给定 Query 序列 \(X_Q\in\mathbb{R}^{T_Q\times d_{\mathrm{model}}}\)、Key / Value 序列 \(X_K\in\mathbb{R}^{T_K\times d_{\mathrm{model}}}\)，以及线性投影权重与偏置，实现交叉注意力的完整计算，返回二维浮点列表 \(O\)。</p>
+  <p><strong>两条序列的长度可以不同。</strong>本题的输入特征维度相同，所有投影矩阵为方阵；没有 head 数参数，也不用 reshape 分头，所以是<strong>单头、无 mask</strong>的交叉注意力，<code>d_k = d_model</code>。</p>
+  <div class="table-wrap"><table><caption>输入参数与返回值的形状</caption><thead><tr><th>参数</th><th>形状</th><th>意义 / 原题样例</th></tr></thead><tbody>
+    <tr><td>X_Q</td><td>(T_Q, d_model)</td><td>查询序列；(2,4)</td></tr>
+    <tr><td>X_K</td><td>(T_K, d_model)</td><td>提供 K 和 V 的序列；(2,4)</td></tr>
+    <tr><td>W_Q、W_K、W_V</td><td>(d_model, d_model)</td><td>三套不同的投影；(4,4)</td></tr>
+    <tr><td>b_Q、b_K、b_V</td><td>(d_model,)</td><td>每个 token 共用同一偏置；(4,)</td></tr>
+    <tr><td>W_O；b_O</td><td>(d_model, d_model)；(d_model,)</td><td>输出投影；(4,4)；(4,)</td></tr>
+    <tr><td>O（返回）</td><td>(T_Q, d_model)</td><td>每个 Query 一个输出；(2,4)</td></tr>
+  </tbody></table></div>
+  <h3>输入样例（完整保留）</h3>
+  <pre><code>X_Q = [[1, 0, 1, 0],
+       [0, 1, 0, 1]]
+X_K = [[1, 1, 0, 0],
+       [0, 1, 1, 0]]
+
+W_Q = [[1, 0, 1, 0],
+       [0, 1, 0, 1],
+       [1, 0, 0, 1],
+       [0, 1, 1, 0]]
+b_Q = [0, 0, 0, 0]
+
+W_K = [[1, 1, 0, 0],
+       [0, 1, 1, 0],
+       [1, 0, 0, 1],
+       [0, 0, 1, 1]]
+b_K = [0, 0, 0, 0]
+
+W_V = [[1, 0, 0, 1],
+       [1, 1, 0, 0],
+       [0, 1, 1, 0],
+       [0, 0, 1, 1]]
+b_V = [0, 0, 0, 0]
+
+W_O = [[1, 0, 1, 0],
+       [0, 1, 0, 1],
+       [1, 0, 0, 1],
+       [0, 1, 1, 0]]
+b_O = [0, 0, 0, 0]</code></pre>
+  <h3>题目输出（两位小数）</h3><pre><code>O = [[2.00, 2.00, 1.76, 2.24],
+     [2.00, 2.00, 2.24, 1.76]]</code></pre>
+  <p>重新计算的完整精度结果约为 <code>[[2,2,1.755081,2.244919],[2,2,2.244919,1.755081]]</code>，与样例一致。两位小数仅用于展示，<code>return O.tolist()</code> 不做舍入。</p>
+  <h3>题目提示与数值范围</h3><ul>
+    <li>输入：−1000 ≤ X_Q[i,j]、X_K[i,j] ≤ 1000。</li><li>权重：−10 ≤ W_Q、W_K、W_V、W_O 的元素 ≤ 10。</li><li>偏置：−5 ≤ b_Q、b_K、b_V、b_O 的元素 ≤ 5。</li><li>权重满足 0 ≤ A[i,j] ≤ 1，每行之和为 1；最终 O 可为任意实数矩阵。</li>
+  </ul><p class="small">资料未提供序列长度、特征维度上限或判题误差。本题不包含 batch、残差、层归一化、dropout 或因果 mask。</p>
+</section>
+
+<section class="section" id="sources">
+  <div class="sec-no">02 / 先理解来源</div><h2>Query 提问，Key 匹配，Value 提供内容</h2>
+  <div class="source-flow">
+    <article class="source-card"><h3>查询侧 · X_Q</h3><p>每行是一个需要读取信息的位置。<strong>只投影为 Q</strong>，决定“我想找什么”。</p><div class="shape-chain"><span class="shape-node query">X_Q (T_Q,M)</span><span aria-hidden="true">→</span><span class="shape-node query">Q = X_Q @ W_Q + b_Q</span></div><p>Q 的行数是 T_Q；最终也要给这 T_Q 个位置各返回一个向量。</p></article>
+    <article class="source-card kv-source"><h3>信息侧 · X_K</h3><p>每行是一个可供读取的位置。<strong>分别投影为 K 与 V</strong>：K 决定“怎么被匹配”，V 决定“被读取的内容”。</p><div class="shape-chain"><span class="shape-node">X_K (T_K,M)</span><span aria-hidden="true">↗</span><span class="shape-node">K = X_K @ W_K + b_K</span><span aria-hidden="true">↘</span><span class="shape-node">V = X_K @ W_V + b_V</span></div><p>K 和 V 的行数都是 T_K，第 j 个 Key 对应第 j 个 Value；它们用不同权重，所以数值不必相同。</p></article>
+    <div class="flow-junction"><h3>两条路径在注意力矩阵中汇合</h3><div class="shape-chain"><span class="shape-node query">Q (T_Q,M)</span><span>×</span><span class="shape-node">Kᵀ (M,T_K)</span><span>→</span><span class="shape-node">S / A (T_Q,T_K)</span><span>×</span><span class="shape-node">V (T_K,M)</span><span>→</span><span class="shape-node query">H / O (T_Q,M)</span></div><p><strong>每行对应一个 Query，每列对应一个 Key。</strong>一行权重横向分配到全部 T_K 个位置，再按相同位置的 V 加权取回内容。</p></div>
+  </div>
+  <div class="table-wrap"><table><thead><tr><th>区别维度</th><th>Self-Attention</th><th>Cross-Attention</th></tr></thead><tbody><tr><td>Q 的来源</td><td>X</td><td>X_Q</td></tr><tr><td>K / V 的来源</td><td>同一份 X</td><td>另一份 X_K</td></tr><tr><td>得分矩阵</td><td>(T,T)</td><td>(T_Q,T_K)，可为矩形</td></tr><tr><td>输出位置</td><td>输入序列的 T 个位置</td><td>查询序列的 T_Q 个位置</td></tr></tbody></table></div>
+  <p>例如原始 Transformer 的 Encoder–Decoder Attention：Decoder 当前的隐藏状态提供 Q，Encoder 输出提供 K/V。Decoder 的每个位置通过注意力读取源句子的信息。这道题只是这一计算子模块，不包含整个 Encoder 或 Decoder。</p>
+  <div class="callout"><strong>来源和头数是两个独立概念。</strong>Self / Cross 描述 Q 与 K/V 是否来自同一序列；MHA / GQA / MQA 描述有多少 Query、K/V heads，以及怎样共享。交叉注意力也可以是多头；本题没有分头步骤。</div>
+</section>
+
+<section class="section" id="steps">
+  <div class="sec-no">03 / 公式对应代码</div><h2>五步完整计算</h2>
+  <h3>1. 三次线性投影，先确认来源</h3>
+  <div class="formula"><div class="formula-row">Q = X<sub>Q</sub>W<sub>Q</sub> + b<sub>Q</sub></div><div class="formula-row">K = X<sub>K</sub>W<sub>K</sub> + b<sub>K</sub></div><div class="formula-row">V = X<sub>K</sub>W<sub>V</sub> + b<sub>V</sub></div></div>
+  <p>Q 为 (T_Q,M)，K/V 为 (T_K,M)。<code>@</code> 将输入每行和权重每列作点积，偏置沿 token 行广播。<strong>V 用 X_K，不用 X_Q，也不是 K @ W_V。</strong>本例 Q 的首行是 X_Q 的第 0、2 个输入特征选中的权重行之和：[2,0,1,1]。</p>
+  <h3>2. 缩放点积：每个 Query 与全部 Key 比较</h3>
+  <div class="formula"><div class="formula-row">S = <span class="fraction"><span class="top">QK<sup>T</sup></span><span class="bottom">\sqrt{d_k}</span></span></div><div class="formula-row">S<sub>ij</sub> = <span class="fraction"><span class="top">\sum_{r=0}^{d_k-1} Q<sub>ir</sub>K<sub>jr</sub></span><span class="bottom">\sqrt{d_k}</span></span></div></div>
+  <p><code>(T_Q,M) @ (M,T_K)</code> 得到 (T_Q,T_K)。本题 <code>d_k = K.shape[1] = 4</code>，缩放因子 √4=2。每个元素 S[i,j] 是 Query i 与 Key j 的匹配分数。</p>
+  <p>在各维近似独立、均值为 0、方差为 1 的常见分析下，d_k 项点积的方差约为 d_k，除 √d_k 可将尺度控制到较稳定的范围，减轻 Softmax 过度尖锐、梯度过小的问题。这是尺度控制，并不保证所有输入都不会饱和；数值稳定还需要下一步减最大值。</p>
+  <h3>3. 沿 Key 轴逐行 Softmax</h3>
+  <div class="formula"><div class="formula-row">m<sub>i</sub> = \max_{j} S<sub>ij</sub></div><div class="formula-row">A<sub>ij</sub> = <span class="fraction"><span class="top">\exp(S<sub>ij</sub>-m<sub>i</sub>)</span><span class="bottom">\sum_{k=0}^{T_K-1}\exp(S<sub>ik</sub>-m<sub>i</sub>)</span></span></div><div class="formula-row">\sum_{j=0}^{T_K-1} A<sub>ij</sub> = 1</div></div>
+  <pre><code>S = S - np.max(S, axis=-1, keepdims=True)
+exp_S = np.exp(S)
+A = exp_S / np.sum(exp_S, axis=-1, keepdims=True)
+# PyTorch：A = torch.softmax(S, dim=-1)</code></pre>
+  <p>二维 S 的 <code>axis=-1</code> 就是 <code>axis=1</code>，沿 Key 列归约。每个 Query 有自己的分母，不能对所有元素求一个总和，也不能沿 Query 轴归一化。减最大值把每行最大指数变成 exp(0)=1，其余不超过 1；减去同一个常数不改变这一行的 Softmax 分布。</p>
+  <h3>4. 权重乘 Value，取回内容</h3><div class="formula"><div class="formula-row">H = AV</div><div class="formula-row">H<sub>ir</sub> = \sum_{j=0}^{T_K-1} A<sub>ij</sub>V<sub>jr</sub></div></div>
+  <p><code>(T_Q,T_K) @ (T_K,M)</code> 得到 (T_Q,M)。固定 Query i，它的输出向量是 <code>A[i,0]*V[0] + … + A[i,T_K-1]*V[T_K-1]</code>。本例 Query 0 的权重约为 [0.377541,0.622459]，因此更偏向 Value 1。</p>
+  <h3>5. 输出线性投影</h3><div class="formula"><div class="formula-row">O = HW<sub>O</sub> + b<sub>O</sub></div></div>
+  <p>W_O 混合 H 的特征，形状仍为 (T_Q,M)。这是线性变换，没有再次做 Softmax：<strong>A 是概率分布，H/O 是特征向量。</strong>本题 H 是 Value 的凸组合，单个特征位于对应 Value 特征的范围内；经过 W_O 和 b_O 后，O 不再受这一范围约束。</p>
+</section>
+
+<section class="section" id="code">
+  <div class="sec-no">04 / 两个库对照</div><h2>NumPy / PyTorch 逐行解析</h2>
+  <p class="muted">保留你提供的算法、参数顺序与 float64 精度。点击任意代码行查看来源、形状和对应数值；以下教学代码假设输入满足题目约束。</p>
+  <div class="controls" role="group" aria-label="实现版本"><button type="button" class="btn active" id="tab-numpy" aria-pressed="true">NumPy 版</button><button type="button" class="btn" id="tab-torch" aria-pressed="false">PyTorch 版</button><span id="line-status" class="small"></span></div>
+  <div class="editor-grid"><div class="code-panel"><div class="code-toolbar"><span id="code-label">cross_attention.py</span><button type="button" id="copy-code" class="btn">复制完整代码</button></div><div id="code-lines" class="code-scroll" aria-label="点击代码行查看说明"></div></div><aside class="detail-panel"><div class="detail-kicker" id="detail-kicker"></div><h3 id="detail-title"></h3><pre><code id="detail-code"></code></pre><p id="detail-body"></p><div id="detail-shape" class="example"></div><div class="controls"><button type="button" id="prev-line" class="btn">上一行</button><button type="button" id="next-line" class="btn primary">下一行</button></div><p class="small">可用 Tab 定位代码行，Enter / 空格选择。</p></aside></div>
+  <details><summary>展开完整 NumPy 实现</summary><pre><code id="full-numpy"></code></pre></details><details><summary>展开完整 PyTorch 实现</summary><pre><code id="full-torch"></code></pre></details><div id="copy-status" class="small" role="status"></div>
+  <noscript><p>代码切换与矩阵演示需要 JavaScript；题干、公式、步骤和维度解释可直接阅读。</p></noscript>
+</section>
+
+<section class="section" id="trace">
+  <div class="sec-no">05 / 矩阵计算可视化</div><h2>从两条输入走到每个 Query 的输出</h2>
+  <div class="controls"><label for="trace-example">计算示例</label><select id="trace-example"><option value="original">原题 · T_Q=2，T_K=2</option><option value="rectangular">扩展示例 · T_Q=2，T_K=3</option></select></div>
+  <p class="small">扩展示例只给原题 X_K 追加 [0,0,0,1]，权重、偏置和 X_Q 保持原题值；它用于展示矩形注意力，不是原题给出的输出。蓝色是查询侧，绿色是信息侧。</p>
+  <div id="stage-buttons" class="controls" role="group" aria-label="计算阶段"></div><div class="trace-head"><h3 id="trace-title"></h3><span id="trace-shape" class="shape-badge"></span></div><p id="trace-text"></p><div id="trace-matrices" class="matrix-grid" aria-live="polite"></div><p id="trace-summary" class="trace-summary"></p>
+  <div class="controls"><button type="button" id="trace-prev" class="btn">上一步</button><span id="trace-progress" class="small"></span><button type="button" id="trace-next" class="btn primary">下一步</button></div>
+  <h3>选一个 Query，看它怎样读取 Value</h3><div class="controls"><label for="weight-token">Query 位置</label><select id="weight-token"><option value="0">Query 0</option><option value="1">Query 1</option></select></div><div id="weights"></div><div id="weighted-output" class="result" aria-live="polite"></div>
+  <p class="small">矩阵显示六位小数，计算保留完整精度。权重条形图始终显示当前示例的最终 Softmax 分布。</p>
+</section>
+
+<section class="section" id="axes">
+  <div class="sec-no">06 / 轴与广播</div><h2>axis=-1、keepdims=True 与矩阵乘法</h2>
+  <h3>1. S[i,j] 的 i、j 分别是谁？</h3>
+  <p>i 沿行变化，指 Query；j 沿列变化，指 Key。固定一行 i，是一个 Query 比较所有 Key；固定一列 j，是所有 Query 分别比较同一个 Key。归一化必须在每个 Query 自己的一行完成。</p>
+  <div class="axis-panel"><h3>选择行、列，观察对应位置</h3><div class="controls"><label for="axis-query">Query 行 i</label><select id="axis-query"><option value="0">0</option><option value="1">1</option></select><label for="axis-key">Key 列 j</label><select id="axis-key"><option value="0">0</option><option value="1">1</option><option value="2">2</option></select></div><div id="axis-matrix"></div><p id="axis-explanation" class="trace-summary" aria-live="polite"></p></div>
+  <h3>2. 矩形更容易看懂 keepdims 的作用</h3>
+  <div class="tensor-flow"><div class="tensor-card"><strong>S · (2,3)，最后一轴是 Key</strong><pre><code>[[1.5, 2.0, 1.0],
+ [2.5, 2.0, 1.0]]
+axis=0：沿 Query 行
+axis=1 / -1：沿 Key 列</code></pre></div><div class="tensor-card"><strong>max(axis=-1,keepdims=True) · (2,1)</strong><pre><code>[[2.0],
+ [2.5]]
+每个 Query 一个最大值
+保留列轴，长度变成 1</code></pre></div><div class="tensor-card"><strong>S - 行最大值 · (2,3)</strong><pre><code>[[-0.5, 0.0, -1.0],
+ [ 0.0,-0.5, -1.5]]
+第一行的 3 项都减 2.0
+第二行的 3 项都减 2.5</code></pre></div></div>
+  <p><code>keepdims=True</code> 保留归约轴为长度 1，(2,1) 的每行单值就能广播到 (2,3)。删掉它会得到 (2,)，NumPy 从最后一轴对齐，长度 2 对不上长度 3，会报广播错误。在原题 (2,2) 中反而可能不报错，但会将这两个值分别减到两列，语义错了。</p>
+  <h3>3. np.sum 到底做了什么？</h3>
+  <pre><code>exp_S = np.exp(S)  # 此时 S 已减去行最大值
+denominator = np.sum(exp_S, axis=-1, keepdims=True)
+# (2,3) → (2,1)：一行的 3 个指数相加成自己的分母
+A = exp_S / denominator  # (2,3) / (2,1) → (2,3)</code></pre>
+  <p><code>np.sum(exp_S,…)</code> 与 <code>exp_S.sum(…)</code> 等价；<code>np.max(S,…)</code> 与 <code>S.max(…)</code> 等价。<code>np.exp</code> 对每项取指数，<code>/</code> 是逐元素除法，<code>@</code> 才是矩阵乘法。没有写 axis 的 <code>np.sum(exp_S)</code> 会把全部元素加成一个标量，不能用于逐行 Softmax。</p>
+  <div class="table-wrap"><table><thead><tr><th>操作</th><th>NumPy</th><th>PyTorch</th><th>本题作用</th></tr></thead><tbody><tr><td>列表转数值对象</td><td>np.asarray(x,dtype=np.float64)</td><td>torch.tensor(x,dtype=torch.float64)</td><td>支持 @、shape 与数值运算</td></tr><tr><td>二维转置</td><td>K.T</td><td>K.T</td><td>(T_K,M) → (M,T_K)</td></tr><tr><td>归约轴</td><td>axis=-1</td><td>dim=-1</td><td>最后一维，Key 位置</td></tr><tr><td>保留归约轴</td><td>keepdims=True</td><td>keepdim=True</td><td>手写归一化时保留 (T_Q,1)</td></tr><tr><td>稳定 Softmax</td><td>减 max → exp → 除行 sum</td><td>torch.softmax(S,dim=-1)</td><td>PyTorch 一次完成这一过程</td></tr><tr><td>返回列表</td><td>O.tolist()</td><td>O.tolist()</td><td>二维嵌套列表，完整精度</td></tr></tbody></table></div>
+  <p>这里 K 是二维，所以 <code>K.T</code> 正确。若扩展成 (batch,head,T_K,d_k) 的四维张量，应只交换最后两轴：NumPy 用 <code>swapaxes(-2,-1)</code>，PyTorch 用 <code>transpose(-2,-1)</code>；不能直接照搬二维 .T。</p>
+  <h3>4. 一个数值对应一条读取路径</h3>
+  <p>原题 Q[0]=[2,0,1,1]，K[1]=[1,1,1,1]，所以 S[0,1]=(2+0+1+1)/2=2。这一行 Softmax 后 A[0,1]≈0.622459，意思是 Query 0 为 Value 1 分配约 62.25% 权重。它不是“输出的第 1 个特征”；真正的输出特征由整个 V[1] 向量提供。</p>
+</section>
+
+<section class="section" id="practice">
+  <div class="sec-no">07 / 复现与边界</div><h2>来源 → 打分 → 行归一化 → 读取 → 输出</h2>
+  <pre><code>Q = ______ @ W_Q + b_Q
+K = ______ @ W_K + b_K
+V = ______ @ W_V + b_V
+d_k = K.shape[______]
+S = Q @ ______ / np.sqrt(______)
+S -= np.max(S, axis=______, keepdims=______)
+exp_S = np.exp(S)
+A = exp_S / np.sum(exp_S, axis=______, keepdims=______)
+H = A @ ______
+O = H @ W_O + b_O
+return O.______()</code></pre>
+  <details><summary>展开答案与自检点</summary><ul><li>Q 用 X_Q；K 和 V 都用 X_K。</li><li>d_k=K.shape[1]；S=Q@K.T/√d_k。</li><li>二维逐行 Softmax：axis=-1 或 1，keepdims=True。</li><li>H=A@V；返回 O.tolist()。</li><li>T_Q≠T_K 时 S、A 是矩形，O 行数是 T_Q。</li><li>T_K=1 时每行权重为 [1]，所有 Query 都读取同一个 V，再经过同一个输出投影。</li><li>只改变 X_Q 时 K/V 不变；改变 X_K 会改变可匹配和读取的信息。</li><li>A 每行和为 1，O 每行无需为 1；大得分应保持有限输出。</li></ul></details>
+  <h3>时间与空间：两种长度分别出现在哪里？</h3>
+  <p>令 M=d_model。三次输入投影与输出投影合计为 <code>O((T_Q+T_K)M²)</code>；QKᵀ 与 AV 合计为 <code>O(T_Q T_K M)</code>。总时间为 <code>O((T_Q+T_K)M²+T_Q T_K M)</code>，显式注意力矩阵大小为 T_Q×T_K。</p>
+  <p>本题接口是 Python 列表，转换为数组 / 张量会占用权重副本和中间矩阵，额外空间为 <code>O(M²+(T_Q+T_K)M+T_Q T_K)</code>。原题序列短，适合显式展示；长序列的实际系统可用专用注意力内核减少中间权重矩阵的物化。</p>
+  <div class="callout note"><strong>两条输入序列不要求长度相同，但不是毫无限制。</strong>Q 与 K 的最后一维必须相同才能点积；K 与 V 的 token 数及位置对应必须一致才能读取。通用模型可设置不同的输入维度、d_k 和 d_v，本题则统一为 M；不要把题目简化条件当成所有交叉注意力的固定规则。</div>
+</section>
+<footer class="footer"><p>相关学习：<a href="./self-attention.html">Self-Attention</a> · <a href="./multi-head-attention.html">Multi-Head Attention</a> · <a href="./grouped-query-attention.html">GQA</a> · Cross-Attention</p></footer>
+</main>
+<script src="./math-render.js?v=20261003-14"></script>
+</body></html>

@@ -1,0 +1,24 @@
+/* Base components come from gqa-guide.css and the shared handwriting theme. */
+.source-flow { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; }
+.source-card { min-width:0; padding:20px; border:1px solid #a8c4e6; border-top:4px solid #4e87cb; border-radius:9px; background:#f1f6fc; }
+.source-card.kv-source { border-color:#a9c9c2; border-top-color:#438c7d; background:#f0f8f4; }
+.source-card h3 { margin:0 0 10px; }
+.flow-junction { grid-column:1/-1; padding:18px; border:1px solid #c5dcd9; border-radius:9px; background:#f7faf8; }
+.flow-junction h3 { margin-top:0; }
+.shape-chain { display:flex; flex-wrap:wrap; gap:9px; align-items:center; margin:14px 0; }
+.shape-node { padding:8px 12px; border:1px solid #c5dcd9; border-radius:7px; background:#f1f8f5; font:13px/1.7 ui-monospace,Consolas,monospace; }
+.shape-node.query { border-color:#a8c4e6; background:#edf4fc; }
+.axis-panel { padding:18px; border:1px solid #c5dcd9; border-radius:9px; background:#f8fbfa; }
+.axis-panel h3 { margin-top:0; }
+.cell-focus { background:#e1f0ee; box-shadow:inset 0 0 0 2px #438c7d; font-weight:700; }
+.selected-query td { background:#edf4fc; }
+.selected-query .cell-focus { background:#e1f0ee; }
+#code .detail-panel { top:150px; }
+body > nav { top:58px; }
+#handwriting-ipad-reading { min-height:44px; }
+.detail-panel { overflow-wrap:anywhere; }
+summary { min-height:44px; display:list-item; }
+.ipad-reading .matrix-grid { grid-template-columns:1fr; }
+@media(max-width:900px) { .matrix-grid { grid-template-columns:1fr; } }
+@media(max-width:700px) { .source-flow { grid-template-columns:1fr; } .source-card,.flow-junction,.axis-panel { padding:15px; } }
+@media print { .source-flow { display:block; } .source-card { margin-bottom:12px; } }
