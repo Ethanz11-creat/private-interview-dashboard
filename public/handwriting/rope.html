@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>RoPE 旋转位置编码 · 完整题干与手撕代码</title>
+  <link rel="stylesheet" href="./gqa-guide.css?v=20261007-1">
+  <link rel="stylesheet" href="./handwriting.css?v=20261003-2">
+  <link rel="stylesheet" href="./rope-guide.css?v=20261008-1">
+  <script src="./rope-guide.js?v=20261008-1" type="module"></script>
+</head>
+<body>
+<header><div class="wrap hero">
+  <div class="eyebrow">TRANSFORMER / ROTARY POSITION EMBEDDING</div>
+  <h1>RoPE · 旋转位置编码</h1>
+  <p class="lead">把每两个相邻特征看成一个二维平面，用 token 位置决定旋转角度。先从一个向量的成对旋转走到整张矩阵，再说明为什么实际 Attention 中只旋转 Q/K。</p>
+  <div class="pills"><span class="pill">二维旋转可视化</span><span class="pill">NumPy / PyTorch 切换</span><span class="pill">位置与频率矩阵</span><span class="pill">Q/K 接入解释</span></div>
+</div></header>
+<nav aria-label="本页章节"><div class="wrap nav-links">
+  <a href="#problem">01 题干</a><a href="#pairing">02 两两配对</a><a href="#formula">03 公式</a><a href="#code">04 逐行代码</a><a href="#trace">05 矩阵演示</a><a href="#attention">06 Q/K 接入</a><a href="#axes">07 维度与语法</a><a href="#practice">08 盲写</a>
+</div></nav>
+<main class="wrap">
+<section class="section" id="problem">
+  <div class="sec-no">01 / 原题整理</div><h2>输入、位置与返回值</h2>
+  <p>给定一个二维特征矩阵 <code>X</code> 和每一行对应的位置，使用 Rotary Position Embedding（RoPE）为每个 token 注入位置。输出仍是与 X 同形状的矩阵。</p>
+  <div class="table-wrap"><table><caption>接口和形状</caption><thead><tr><th>参数</th><th>形状</th><th>意义</th></tr></thead><tbody>
+    <tr><td>X / x</td><td>(T,D)</td><td>T 个 token，每个 token 有 D 个特征；D 必须为偶数</td></tr>
+    <tr><td>positions</td><td>(T,)</td><td>每一行的位置；省略时使用 0,1,…,T−1</td></tr>
+    <tr><td>base</td><td>标量 &gt; 1</td><td>频率底数；代码默认 10000，演示使用 100 让旋转更明显</td></tr>
+    <tr><td>output</td><td>(T,D)</td><td>每一对通道独立旋转后的矩阵</td></tr>
+  </tbody></table></div>
+  <h3>演示输入（完整保留）</h3><pre><code>X = [[1, 0, 0, 1],
+     [1, 1, 1, 0],
+     [0, 1, 2,-1]]
+positions = [0, 1, 2]
+base = 100</code></pre>
+  <p>因为 D=4，所以每个 token 有两对二维坐标：<code>(x[0], x[1])</code> 和 <code>(x[2], x[3])</code>。位置 0 的角度全为 0，因此第一行保持不变；位置 1、2 会分别转动。</p>
+  <h3>输出（六位小数）</h3><pre><code>[[ 1.000000,  0.000000,  0.000000,  1.000000],
+ [-0.301169,  1.381773,  0.995004,  0.099833],
+ [-0.909297, -0.416147,  2.178736, -0.582727]]</code></pre>
+  <p class="small">这组数值使用 base=100 便于观察；base=10000 时第二对通道的角度变小，但计算流程完全相同。实现不会把输出截断到六位小数。</p>
+  <h3>约束与边界</h3><ul><li>D 必须是偶数，否则无法把通道两两组成二维旋转平面。</li><li>positions 长度必须等于 T，可以是不连续位置，例如缓存推理时的 [8,9,10]。</li><li>base 必须大于 1；不同 base 会改变各通道的频率尺度。</li><li>RoPE 本身不改变矩阵形状，也不做归一化；输出数值可以为任意实数。</li></ul>
+</section>
+
+<section class="section" id="pairing">
+  <div class="sec-no">02 / 先理解二维旋转</div><h2>不是给整行乘一个位置向量，而是每两维转一次</h2>
+  <div class="pair-flow">
+    <article class="pair-card input"><h3>原始 token 向量</h3><pre><code>x = [x₀, x₁, x₂, x₃]
+       └── pair 0 ──┘ └── pair 1 ──┘</code></pre><p>相邻通道组成二维坐标。RoPE 不把位置 embedding 直接加到 x 上。</p></article>
+    <div class="arrow-card" aria-hidden="true">→</div>
+    <article class="pair-card"><h3>位置决定两组角度</h3><pre><code>θ₀(p) = p × 1
+θ₁(p) = p × base⁻²⁄ᴰ</code></pre><p>低下标通道变化快，高下标通道变化慢；同一 token 的两对通道使用不同频率。</p></article>
+    <div class="arrow-card" aria-hidden="true">→</div>
+    <article class="pair-card output"><h3>分别乘二维旋转矩阵</h3><pre><code>[x′₂ᵢ  ]   [ cosθ  −sinθ ] [x₂ᵢ  ]
+[x′₂ᵢ₊₁] = [ sinθ   cosθ ] [x₂ᵢ₊₁]</code></pre><p>旋转改变方向，保持每一对坐标的平方范数。</p></article>
+  </div>
+  <div class="angle-grid"><article class="angle-card"><strong>位置 p=0</strong><code>θ = [0, 0]</code><p>cos=1、sin=0，所以 x′=x。</p></article><article class="angle-card"><strong>位置 p=1</strong><code>θ = [1, 0.1]（base=100,D=4）</code><p>第一对转 1 弧度，第二对只转 0.1 弧度。</p></article><article class="angle-card"><strong>位置 p=2</strong><code>θ = [2, 0.2]</code><p>位置翻倍，角度也翻倍；不同频率的两对通道会形成不同相位。</p></article></div>
+  <div class="callout"><strong>和绝对位置向量的区别：</strong>RoPE 把 position 变成旋转角度，并作用在 Q/K 的通道对上。两个位置旋转后的点积会自然携带相对位置信息；没有额外把一个可学习或固定向量加到 token 表示上。</div>
+</section>
+
+<section class="section" id="formula">
+  <div class="sec-no">03 / 公式对应代码</div><h2>频率 → 角度 → 旋转</h2>
+  <h3>1. 每一对通道的逆频率</h3>
+  <div class="formula"><div class="formula-row">inv_freq<sub>i</sub> = base<sup>−2i/D</sup>，i = 0,1,…,D/2−1</div><div class="formula-row">θ<sub>p,i</sub> = position<sub>p</sub> × inv_freq<sub>i</sub></div></div>
+  <p>代码用 <code>np.arange(0,D,2) / D</code> 生成 0/D、2/D、4/D……，等价于公式中的 2i/D。第一对的 inv_freq 永远为 1；越往后的通道频率越低，旋转越慢。</p>
+  <h3>2. 二维旋转公式</h3>
+  <div class="formula"><div class="formula-row">x′<sub>p,2i</sub> = x<sub>p,2i</sub>cosθ<sub>p,i</sub> − x<sub>p,2i+1</sub>sinθ<sub>p,i</sub></div><div class="formula-row">x′<sub>p,2i+1</sub> = x<sub>p,2i</sub>sinθ<sub>p,i</sub> + x<sub>p,2i+1</sub>cosθ<sub>p,i</sub></div></div>
+  <p>代码里的 <code>even = X[:,0::2]</code> 取出每对的第一个坐标，<code>odd = X[:,1::2]</code> 取出第二个坐标；两个矩阵形状都是 (T,D/2)，可以与 cos、sin 逐元素相乘。</p>
+  <h3>3. 为什么范数不变？</h3>
+  <div class="formula"><div class="formula-row">(x′<sub>2i</sub>)² + (x′<sub>2i+1</sub>)² = x<sub>2i</sub>² + x<sub>2i+1</sub>²</div></div>
+  <p>旋转矩阵是正交矩阵，cos²θ+sin²θ=1，交叉项相互抵消。它只改变二维向量的方向，不放大或缩小该对通道的长度；页面下方会把旋转前后的每对范数列出来。</p>
+  <h3>4. 角度的单位</h3><p>代码中的角度是弧度。<code>np.sin</code> 和 <code>torch.sin</code> 都按弧度计算；不能把 position 直接当成角度后再转成度数，也不需要手动乘 π/180。</p>
+</section>
+
+<section class="section" id="code">
+  <div class="sec-no">04 / 两个库对照</div><h2>NumPy / PyTorch 逐行解析</h2>
+  <p class="muted">代码实现的是“二维输入矩阵的 RoPE”。它先生成每一对通道的角度，再对偶数列和奇数列做逐元素旋转；点击每个非空代码行查看形状、公式和数值。</p>
+  <div class="controls" role="group" aria-label="实现版本"><button type="button" class="btn active" id="tab-numpy" aria-pressed="true">NumPy 版</button><button type="button" class="btn" id="tab-torch" aria-pressed="false">PyTorch 版</button><span id="line-status" class="small"></span></div>
+  <div class="editor-grid"><div class="code-panel"><div class="code-toolbar"><span id="code-label">rope.py · NumPy</span><button type="button" id="copy-code" class="btn">复制完整代码</button></div><div id="code-lines" class="code-scroll" aria-label="点击代码行查看说明"></div></div><aside class="detail-panel"><div class="detail-kicker" id="detail-kicker"></div><h3 id="detail-title"></h3><pre><code id="detail-code"></code></pre><p id="detail-body"></p><div id="detail-shape" class="example"></div><div class="controls"><button type="button" id="prev-line" class="btn">上一行</button><button type="button" id="next-line" class="btn primary">下一行</button></div><p class="small">代码行可点击，也可以用 Tab 定位后按 Enter / 空格选择。</p></aside></div>
+  <details><summary>展开完整 NumPy 实现</summary><pre><code id="full-numpy"></code></pre></details><details><summary>展开完整 PyTorch 实现</summary><pre><code id="full-torch"></code></pre></details><div id="copy-status" class="small" role="status"></div>
+  <noscript><p>代码切换和矩阵演示需要 JavaScript；公式与正文仍可直接阅读。</p></noscript>
+</section>
+
+<section class="section" id="trace">
+  <div class="sec-no">05 / 跟着矩阵验算</div><h2>从位置到旋转后的完整矩阵</h2>
+  <div class="controls"><label for="trace-base">演示底数</label><select id="trace-base"><option value="100">100 · 角度更明显</option><option value="10000">10000 · 标准常用值</option></select><label for="trace-token">查看 token</label><select id="trace-token"><option value="0">position 0</option><option value="1">position 1</option><option value="2">position 2</option></select><label for="trace-pair">查看 pair</label><select id="trace-pair"><option value="0">pair 0 · 通道 0/1</option><option value="1">pair 1 · 通道 2/3</option></select></div>
+  <p class="small">同一份 X 只切换 base；position 与特征保持不变。矩阵显示六位小数，实际计算保留完整精度。</p>
+  <div id="stage-buttons" class="controls" role="group" aria-label="计算阶段"></div><div class="trace-head"><h3 id="trace-title"></h3><span id="trace-shape" class="shape-badge"></span></div><p id="trace-text"></p><div id="trace-matrices" class="matrix-grid" aria-live="polite"></div><p id="trace-summary" class="trace-summary"></p>
+  <div class="controls"><button type="button" id="trace-prev" class="btn">上一步</button><span id="trace-progress" class="small"></span><button type="button" id="trace-next" class="btn primary">下一步</button></div>
+  <div id="pair-detail" class="result" aria-live="polite"></div>
+</section>
+
+<section class="section" id="attention">
+  <div class="sec-no">06 / 接入 Attention</div><h2>实际模型为什么只旋转 Q 和 K？</h2>
+  <div class="qk-bridge"><div class="qk-node"><strong>Q</strong><br>内容 + 当前查询位置</div><div class="qk-arrow">→</div><div class="qk-node k"><strong>K</strong><br>内容 + 可匹配的位置</div><div class="qk-arrow">×</div><div class="qk-node v"><strong>V 不旋转</strong><br>保留被读取的内容</div></div>
+  <p>在 self-attention 或 decoder self-attention 中，通常先得到 Q、K、V，再只对 Q、K 的最后一维应用 RoPE：</p>
+  <pre><code>Q_rot = apply_rope(Q, positions, base)
+K_rot = apply_rope(K, positions, base)
+scores = Q_rot @ K_rot.T / sqrt(d_head)
+attention = softmax(scores, axis=-1)
+H = attention @ V</code></pre>
+  <p>Q 和 K 参与点积，旋转后点积会随两个位置的相对差异变化；V 是被加权读取的内容，通常不携带这一步的旋转。不要把 V 也旋转后再声称这是标准 RoPE attention。</p>
+  <div class="norm-check"><div><strong>为什么能表示相对位置？</strong><p>二维旋转满足 R(θ₁)<sup>T</sup>R(θ₂)=R(θ₂−θ₁)。因此，\(R(m)q\) 与 \(R(n)k\) 的点积可以化成一个只依赖相对角度 n−m 的关系，再和内容向量的点积结合。</p></div><div><strong>为什么只对 Q/K 的部分维度？</strong><p>真实模型通常按 head 处理形状 (batch, heads, T, d_head)，并可设置 <code>rotary_dim &lt; d_head</code>。先旋转前 rotary_dim 维，剩余维度直接拼回；本页的基础题把整个 D 都作为 rotary_dim。</p></div></div>
+  <div class="callout note"><strong>和绝对位置编码对比：</strong>绝对位置编码常把位置向量加到 token 表示上；RoPE 将位置作为 Q/K 的相位旋转。它不增加最后一维，缓存推理时只需要根据 position id 生成对应的 cos/sin。</div>
+</section>
+
+<section class="section" id="axes">
+  <div class="sec-no">07 / 维度与语法</div><h2>切片、广播和位置轴</h2>
+  <h3>1. `0::2` 和 `1::2` 到底取了什么？</h3>
+  <div class="tensor-flow"><div class="tensor-card"><strong>X · (3,4)</strong><pre><code>[[1,0,0,1],
+ [1,1,1,0],
+ [0,1,2,-1]]</code></pre></div><div class="tensor-card"><strong>X[:,0::2] · 偶数列</strong><pre><code>[[1,0],
+ [1,1],
+ [0,2]]
+每一对的第一个坐标</code></pre></div><div class="tensor-card"><strong>X[:,1::2] · 奇数列</strong><pre><code>[[0,1],
+ [1,0],
+ [1,-1]]
+每一对的第二个坐标</code></pre></div></div>
+  <p>切片 `start:stop:step` 中，`0::2` 表示从第 0 列开始每隔 2 列取一次；`1::2` 从第 1 列开始。两者形状都是 (T,D/2)，正好和一组 cos/sin 角度相乘。</p>
+  <h3>2. 广播如何把一维频率扩展成每个位置的角度？</h3>
+  <pre><code>pos[:, None]          # (T,) → (T,1)
+inv_freq[None, :]     # (D/2,) → (1,D/2)
+angles = pos[:,None] * inv_freq[None,:]  # (T,D/2)</code></pre>
+  <p>第 p 行的 position 乘上整行频率，得到该 token 每一对通道的角度。这里没有复制 Python 循环；NumPy / PyTorch 通过广播让 (T,1) 和 (1,D/2) 组合成 (T,D/2)。</p>
+  <h3>3. `empty_like` 为什么不是全零？</h3><p><code>np.empty_like(X)</code> 或 <code>torch.empty_like(X)</code> 只分配与 X 同形状、同 dtype 的空间，不初始化值。随后两条赋值语句分别写入偶数列和奇数列，所以最终所有位置都会被覆盖；如果忘记其中一条赋值，输出可能包含未定义值。</p>
+  <h3>4. 为什么有些源码写 `rotate_half`？</h3>
+  <p>本页把相邻通道配成 <code>(x₀,x₁)、(x₂,x₃)</code>，所以直接写 even / odd 公式。另一些实现把同一组坐标排成“前半维 + 后半维”，例如 <code>[x₀,x₁,x₂,x₃] = [a₀,a₁,b₀,b₁]</code>，此时会写：</p>
+  <pre><code>def rotate_half(x):
+    half = x.shape[-1] // 2
+    return torch.cat((-x[..., half:], x[..., :half]), dim=-1)
+
+# half-split 布局下：x_rot = x * cos + rotate_half(x) * sin</code></pre>
+  <p><code>rotate_half</code> 做的是每个二维平面的 <code>(a,b) → (−b,a)</code>。它和本页的显式偶数列 / 奇数列公式表达同一个旋转，但前提是通道布局一致。面试手撕时先说清楚采用 interleaved（相邻配对）还是 half-split（前后半区配对），不要把两种布局的 cos、sin 直接混用。</p>
+  <h3>5. base、position、D 的关系</h3>
+  <div class="table-wrap"><table><thead><tr><th>变量</th><th>改变它会发生什么</th><th>不会改变什么</th></tr></thead><tbody><tr><td>position p</td><td>同一对通道的旋转角度按 p 线性变化</td><td>矩阵形状和通道配对</td></tr><tr><td>base</td><td>后面通道的频率尺度；base 越大，后面频率越慢</td><td>第一对 inv_freq=1</td></tr><tr><td>D</td><td>配对数量和每一对的频率；必须为偶数</td><td>每个 token 仍是一行</td></tr></tbody></table></div>
+</section>
+
+<section class="section" id="practice">
+  <div class="sec-no">08 / 盲写与自检</div><h2>位置 → 频率 → 角度 → 成对旋转</h2>
+  <pre><code>T, D = X.shape
+inv_freq = 1.0 / (base ** (np.arange(0, D, 2) / ______))
+angles = positions[:, ______] * inv_freq[______ , :]
+cos = np.______ (angles)
+sin = np.______ (angles)
+even = X[:, ______]
+odd = X[:, ______]
+out = np.______ _like(X)
+out[:, 0::2] = even * cos - odd * sin
+out[:, 1::2] = even * sin + odd * cos
+return out.______()</code></pre>
+  <details><summary>展开答案与自检点</summary><ul><li>频率分母用 D；positions[:,None] 与 inv_freq[None,:] 广播成 (T,D/2)。</li><li>函数是 np.cos、np.sin、np.empty_like、out.tolist；切片是 0::2 和 1::2。</li><li>位置 0 的输出必须和输入相同。</li><li>D 为奇数要明确报错；不能静默丢掉最后一列。</li><li>每一对通道的平方范数在旋转前后相同。</li><li>Attention 接入时旋转 Q/K，V 保持原值；Q/K 的位置可以是显式 position ids。</li><li>标准模型常用 base=10000，演示用 base=100 只是为了让第二对通道的角度肉眼可见。</li></ul></details>
+  <h3>复杂度</h3><p>对 (T,D) 输入生成角度、sin/cos 和旋转结果都需要 O(TD) 时间与 O(TD) 中间空间。预先缓存给定最大长度的 cos/sin 后，推理时可以复用它们；RoPE 不增加 Q/K 的最后一维。</p>
+</section>
+<footer class="footer"><p>相关学习：<a href="./self-attention.html">Self-Attention</a> · <a href="./multi-head-attention.html">Multi-Head Attention</a> · <a href="./grouped-query-attention.html">GQA</a> · <a href="./cross-attention.html">Cross-Attention</a> · RoPE</p></footer>
+</main>
+<script src="./math-render.js?v=20261003-14"></script>
+</body></html>

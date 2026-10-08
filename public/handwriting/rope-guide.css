@@ -1,0 +1,28 @@
+/* RoPE-specific visual layer; shared reading primitives come from gqa-guide.css. */
+.pair-flow { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:15px; align-items:stretch; }
+.pair-card { min-width:0; padding:17px; border:1px solid #c6ddda; border-top:4px solid #438c7d; border-radius:9px; background:#f4faf8; }
+.pair-card.input { border-color:#a8c4e6; border-top-color:#4e87cb; background:#f1f6fc; }
+.pair-card.output { border-color:#dfc48e; border-top-color:#ad7a32; background:#fffaf0; }
+.pair-card h3 { margin:0 0 9px; }
+.pair-card pre { margin-bottom:0; font-size:12px; }
+.arrow-card { display:flex; align-items:center; justify-content:center; font-size:26px; color:#64808b; }
+.angle-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; }
+.angle-card { min-width:0; padding:15px; border:1px solid #c5dcd9; border-radius:9px; background:#fbfdfc; }
+.angle-card strong { display:block; color:#35636d; margin-bottom:7px; }
+.angle-card code { display:block; margin:4px 0; }
+.qk-bridge { display:grid; grid-template-columns:1fr auto 1fr auto 1fr; gap:12px; align-items:center; padding:18px; border:1px solid #c5dcd9; border-radius:9px; background:#f8fbfa; }
+.qk-node { min-width:0; padding:13px; border:1px solid #a8c4e6; border-radius:8px; background:#edf4fc; text-align:center; }
+.qk-node.k { border-color:#a9c9c2; background:#f0f8f4; }
+.qk-node.v { border-color:#dfc48e; background:#fffaf0; }
+.qk-arrow { color:#64808b; font-size:22px; text-align:center; }
+.norm-check { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
+.norm-check > div { padding:15px; border:1px solid #c5dcd9; border-radius:8px; background:#f8fbfa; }
+.norm-check strong { display:block; color:#35636d; margin-bottom:7px; }
+.angle-highlight td { background:#fff4d7; box-shadow:inset 0 0 0 2px #d7a64f; font-weight:700; }
+#code .detail-panel { top:150px; }
+body > nav { top:58px; }
+#handwriting-ipad-reading { min-height:44px; }
+@media(max-width:980px) { .pair-flow { grid-template-columns:1fr; } .arrow-card { transform:rotate(90deg); min-height:25px; } .qk-bridge { grid-template-columns:1fr; } .qk-arrow { transform:rotate(90deg); } }
+@media(max-width:900px) { .matrix-grid,.angle-grid,.norm-check { grid-template-columns:1fr; } }
+@media(max-width:700px) { .pair-card,.angle-card,.norm-check > div { padding:14px; } }
+@media print { .pair-flow,.qk-bridge { display:block; } .pair-card,.qk-node { margin-bottom:10px; } .arrow-card,.qk-arrow { display:none; } }
