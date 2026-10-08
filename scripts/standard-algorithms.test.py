@@ -23,6 +23,9 @@ class StandardAlgorithmsTest(unittest.TestCase):
         self.assertEqual(MODULE.LayerNorm(8)(x).shape, x.shape)
         self.assertEqual(MODULE.RMSNorm(8)(x).shape, x.shape)
         self.assertEqual(MODULE.SwiGLU(8, 16)(x).shape, x.shape)
+        half = torch.randn(2, 3, 8, dtype=torch.float16)
+        self.assertEqual(MODULE.LayerNorm(8)(half).dtype, torch.float16)
+        self.assertEqual(MODULE.RMSNorm(8)(half).dtype, torch.float16)
 
     def test_rope_preserves_shape_and_offset(self):
         torch.manual_seed(0)

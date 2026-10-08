@@ -13,7 +13,7 @@ export const topics = [
     flow:['输入实数 x','按 x≥0 分支','正分支 exp(-x) / 负分支 exp(x)','还原原始形状'],
     steps:[['positive =','按正负划分','大负数若直接算 exp(-x)，会指数溢出。布尔索引只计算当前分支需要的元素，不会像 np.where 那样先把两个表达式都算一遍。'],['out[positive]','非负分支','x≥0 时 exp(-x)≤1，1/(1+exp(-x)) 稳定。'],['exp_x =','负数分支','把分子分母同时乘 exp(x)，得到 exp(x)/(1+exp(x))；此时 exp(x)≤1，同样不会溢出。']],
     example:'sigmoid([-1000, 0, 1000])\n# array([0., 0.5, 1.])；极端值可能因有限精度饱和',
-    pitfalls:['Sigmoid 与 Softmax 不同：前者每个元素独立，输出并不要求总和为 1。','大正、大负区域的导数趋近 0，所以不能因为数值稳定就认为不会梯度饱和。','PyTorch 训练用 torch.sigmoid；本题 NumPy 版用于理解稳定计算，不建立自动求导图。'], complexity:'时间 O(N)，输出与中间空间 O(N)。', related:'softmax.html'
+    pitfalls:['Sigmoid 与 Softmax 不同：前者每个元素独立，输出并不要求总和为 1。','大正、大负区域的导数趋近 0，所以不能因为数值稳定就认为不会梯度饱和。','PyTorch 训练用 torch.sigmoid；本题 NumPy 版用于理解稳定计算，不建立自动求导图。'], complexity:'时间 O(N)，输出与中间空间 O(N)。'
   },
   {
     id:'silu',group:'basics',title:'SiLU / Swish',source:'SiLU.py',symbols:['sigmoid','silu'],library:'NumPy',

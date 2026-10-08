@@ -62,10 +62,11 @@ function render(topic, index) {
 const groupedNav = groups.map(([id, title]) => `<div class="algorithm-nav-group"><h3>${escape(title)}</h3>${topics.filter(topic => topic.group === id).map(topic => `<a href="#${topic.id}" data-topic="${topic.id}">${escape(topic.title)}</a>`).join('')}</div>`).join('');
 const options = groups.map(([id, title]) => `<optgroup label="${escape(title)}">${topics.filter(topic => topic.group === id).map(topic => `<option value="${topic.id}">${escape(topic.title)}</option>`).join('')}</optgroup>`).join('');
 const sections = topics.map(render).join('\n');
-fs.writeFileSync(path.join(directory, 'algorithm-library.html'), `<!DOCTYPE html>
+const page = `<!DOCTYPE html>
 <html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>算法与大模型组件 · 20 题规范手撕</title><link rel="stylesheet" href="./gqa-guide.css"><link rel="stylesheet" href="./handwriting.css"><link rel="stylesheet" href="./algorithm-library.css"><script src="./algorithm-library.js" defer></script></head>
 <body class="algorithm-page"><header><div class="wrap hero"><div class="eyebrow">ALGORITHMS / STANDARD IMPLEMENTATIONS</div><h1>算法与大模型组件</h1><p class="lead">20 题沿着“接口 → 数据路径 → 公式 → 实现 → 自检”展开。先明确张量维度和计算约定，再复现代码；已有 Attention / RoPE 等矩阵演示也可以继续对照。</p><div class="pills"><span class="pill">20 个规范实现</span><span class="pill">4 类学习路径</span><span class="pill">iPad 阅读</span></div><p class="small">浏览器用于阅读和代码解析，Python 例子需要在本地安装 NumPy / PyTorch 后运行。</p><a class="btn" href="./standard_algorithms.py" download>下载全部 Python 实现 ↓</a></div></header>
 <div class="algorithm-mobile-nav"><label for="algorithm-select">选择题目</label><select id="algorithm-select">${options}</select><a href="#current-code" class="btn" id="jump-code">看代码 ↓</a></div>
 <div class="wrap algorithm-layout"><aside class="algorithm-sidebar"><nav aria-label="算法主题导航">${groupedNav}</nav></aside><main id="algorithm-main">${sections}<footer class="footer"><p><a href="../?round=handwriting">返回手撕题库</a> · <a href="./standard_algorithms.py" download>下载规范实现</a></p></footer></main></div>
-<noscript><div class="wrap callout">JavaScript 未启用时全部题目依次展示，完整代码可以选中复制；左侧锚点仍可跳转。</div></noscript><script src="./math-render.js?v=20261008"></script></body></html>\n`);
+<noscript><div class="wrap callout">JavaScript 未启用时全部题目依次展示，完整代码可以选中复制；左侧锚点仍可跳转。</div></noscript><script src="./math-render.js?v=20261008"></script></body></html>\n`;
+fs.writeFileSync(path.join(directory, 'algorithm-library.html'), page.replace(/^[ \t]+$/gm, ''));
 console.log(`Built algorithm library: ${topics.length} topics from tested Python definitions.`);

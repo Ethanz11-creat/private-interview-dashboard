@@ -67,7 +67,7 @@ class LayerNorm(nn.Module):
         mean = z.mean(dim=-1, keepdim=True)
         var = z.var(dim=-1, keepdim=True, unbiased=False)
         norm = ((z - mean) * torch.rsqrt(var + self.eps)).to(x.dtype)
-        return norm * self.weight + self.bias
+        return norm * self.weight.to(dtype=x.dtype) + self.bias.to(dtype=x.dtype)
 
 
 class RMSNorm(nn.Module):
@@ -80,7 +80,7 @@ class RMSNorm(nn.Module):
         # RMSNorm 不减均值，也不是计算方差；均方 = mean(x²)。
         z = x.float() if x.dtype in (torch.float16, torch.bfloat16) else x
         norm = (z * torch.rsqrt(z.square().mean(dim=-1, keepdim=True) + self.eps)).to(x.dtype)
-        return norm * self.weight
+        return norm * self.weight.to(dtype=x.dtype)
 
 
 class SwiGLU(nn.Module):
